@@ -17,6 +17,14 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  images: {
+    domains: [
+      "tailwindui.com",
+      "images.unsplash.com",
+      "cdn.tailgrids.com",
+      "www.freepik.com",
+    ],
+  },
 };
 
 export default config;
