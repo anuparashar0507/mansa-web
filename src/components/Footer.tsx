@@ -1,7 +1,18 @@
 import React from 'react';
-import { FaHeart } from 'react-icons/fa';
+// import { FaHeart } from 'react-icons/fa';
 import Link from 'next/link'
 import Image from 'next/image';
+
+type LinkGroupProps = {
+  children: React.ReactNode;
+  header: React.ReactNode;
+};
+
+type NavLinkProps = {
+  link: string;
+  label: string;
+};
+
 const Footer: React.FC = () => {
     return (
       <>
@@ -210,10 +221,7 @@ const Footer: React.FC = () => {
       </>
     );
   };
-  type LinkGroupProps = {
-    children: React.ReactNode;
-    header: React.ReactNode;
-  };
+
   
   const LinkGroup : React.FC<LinkGroupProps> = ({ children, header }) => {
     return (
@@ -230,10 +238,7 @@ const Footer: React.FC = () => {
     );
   };
   
-  type NavLinkProps = {
-    link: string;
-    label: string;
-  };
+ 
   const NavLink :React.FC<NavLinkProps> = ({ link, label }) => {
     return (
       <li>

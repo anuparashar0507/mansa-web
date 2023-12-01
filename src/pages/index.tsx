@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Link from "next/link";
+// import Link from "next/link";
 import Hero from "~/components/home//Hero";
 import About from "~/components/home//About";
 import Stats from "~/components/home//Stats";

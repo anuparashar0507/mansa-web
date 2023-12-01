@@ -2,7 +2,12 @@ import { XMarkIcon } from '@heroicons/react/20/solid'
 import React from 'react'
 import Link from 'next/link'
 
-const Banner: React.FC = () => {
+type BannerProps = {
+  setClose : React.Dispatch<React.SetStateAction<boolean>>,
+  // close:boolean
+}
+
+const Banner: React.FC<BannerProps> = ({setClose}) => {
   return (
     <div className="relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
       <div
@@ -31,21 +36,22 @@ const Banner: React.FC = () => {
       </div>
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         <p className="text-sm leading-6 text-gray-900">
-          <strong className="font-semibold">GeneriCon 2023</strong>
+          <strong className="font-semibold">Karvan 2024</strong>
           <svg viewBox="0 0 2 2" className="mx-2 inline h-0.5 w-0.5 fill-current" aria-hidden="true">
             <circle cx={1} cy={1} r={1} />
           </svg>
-          Join us in Denver from June 7 – 9 to see what’s coming next.
+          Join us in Bhopal from January 6 – 7 to Relive the Memories.
         </p>
         <Link
-          href="#"
+          href="https://forms.gle/YQd8Txf9pHmoJdjv8"
+          target="_blank"
           className="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
         >
           Register now <span aria-hidden="true">&rarr;</span>
         </Link>
       </div>
       <div className="flex flex-1 justify-end">
-        <button type="button" className="-m-3 p-3 focus-visible:outline-offset-[-4px]">
+        <button type="button" className="-m-3 p-3 focus-visible:outline-offset-[-4px]" onClick={()=>setClose(true)}>
           <span className="sr-only">Dismiss</span>
           <XMarkIcon className="h-5 w-5 text-gray-900" aria-hidden="true" />
         </button>
