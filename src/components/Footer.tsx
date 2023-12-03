@@ -2,6 +2,7 @@ import React from 'react';
 // import { FaHeart } from 'react-icons/fa';
 import Link from 'next/link'
 import Image from 'next/image';
+import mansaLogo from "../../public/MansaLogo.svg"
 
 type LinkGroupProps = {
   children: React.ReactNode;
@@ -19,21 +20,21 @@ const Footer: React.FC = () => {
         <footer className="w-full flex justify-center relative z-10 bg-white pb-10 pt-20 dark:bg-dark lg:pb-20 lg:pt-[120px]">
           <div className="container">
             <div className="mx-4 flex flex-wrap">
-              <div className="w-full px-4 sm:w-2/3 lg:w-3/12">
+              <div className="w-full px-4 sm:w-2/3 lg:w-4/12">
                 <div className="mb-10 w-full">
                   <Link href="/#" className="mb-6 inline-block max-w-[160px]">
-                    <Image
-                      src="https://cdn.tailgrids.com/2.0/image/assets/images/logo/logo.svg"
+                    {/* <Image
+                      src={mansaLogo}
                       alt="logo"
                       className="max-w-full dark:hidden"
-                      height={8}
+                      height={16}
                       width={40}
-                    />
+                    /> */}
                     <Image
-                      src="https://cdn.tailgrids.com/2.0/image/assets/images/logo/logo-white.svg"
+                      src={mansaLogo}
                       alt="logo"
-                      className="max-w-full hidden dark:block"
-                      height={8}
+                      className=" h-12 md:h-16  w-auto hidden dark:block"
+                      height={32}
                       width={40}
                     />
                   </Link>
