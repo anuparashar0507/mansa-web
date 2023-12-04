@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 import family from "../../../public/Images/family.jpg";
-import one from "../../../public/Images/one.png";
+import one from "../../../public/Images/ten.jpeg";
 import audi from "../../../public/Images/audi.jpg";
 import nine from "../../../public/Images/three.jpg";
 import five from "../../../public/Images/jnv-meet.jpg";
