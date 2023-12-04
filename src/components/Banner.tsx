@@ -49,7 +49,7 @@ const Banner: React.FC<BannerProps> = ({ setClose }) => {
         <Link
           href="https://forms.gle/YQd8Txf9pHmoJdjv8"
           target="_blank"
-          className="flex-none animate-pulse rounded-full bg-pink-500 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+          className="flex-none animate-pulse rounded-full bg-pink-500 px-3.5 py-1 text-sm font-semibold text-white shadow-sm hover:bg-green-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
         >
           Register now <span aria-hidden="true">&rarr;</span>
         </Link>

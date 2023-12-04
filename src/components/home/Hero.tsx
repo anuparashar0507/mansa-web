@@ -33,7 +33,7 @@ const Hero: React.FC = () => {
             </p>
             <Link
               href="#"
-              className="bg-brand mt-12 inline-block rounded-md border border-transparent px-8 py-3 text-center font-medium text-white hover:bg-indigo-700"
+              className="bg-brand mt-12 inline-block rounded-md border border-transparent px-8 py-3 text-center font-medium text-white hover:bg-opacity-90"
             >
               Know More
             </Link>

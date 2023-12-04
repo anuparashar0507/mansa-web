@@ -4,10 +4,8 @@ import Link from "next/link";
 import bgImg from "../../../public/Images/party-group.jpg";
 
 const links = [
-  { name: "Open roles", href: "#" },
-  { name: "Internship program", href: "#" },
-  { name: "Our values", href: "#" },
-  { name: "Meet our leadership", href: "#" },
+  { name: "Know More", href: "#" },
+  { name: "Register Here", href: "#" },
 ];
 const stats = [
   { name: "Offices worldwide", value: "12" },
@@ -50,46 +48,55 @@ const Event: React.FC = () => {
           }}
         />
       </div>
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:mx-0">
-          <div className="mb-8 flex w-max">
-            <div className="w-max rounded-full px-3 py-1 text-lg font-bold tracking-tight text-white ring-2 ring-inset ring-pink-500">
-              Event Alert
+      <div className="mx-auto flex max-w-7xl flex-wrap gap-12 px-6 lg:px-8">
+        <div>
+          <div className="mx-auto max-w-2xl lg:mx-0">
+            <div className="mb-8 flex w-max">
+              <div className="w-max rounded-full px-3 py-1 text-lg font-bold tracking-tight text-white ring-2 ring-inset ring-pink-500">
+                Event Alert
+              </div>
+              <span className="relative flex h-3 w-3">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
+                <span className="relative inline-flex h-3 w-3 rounded-full bg-pink-500"></span>
+              </span>
             </div>
-            <span className="relative flex h-3 w-3">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"></span>
-              <span className="relative inline-flex h-3 w-3 rounded-full bg-pink-500"></span>
-            </span>
-          </div>
-          <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
-            Karvan-2024, Bhopal
-          </h2>
-          <p className="mt-6 text-lg leading-8 text-gray-300">
-            Madhya-Bharat Association of Navodayan Students & Alumni Cordially
-            Invites You to The Grand National Navodayan Meet - Bhopal
-          </p>
-          <p className="mt-6 text-lg leading-8 text-gray-300">
-            Date: 6th & 7th January 2024
-          </p>
-          <p className="mt-6 text-lg leading-8 text-gray-300">
-            Venue: LNCT University Campus, Kolar Road, Bhopal(M.P.){" "}
-            <Link
-              href={"https://maps.app.goo.gl/cmkvHg6N6fE5ULHm7"}
-              target="_blank"
-            >
-              Locate Here
-            </Link>
-          </p>
-        </div>
-        <div className="mx-auto mt-10 max-w-2xl lg:mx-0 lg:max-w-none">
-          <div className="grid grid-cols-1 gap-x-8 gap-y-6 text-base font-semibold leading-7 text-white sm:grid-cols-2 md:flex lg:gap-x-10">
-            {links.map((link) => (
-              <Link key={link.name} href={link.href}>
-                {link.name} <span aria-hidden="true">&rarr;</span>
+            <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
+              Karvan-2024, Bhopal
+            </h2>
+            <p className="mt-6 text-lg leading-8 text-gray-300">
+              Madhya-Bharat Association of Navodayan Students & Alumni Cordially
+              Invites You to The Grand National Navodayan Meet - Bhopal
+            </p>
+            <p className="mt-6 text-lg leading-8 text-gray-300">
+              Date: 6th & 7th January 2024
+            </p>
+            <p className="mt-6 text-lg leading-8 text-gray-300">
+              Venue: LNCT University Campus, Kolar Road, Bhopal(M.P.){" "}
+              <Link
+                href={"https://maps.app.goo.gl/cmkvHg6N6fE5ULHm7"}
+                target="_blank"
+              >
+                <span className="ml-3 text-yellow-500 underline underline-offset-4">
+                  Locate Here
+                </span>
               </Link>
-            ))}
+            </p>
           </div>
-          <dl className="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mx-auto mt-10 max-w-3xl lg:mx-0 lg:max-w-none">
+            <div className="grid grid-cols-1 gap-x-8 gap-y-6 text-base font-semibold leading-7 text-white sm:grid-cols-2 md:flex lg:gap-x-10">
+              {links.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="w-max rounded-xl px-3 py-2 text-white ring-2 ring-inset ring-pink-50"
+                >
+                  {link.name} <span aria-hidden="true">&rarr;</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* <dl className="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (
               <div key={stat.name} className="flex flex-col-reverse">
                 <dt className="text-base leading-7 text-gray-300">
@@ -100,7 +107,19 @@ const Event: React.FC = () => {
                 </dd>
               </div>
             ))}
-          </dl>
+          </dl> */}
+        </div>
+        <div className="mx-auto my-auto flex w-max flex-col px-8 py-4">
+          <dt className="text-center text-xl leading-7 text-gray-300">
+            Number of Navodayans coming
+          </dt>
+          <dd className="my-8 text-center text-7xl font-bold leading-9 tracking-tight text-white">
+            1250+
+            {/* <span className="text-xl font-normal leading-7 text-gray-300"></span> */}
+          </dd>
+          <dt className="text-center text-xl leading-7 text-gray-300">
+            & counting.. Are you coming!
+          </dt>
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@ const stats = [
 
 const Stats: React.FC = () => {
   return (
-    <div className="sm:py-18 w-full bg-slate-50 py-12">
+    <div className="sm:py-18 w-full bg-slate-50 py-20">
       {/* <div className="mx-auto mb-auto mt-auto flex flex-col content-start"> */}
       <div className="mx-auto flex max-w-7xl flex-col justify-center px-6 lg:px-8">
         <h2 className="text-brand text-center text-base font-semibold leading-7">

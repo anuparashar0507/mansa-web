@@ -1,6 +1,6 @@
-import React, { Fragment, useState } from "react";
-import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
-import mansaLogo from "../../public/MansaLogo.svg";
+import React, { useState } from "react";
+import { Dialog, Popover } from "@headlessui/react";
+import mansaLogo from "../../public/MANSALogo.png";
 import {
   // ArrowPathIcon,
   Bars3Icon,
@@ -10,11 +10,11 @@ import {
   // SquaresPlusIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import {
-  ChevronDownIcon,
-  PhoneIcon,
-  PlayCircleIcon,
-} from "@heroicons/react/20/solid";
+// import {
+//   ChevronDownIcon,
+//   PhoneIcon,
+//   PlayCircleIcon,
+// } from "@heroicons/react/20/solid";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -42,14 +42,14 @@ type CallToAction = {
 //   { name: 'Integrations', description: 'Connect with third-party tools', href: '#', icon: SquaresPlusIcon },
 //   { name: 'Automations', description: 'Build strategic funnels that will convert', href: '#', icon: ArrowPathIcon },
 // ]
-const callsToAction: CallToAction[] = [
-  { name: "Watch demo", href: "#", icon: PlayCircleIcon },
-  { name: "Contact sales", href: "#", icon: PhoneIcon },
-];
+// const callsToAction: CallToAction[] = [
+//   { name: "Watch demo", href: "#", icon: PlayCircleIcon },
+//   { name: "Contact sales", href: "#", icon: PhoneIcon },
+// ];
 
-function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(" ");
-}
+// function classNames(...classes: string[]): string {
+//   return classes.filter(Boolean).join(" ");
+// }
 
 const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -65,8 +65,8 @@ const Header: React.FC = () => {
             <span className="sr-only">Your Company</span>
             <Image
               className="h-12 w-auto  md:h-16"
-              height={32}
-              width={40}
+              height={400}
+              width={600}
               src={mansaLogo}
               alt=""
             />
@@ -157,14 +157,14 @@ const Header: React.FC = () => {
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <Link href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
+              <span className="sr-only">MANSA</span>
               <Image
                 className="h-12 w-auto"
                 src={mansaLogo}
                 alt="MANSA Logo"
                 // fill={true}
-                height={12}
-                width={40}
+                height={400}
+                width={600}
               />
             </Link>
             <button
@@ -250,7 +250,7 @@ const NavLink: React.FC<NavLinkProps> = ({ href, title }) => {
   return (
     <Link
       href={href}
-      className="hover:bg-blue rounded-3xl px-3 py-2 text-sm font-semibold leading-6 text-gray-900 hover:text-white  focus:outline-none focus:ring focus:ring-blue-300"
+      className="hover:bg-blue hover:text-brand/80 rounded-3xl px-3 py-2 text-sm font-semibold leading-6 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300"
     >
       {title}
     </Link>
