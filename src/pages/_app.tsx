@@ -3,6 +3,7 @@ import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import DefaultLayout from "~/layouts/default";
 import "~/styles/globals.css";
+import { SEO } from "~/components/SEO";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -10,8 +11,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   return (
     <SessionProvider session={session}>
+      <SEO
+        title={"Welcome to MANSA"}
+        description="Madhya Bharat Association of Students and Alumni"
+      />
+
       <DefaultLayout>
-      <Component {...pageProps} />
+        <Component {...pageProps} />
       </DefaultLayout>
     </SessionProvider>
   );

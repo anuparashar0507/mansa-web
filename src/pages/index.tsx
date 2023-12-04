@@ -1,5 +1,4 @@
-import Head from "next/head";
-// import Link from "next/link";
+import { SEO } from "~/components/SEO";
 import Hero from "~/components/home//Hero";
 import About from "~/components/home//About";
 import Stats from "~/components/home//Stats";
@@ -10,14 +9,11 @@ import Contact from "~/components/home//Contact";
 export default function Home() {
   return (
     <>
-      <Head>
-        <title>Welcome to MANSA</title>
-        <meta
-          name="description"
-          content="Madhya Bharat Association of Students and Alumni"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <SEO
+        title={"Welcome to MANSA"}
+        description="Madhya Bharat Association of Students and Alumni"
+      />
+
       <main className="flex min-h-screen flex-col items-center justify-center">
         <Hero />
         <About />
