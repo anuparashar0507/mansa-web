@@ -1,3 +1,10 @@
+<!-- PROJECT LOGO -->
+<div align="center" style="background: blue;">
+  <a href="https://mansa-web.vercel.app">
+    <img src="/public/MANSALogo.png" alt="MANSA Logo" style="width: 50%;">
+  </a>
+</div>
+
 # MANSA (Madhya-Bharat Association of Navodayan Students and Alumni) Community Platform
 
 ## Introduction
@@ -6,30 +13,33 @@ This project aims to develop a comprehensive community platform for the organiza
 
 ## Features
 
-- Event Organization: Manage past, upcoming, and ongoing events
-  Easy registration and event management
-  Starred influencer section on event pages
-  Career Support:
+- **Event Organization:**
 
-- Authenticated job board for alumni
-  Job postings with detailed descriptions and contact information
-  Search functionality to filter jobs
-  Networking:
+  - Manage past, upcoming, and ongoing events
+  - Easy registration and event management
+  - Starred influencers section on event pages
 
-- Searchable directory of all registered alumni
-  Advanced filtering based on location, JNV, district, state, and country
-  Easy access to alumni profiles and connection options
+- **Career Support:**
+
+  - Authenticated job board for alumni
+  - Job postings with detailed descriptions and contact information
+  - Search functionality to filter jobs
+
+- **Networking:**
+  - Searchable directory of all registered alumni
+  - Advanced filtering based on location, JNV, district, state, and country
+  - Easy access to alumni profiles and connection options
 
 # Contribution Guide
 
-## We welcome contributions to this project! Please follow these guidelines:
+### We welcome contributions to this project! Please follow these guidelines:
 
-- Fork the repository: Fork the repository to your own GitHub account.
-- Create a branch for your changes: Create a new branch for your changes, e.g., feature/new-feature.
-- Make your changes: Make your changes to the code and add appropriate tests.
-- Commit your changes: Commit your changes with meaningful messages.
-- Push your changes: Push your changes to your forked repository.
-- Create a pull request: Create a pull request to merge your changes into the main branch.
+1. Fork the repository: Fork the repository to your own GitHub account.
+2. Create a branch for your changes: Create a new branch for your changes, e.g., `feature/new-feature`.
+3. Make your changes: Make your changes to the code and add appropriate tests.
+4. Commit your changes: Commit your changes with meaningful messages.
+5. Push your changes: Push your changes to your forked repository.
+6. Create a pull request: Create a pull request to merge your changes into the main branch.
 
 # Create T3 App
 
