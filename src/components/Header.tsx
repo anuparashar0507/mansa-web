@@ -61,8 +61,8 @@ const Header: React.FC = () => {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <Link href="#" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
+          <Link href="/" className="-m-1.5 p-1.5">
+            <span className="sr-only">MANSA</span>
             <Image
               className="h-12 w-auto  md:h-16"
               height={400}
@@ -133,10 +133,10 @@ const Header: React.FC = () => {
               </Popover.Panel>
             </Transition>
           </Popover> */}
-          <NavLink href="#" title="About US" />
-          <NavLink href="#" title="Events" />
+          <NavLink href="/about" title="About US" />
+          <NavLink href="/events/karvan" title="Events" />
           <NavLink href="#" title="Gallery" />
-          <NavLink href="#" title="Contact US" />
+          <NavLink href="/contact" title="Contact Us" />
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           <Link
@@ -205,13 +205,13 @@ const Header: React.FC = () => {
                   )}
                 </Disclosure> */}
                 <Link
-                  href="#"
+                  href="/about"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   About Us
                 </Link>
                 <Link
-                  href="#"
+                  href="/events/karvan"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Events
@@ -223,7 +223,7 @@ const Header: React.FC = () => {
                   Gallery
                 </Link>
                 <Link
-                  href="#"
+                  href="/contact"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Contact Us
