@@ -33,7 +33,7 @@ export default function Home() {
         <Hero />
         <About />
         <Stats />
-        <Event count={5} />
+        <Event />
         <Contact />
       </main>
     </>
