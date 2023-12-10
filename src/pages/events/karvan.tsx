@@ -1,23 +1,72 @@
 import React from "react";
+import type { NextPage } from 'next'
+import { useEffect, useState } from 'react'
 import Features from "~/components/events/karvan/Features";
 import Event from "~/components/home/Event";
 import Hero from "~/components/events/karvan/Hero";
 const Karvan = () => {
+
+// const time = 
+  // const timeToDays = time * 60 * 60 * 24 * 1000;
+
+  // const countDownDate = new Date().getTime() + timeToDays;
+
+
+  // useEffect(() => {
+
+
+  //   var updateTime = setInterval(() => {
+  //     var now = new Date().getTime();
+
+  //     var difference = countDownDate - now;
+
+  //     var newDays = Math.floor(difference / (1000 * 60 * 60 * 24));
+  //     var newHours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  //     var newMinutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+  //     var newSeconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+  //     setDays(newDays);
+  //     setHours(newHours);
+  //     setMinutes(newMinutes);
+  //     setSeconds(newSeconds);
+
+
+  //     if (difference <= 0) {
+  //       clearInterval(updateTime);
+  //       setMessage("The Launch Has Started");
+  //       setDays(0);
+  //       setHours(0);
+  //       setMinutes(0);
+  //       setSeconds(0);
+  //     }
+  //   })
+
+  //   return () => {
+  //     clearInterval(updateTime);
+  //   }
+
+  // }, [time]);
   return (
     <>
       <Hero count={10} />
-      <div className="mx-auto my-auto flex w-max flex-col px-8 py-4">
+      {/* <TimerContainer
+        days={days}
+        hours={hours}
+        minutes={minutes}
+        seconds={seconds}
+      /> */}
+      {/* <div className="mx-auto my-auto flex w-max flex-col px-8 py-4">
           <dt className="text-center text-xl leading-7 text-gray-300">
             Number of Navodayans coming
           </dt>
           <dd className="my-8 text-center text-7xl font-bold leading-9 tracking-tight text-white">
             1250
-            {/* <span className="text-xl font-normal leading-7 text-gray-300"></span> */}
+            <span className="text-xl font-normal leading-7 text-gray-300"></span>
           </dd>
           <dt className="text-center text-xl leading-7 text-gray-300">
             & counting.. Are you coming!
           </dt>
-        </div>
+        </div> */}
       <Features />
       <div className="w-full flex justify-center bg-slate-100 items-center py-4">
       <iframe
