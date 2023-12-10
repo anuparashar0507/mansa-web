@@ -180,7 +180,7 @@ const Features = () => {
               alt=""
             />
               </div>
-              <h3 className="text-3xl font-semibold">Yogathan (Yoga, marathon)</h3>
+              <h3 className="text-3xl font-semibold">Yogathan (Yoga, Marathon)</h3>
               <p className="mt-4 text-lg leading-relaxed text-gray-600">
               Start your day with a healthy dose of yoga and a refreshing marathon.
               </p>

@@ -43,7 +43,7 @@ const Hero: React.FC = () => {
               {/* Decorative image grid */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none lg:absolute lg:inset-y-0 lg:mx-auto lg:w-full lg:max-w-7xl"
+                className="pointer-events-none w-max lg:absolute lg:inset-y-0 lg:mx-auto lg:w-full lg:max-w-7xl"
               >
                 <div className="w-full sm:absolute sm:left-1/2 sm:top-0 sm:translate-x-8 sm:transform lg:left-1/2 lg:top-1/2 lg:-translate-y-1/2 lg:translate-x-8">
                   <div className="flex items-center space-x-2 sm:space-x-6 lg:space-x-8">
