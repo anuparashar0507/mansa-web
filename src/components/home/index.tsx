@@ -13,7 +13,7 @@ const Home : React.FC = () => {
     <Hero />
     <About />
     <Stats />
-    <Event />
+    <Event  />
     <CTA />
     <Contact />
     </>
