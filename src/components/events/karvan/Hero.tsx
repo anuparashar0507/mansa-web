@@ -5,7 +5,7 @@ import bgImg from "../../../../public/Images/party-group.jpg";
 import { TimerContainer } from "../TimeContainer";
 const links = [
   // { name: "Know More", href: "#" },
-  { name: "Register Here", href: "#" },
+  { name: "Register Here", href: "https://forms.gle/YQd8Txf9pHmoJdjv8" },
 ];
 // const stats = [
 //   { name: "", value: "COME" },
@@ -88,7 +88,7 @@ const Hero: React.FC<countProps> = ({ count ,days, hours, minutes, seconds }) =>
             </p>
           </div>
           <div className="mx-auto mt-10 max-w-7xl lg:mx-0 lg:max-w-none">
-            <div className="grid grid-cols-1 gap-x-8 gap-y-6 text-base font-semibold leading-7 text-white sm:grid-cols-2 md:flex lg:gap-x-10">
+            <div className="grid grid-cols-1 gap-x-8 gap-y-6 text-base font-semibold leading-7 text-white sm:grid-cols-2 md:flex mb-12 lg:gap-x-10">
               {links.map((link) => (
                 <Link
                   key={link.name}

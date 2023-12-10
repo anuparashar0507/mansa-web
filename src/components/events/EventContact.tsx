@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import React from 'react'
 
 const EventContact = () => {
@@ -20,7 +21,8 @@ const EventContact = () => {
         <p className="leading-relaxed mb-5 text-gray-600">navodayansinbhopal@gmail.com</p>
         <h2 className="text-gray-900 text-lg mb-1 font-medium title-font">Venue</h2>
         <p className="leading-relaxed mb-5 text-gray-600">LNCT University Campus, Kolar Road, Bhopal(M.P.)</p>
-        <button className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Start Navigation</button>
+        <Link className="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg text-center"    href={"https://maps.app.goo.gl/cmkvHg6N6fE5ULHm7"}
+                target="_blank">Start Navigation</Link>
         <p className="text-xs text-gray-500 mt-3">We are waiting to host you.</p>
       </div>
     </div>

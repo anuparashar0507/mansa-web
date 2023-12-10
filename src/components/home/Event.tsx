@@ -5,7 +5,7 @@ import bgImg from "../../../public/Images/party-group.jpg";
 
 const links = [
   { name: "Know More", href: "/events/karvan" },
-  { name: "Register Here", href: "#" },
+  { name: "Register Here", href: "https://forms.gle/YQd8Txf9pHmoJdjv8" },
 ];
 // const stats = [
 //   { name: "Offices worldwide", value: "12" },
