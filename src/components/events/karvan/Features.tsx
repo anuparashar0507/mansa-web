@@ -2,9 +2,16 @@ import React from "react";
 import friendship from "../../../../public/Images/friendship.gif"
 import campfire from "../../../../public/Images/campfire.gif"
 import music from "../../../../public/Images/music.gif"
-import yoga from "../../../../public/Images/yoga.gif"
+import yogaIcon from "../../../../public/Images/yoga.gif"
 import society from "../../../../public/Images/society.gif"
 import path from "../../../../public/Images/path.gif"
+import meetup from "../../../../public/Images/path.png"
+import campfireimg from "../../../../public/Images/campfireimg.png"
+import musicnight from "../../../../public/Images/musicnight.png"
+import yoga from "../../../../public/Images/yoga.png"
+import discussion from "../../../../public/Images/discussion.png"
+import panel from "../../../../public/Images/panel.png"
+
 import Image from "next/image";
 
 const Features = () => {
@@ -66,7 +73,7 @@ const Features = () => {
               className="w-full bg-transparent"
               height={800}
               width={800}
-              src="/images/meetup.svg"
+              src={meetup}
               alt=""
             />
           </div>
@@ -97,7 +104,7 @@ const Features = () => {
               className="w-full"
               height={800}
               width={800}
-              src="/images/campfireimg.svg"
+              src={campfireimg}
               alt=""
             />
           </div>
@@ -128,7 +135,7 @@ const Features = () => {
               className="w-full"
               height={800}
               width={800}
-              src="/images/musicnight.svg"
+              src={musicnight}
               alt=""
             />
           </div>
@@ -158,7 +165,7 @@ const Features = () => {
               className="w-full"
               height={800}
               width={800}
-              src="/images/yoga.svg"
+              src={yoga}
               alt=""
             />
           </div>
@@ -169,7 +176,7 @@ const Features = () => {
               className="rounded-full"
               height={300}
               width={300}
-              src={yoga}
+              src={yogaIcon}
               alt=""
             />
               </div>
@@ -189,7 +196,7 @@ const Features = () => {
               className="w-full"
               height={800}
               width={800}
-              src="/images/discussion.svg"
+              src={discussion}
               alt=""
             />
           </div>
@@ -219,7 +226,7 @@ const Features = () => {
               className="w-full"
               height={800}
               width={800}
-              src="/images/panel.svg"
+              src={panel}
               alt=""
             />
           </div>
