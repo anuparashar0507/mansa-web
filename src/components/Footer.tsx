@@ -16,7 +16,7 @@ type NavLinkProps = {
 
 const Footer: React.FC = () => {
   return (
-    <footer className="dark:bg-dark relative z-10 flex w-full flex-col justify-center bg-white pb-10 pt-20 lg:pb-20 lg:pt-[120px]">
+    <footer className="dark:bg-dark relative z-10 border-t-2 border-slate-100 flex w-full flex-col justify-center bg-white pb-10 pt-20 lg:pb-20 lg:pt-[120px]">
       <div className="container mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-4 flex flex-wrap justify-between">
           <div className="w-full px-4 sm:w-2/3 lg:w-4/12">
