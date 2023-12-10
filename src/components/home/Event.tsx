@@ -4,7 +4,7 @@ import Link from "next/link";
 import bgImg from "../../../public/Images/party-group.jpg";
 
 const links = [
-  { name: "Know More", href: "#" },
+  { name: "Know More", href: "/events/karvan" },
   { name: "Register Here", href: "#" },
 ];
 // const stats = [
