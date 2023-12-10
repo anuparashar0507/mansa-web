@@ -2,59 +2,46 @@ import React from "react";
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import Features from "~/components/events/karvan/Features";
-import Event from "~/components/home/Event";
+import EventContact from "~/components/events/EventContact";
 import Hero from "~/components/events/karvan/Hero";
+const targetDate = new Date("2024-01-06T12:00:00"); // Replace with your desired date
+interface CountdownState {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
 const Karvan = () => {
+  const [timeLeft, setTimeLeft] = useState<CountdownState>({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
-// const time = 
-  // const timeToDays = time * 60 * 60 * 24 * 1000;
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      const diff = targetDate.getTime() - now.getTime();
 
-  // const countDownDate = new Date().getTime() + timeToDays;
+      // Calculate the remaining time in seconds
+      const secondsRemaining = Math.floor(diff / 1000);
 
+      // Calculate days, hours, minutes, and seconds
+      const days = Math.floor(secondsRemaining / (3600 * 24));
+      const hours = Math.floor((secondsRemaining % (3600 * 24)) / 3600);
+      const minutes = Math.floor((secondsRemaining % 3600) / 60);
+      const seconds = Math.floor(secondsRemaining % 60);
 
-  // useEffect(() => {
+      setTimeLeft({ days, hours, minutes, seconds });
+    }, 1000);
 
-
-  //   var updateTime = setInterval(() => {
-  //     var now = new Date().getTime();
-
-  //     var difference = countDownDate - now;
-
-  //     var newDays = Math.floor(difference / (1000 * 60 * 60 * 24));
-  //     var newHours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  //     var newMinutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-  //     var newSeconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-  //     setDays(newDays);
-  //     setHours(newHours);
-  //     setMinutes(newMinutes);
-  //     setSeconds(newSeconds);
-
-
-  //     if (difference <= 0) {
-  //       clearInterval(updateTime);
-  //       setMessage("The Launch Has Started");
-  //       setDays(0);
-  //       setHours(0);
-  //       setMinutes(0);
-  //       setSeconds(0);
-  //     }
-  //   })
-
-  //   return () => {
-  //     clearInterval(updateTime);
-  //   }
-
-  // }, [time]);
+    return () => clearInterval(interval);
+  }, []);
   return (
     <>
-      <Hero count={10} />
-      {/* <TimerContainer
-        days={days}
-        hours={hours}
-        minutes={minutes}
-        seconds={seconds}
-      /> */}
+      <Hero count={10} days={timeLeft.days} hours={timeLeft.hours}  minutes={timeLeft.minutes} seconds={timeLeft.seconds} />
+     
       {/* <div className="mx-auto my-auto flex w-max flex-col px-8 py-4">
           <dt className="text-center text-xl leading-7 text-gray-300">
             Number of Navodayans coming
@@ -68,16 +55,7 @@ const Karvan = () => {
           </dt>
         </div> */}
       <Features />
-      <div className="w-full flex justify-center bg-slate-100 items-center py-4">
-      <iframe
-          className="grayscale-1 m-0  w-full max-w-7xl scroll-m-0 border-none opacity-70 contrast-125"
-          title="Office Location"
-          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1833.8897323192164!2d77.4274725!3d23.1782478!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x397c439eedfd261d%3A0xbda480b4e82fe8d7!2sLNCT%20University%2C%20Bhopal!5e0!3m2!1sen!2sin!4v1702208165099!5m2!1sen!2sin&amp;ie=UTF8&amp;t=&amp;z=14&amp;iwloc=B&amp;output=embed"
-          width="600"
-          height="450"
-          loading="lazy"
-        />
-        </div>
+     <EventContact />
     </>
   );
 };

@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 import bgImg from "../../../../public/Images/party-group.jpg";
-
+import { TimerContainer } from "../TimeContainer";
 const links = [
   // { name: "Know More", href: "#" },
   { name: "Register Here", href: "#" },
@@ -13,10 +13,14 @@ const links = [
 //   { name: "", value: "CELEBRATE" },
   // { name: "Paid time off", value: "Unlimited" },
 // ];
-// type countProps ={
-//   count
-// }
-const Hero: React.FC<{ count: number }> = ({ count }) => {
+type countProps ={
+  count: number,
+  days:number,
+  hours:number,
+  minutes:number,
+  seconds:number
+}
+const Hero: React.FC<countProps> = ({ count ,days, hours, minutes, seconds }) => {
   return (
     <div className="relative isolate w-full overflow-hidden bg-gray-900 py-24 sm:py-32">
       <Image
@@ -96,23 +100,14 @@ const Hero: React.FC<{ count: number }> = ({ count }) => {
               ))}
             </div>
           </div>
-
-          {/* <dl className="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4">
-            {stats.map((stat) => (
-              <div key={stat.name} className="flex flex-col-reverse">
-                <dt className="text-base leading-7 text-gray-300">
-                  {stat.name}
-                </dt>
-                <dd className="text-2xl font-bold leading-9 tracking-tight text-white">
-                  {stat.value}
-                </dd>
-              </div>
-            ))}
-          </dl> */}
+      <TimerContainer
+        days={days}
+        hours={hours}
+        minutes={minutes}
+        seconds={seconds}
+      />
         </div>
-      
       </div>
-    
     </div>
   );
 };
