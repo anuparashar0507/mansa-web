@@ -1,12 +1,13 @@
 import { google } from 'googleapis';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-type User ={
-  name: string;
-  batch: string;
-  passout: string;
-}
-
+type User = {
+    name: string;
+    batch: string;
+    passout: string;
+    [key: string]: any;
+  };
+  
 type ApiResponse ={
   count: number;
   users: User[];
@@ -38,12 +39,13 @@ export default async function handler(
 
     const headers = rows.shift() as string[];
     const users: User[] = rows.map((row) => {
-      let user: Partial<User> = {};
-      headers.forEach((header, index) => {
-        user[header.toLowerCase()] = row[index];
+        let user = {} as User;
+        headers.forEach((header, index) => {
+          user[header.toLowerCase()] = row[index];
+        });
+        return user;
       });
-      return user as User;
-    });
+      
 
     res.status(200).json({ count: users.length, users });
   } catch (err) {
