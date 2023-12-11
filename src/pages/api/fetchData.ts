@@ -8,10 +8,11 @@ type User = {
     [key: string]: any;
   };
   
-type ApiResponse ={
-  count: number;
-  users: User[];
-}
+  type ApiResponse = {
+    count: number;
+    users: User[];
+    [key: string]: any;
+  };
 
 const auth = new google.auth.GoogleAuth({
   keyFile: 'register.json',
@@ -50,6 +51,6 @@ export default async function handler(
     res.status(200).json({ count: users.length, users });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error' } as ApiResponse);
   }
 }
