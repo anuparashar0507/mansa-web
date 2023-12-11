@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { google } from 'googleapis';
 import type { NextApiRequest, NextApiResponse } from 'next';
+
 type User ={
   name: string;
   batch: string;
@@ -40,7 +38,7 @@ export default async function handler(
 
     const headers = rows.shift() as string[];
     const users: User[] = rows.map((row) => {
-      const user: Partial<User> = {};
+      let user: Partial<User> = {};
       headers.forEach((header, index) => {
         user[header.toLowerCase()] = row[index];
       });
@@ -49,7 +47,7 @@ export default async function handler(
 
     res.status(200).json({ count: users.length, users });
   } catch (err) {
-    // console.error(err);
+    console.error(err);
     res.status(500).json({ error: 'Internal server error' });
   }
 }

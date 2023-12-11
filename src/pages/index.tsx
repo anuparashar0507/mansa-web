@@ -1,5 +1,5 @@
-import { GetServerSideProps } from 'next';
-import { useEffect, useState } from "react";
+// pages/index.tsx
+import { useEffect,useState } from "react";
 import { SEO } from "~/components/SEO";
 import Hero from "~/components/home/Hero";
 import About from "~/components/home/About";
@@ -7,21 +7,21 @@ import Stats from "~/components/home/Stats";
 import Event from "~/components/home/Event";
 import Contact from "~/components/home/Contact";
 
-interface HomeProps {
-  data: {
-    count: number;
-    users: []
-  };
-}
 
-export default function Home({ data }: HomeProps) {
-  // const [count, setCount] = useState(0);
+export default function Home() {
+  // const [users, setUsers] = useState([]);
+  const [count, setCount] = useState(0);
 
-  // useEffect(() => {
-  //   setCount(data?.count);
-  //   console.log("DATAAA ::: ", data)
-  // }, []);
-
+  useEffect(() => {
+    async function fetchData() {
+      const res = await fetch('/api/fetchData');
+      const data = await res.json();
+      // setUsers(data?.users);
+      setCount(data?.count);
+      console.log("DATAAA ::: ", data)
+    }
+    fetchData();
+  }, []);
   return (
     <>
       <SEO
@@ -33,20 +33,32 @@ export default function Home({ data }: HomeProps) {
         <Hero />
         <About />
         <Stats />
-        <Event count={data ?? data.count} />
+        <Event count={count} />
         <Contact />
       </main>
     </>
   );
 }
 
-export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
-  const res = await fetch('/api/fetchData');
-  const data = await res.json();
+// export async function getServerSideProps(): Promise<{ props: HomeProps }> {
+//   try {
+//     const req = await fetch("http://localhost:3000/api/sheet");
+//     const res = (await req.json()) as ApiResponse; // Type assertion here
+//     // console.log("Responseee : ", res);
+//     if (res) {
+//       return {
+//         props: {
+//           sheetdata: res.count,
+//         },
+//       };
+//     }
+//   } catch (error) {
+//     console.error("Error fetching data:", error);
+//   }
 
-  return {
-    props: {
-      data,
-    },
-  };
-}
+//   return {
+//     props: {
+//       sheetdata: 4,
+//     },
+//   };
+// }
