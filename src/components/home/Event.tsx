@@ -13,10 +13,10 @@ const links = [
 //   { name: "Hours per week", value: "40" },
 //   { name: "Paid time off", value: "Unlimited" },
 // ];
-// type countProps ={
-//   count
-// }
-const Event: React.FC = () => {
+type countProps ={
+  count:number
+}
+const Event: React.FC<countProps> = ({count}) => {
   return (
     <div className="relative isolate w-full overflow-hidden bg-gray-900 py-24 sm:py-32">
       <Image
@@ -116,7 +116,7 @@ const Event: React.FC = () => {
             Number of Navodayans coming
           </dt>
           <dd className="my-8 text-center text-7xl font-bold leading-9 tracking-tight text-white">
-            1250+
+           {count}
             {/* <span className="text-xl font-normal leading-7 text-gray-300"></span> */}
           </dd>
           <dt className="text-center text-xl leading-7 text-gray-300">

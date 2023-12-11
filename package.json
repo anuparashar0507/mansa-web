@@ -20,6 +20,7 @@
     "@t3-oss/env-nextjs": "^0.7.1",
     "google-auth-library": "^9.4.1",
     "google-spreadsheet": "^4.1.1",
+    "googleapis": "^129.0.0",
     "next": "^14.0.3",
     "next-auth": "^4.24.5",
     "react": "18.2.0",
