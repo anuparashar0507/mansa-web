@@ -13,14 +13,20 @@ export default function Home() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    async function fetchData() {
-      const res = await fetch('/api/fetchData');
-      const data = await res.json();
-      // setUsers(data?.users);
-      setCount(data?.count);
-      console.log("DATAAA ::: ", data)
+   async function fetchData() {
+  try {
+    const res = await fetch('/api/fetchData');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const data = await res.json();
+    if (data) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+      setCount(data.count);
     }
-    fetchData();
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+    void fetchData();
   }, []);
   return (
     <>
