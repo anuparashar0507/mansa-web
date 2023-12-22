@@ -15,7 +15,7 @@ export default function Home() {
   useEffect(() => {
    async function fetchData() {
   try {
-    const res = await fetch('/api/fetchData');
+    const res = await fetch('/api/fetchSheet');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const data = await res.json();
     if (data) {
