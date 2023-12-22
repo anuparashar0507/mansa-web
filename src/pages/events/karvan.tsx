@@ -1,5 +1,5 @@
 import React from "react";
-import type { NextPage } from 'next'
+import { SEO } from "~/components/SEO";
 import { useEffect, useState } from 'react'
 import Features from "~/components/events/karvan/Features";
 import EventContact from "~/components/events/EventContact";
@@ -40,6 +40,10 @@ const Karvan = () => {
   }, []);
   return (
     <>
+     <SEO
+        title={"Karvan-2024 by MANSA"}
+        description="The Grand National Navodayan Meet - Bhopal"
+      />
       <Hero count={10} days={timeLeft.days} hours={timeLeft.hours}  minutes={timeLeft.minutes} seconds={timeLeft.seconds} />
      
       {/* <div className="mx-auto my-auto flex w-max flex-col px-8 py-4">

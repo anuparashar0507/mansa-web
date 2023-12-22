@@ -1,5 +1,5 @@
 // pages/index.tsx
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { SEO } from "~/components/SEO";
 import Hero from "~/components/home/Hero";
 import About from "~/components/home/About";
@@ -7,20 +7,26 @@ import Stats from "~/components/home/Stats";
 import Event from "~/components/home/Event";
 import Contact from "~/components/home/Contact";
 
-// interface HomeProps {
-//   sheetdata: number;
-// }
-// interface ApiResponse {
-//   count: number;
-//   // Add other properties if your API response has more fields
-// }
 
 export default function Home() {
-  // const { count } = sheetdata; // Extract the count property
-  let res2;
+  // const [users, setUsers] = useState([]);
+  const [count, setCount] = useState(0);
+
   useEffect(() => {
-    res2 = fetch("/api/sheet").then((res) => res.json());
-    console.log(res2);
+   async function fetchData() {
+  try {
+    const res = await fetch('/api/fetchSheet');
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const data = await res.json();
+    if (data) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+      setCount(data.count);
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+    void fetchData();
   }, []);
   return (
     <>
@@ -33,7 +39,7 @@ export default function Home() {
         <Hero />
         <About />
         <Stats />
-        <Event />
+        <Event count={count} />
         <Contact />
       </main>
     </>

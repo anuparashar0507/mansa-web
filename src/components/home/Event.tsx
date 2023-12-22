@@ -2,6 +2,7 @@ import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 import bgImg from "../../../public/Images/party-group.jpg";
+import Skeleton from "../Skeleton";
 
 const links = [
   { name: "Know More", href: "/events/karvan" },
@@ -13,10 +14,10 @@ const links = [
 //   { name: "Hours per week", value: "40" },
 //   { name: "Paid time off", value: "Unlimited" },
 // ];
-// type countProps ={
-//   count
-// }
-const Event: React.FC = () => {
+type countProps ={
+  count:number
+}
+const Event: React.FC<countProps> = ({count}) => {
   return (
     <div className="relative isolate w-full overflow-hidden bg-gray-900 py-24 sm:py-32">
       <Image
@@ -115,12 +116,15 @@ const Event: React.FC = () => {
           <dt className="text-center text-xl leading-7 text-gray-300">
             Number of Navodayans coming
           </dt>
-          <dd className="my-8 text-center text-7xl font-bold leading-9 tracking-tight text-white">
-            1250+
-            {/* <span className="text-xl font-normal leading-7 text-gray-300"></span> */}
+          <dd className="my-8 text-center text-7xl font-bold leading-9 tracking-tight text-white">        
+           {count=== 0?
+          <Skeleton />
+          :
+          count 
+          }
           </dd>
           <dt className="text-center text-xl leading-7 text-gray-300">
-            & counting.. Are you coming!
+           Are you coming!
           </dt>
         </div>
       </div>
