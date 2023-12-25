@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
-// import { AuthContext } from './AuthContext';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
-import Banner from '~/components/Banner';
+// import Authenticated from "./authenticated";
+import LandingLayout from "./landingLayout";
+import { usePathname } from "next/navigation";
 type LayoutProps = {
   children: React.ReactNode;
 };
 
 const DefaultLayout: React.FC<LayoutProps> = ({ children }) => {
-//   const { isAuthenticated } = useContext(AuthContext);
-const [close, setClose] = useState(false)
+  const pathname = usePathname();
+  const mode = pathname.split("/").filter((e) => e)[0];
+  console.log("Pathname :", mode);
+  //   const { isAuthenticated } = useContext(AuthContext);
 
   return (
     <>
-     {!close && <Banner setClose={setClose}  />}
-      <Header  />
-      {/* {isAuthenticated ? <Dashboard /> : children} */}
-      {children}
-      <Footer />
+      {/* {mode === "dashboard" ? (
+        <Authenticated>{children}</Authenticated>
+      ) : (
+        <LandingLayout>{children}</LandingLayout>
+      )} */}
+      <LandingLayout>{children}</LandingLayout>
     </>
   );
 };
