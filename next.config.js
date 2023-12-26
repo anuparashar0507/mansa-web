@@ -23,6 +23,7 @@ const config = {
       "images.unsplash.com",
       "cdn.tailgrids.com",
       "www.freepik.com",
+      "daisyui.com",
     ],
   },
 };
