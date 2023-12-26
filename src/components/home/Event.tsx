@@ -6,7 +6,7 @@ import Skeleton from "../Skeleton";
 
 const links = [
   { name: "Know More", href: "/events/karvan" },
-  { name: "Register Here", href: "https://forms.gle/YQd8Txf9pHmoJdjv8" },
+  // { name: "Register Here", href: "https://forms.gle/YQd8Txf9pHmoJdjv8" },
 ];
 // const stats = [
 //   { name: "Offices worldwide", value: "12" },
@@ -14,10 +14,10 @@ const links = [
 //   { name: "Hours per week", value: "40" },
 //   { name: "Paid time off", value: "Unlimited" },
 // ];
-type countProps ={
-  count:number
-}
-const Event: React.FC<countProps> = ({count}) => {
+type countProps = {
+  count: number;
+};
+const Event: React.FC<countProps> = ({ count }) => {
   return (
     <div className="relative isolate w-full overflow-hidden bg-gray-900 py-24 sm:py-32">
       <Image
@@ -116,15 +116,11 @@ const Event: React.FC<countProps> = ({count}) => {
           <dt className="text-center text-xl leading-7 text-gray-300">
             Number of Navodayans coming
           </dt>
-          <dd className="my-8 text-center text-7xl font-bold leading-9 tracking-tight text-white">        
-           {count=== 0?
-          <Skeleton />
-          :
-          count 
-          }
+          <dd className="my-8 text-center text-7xl font-bold leading-9 tracking-tight text-white">
+            {count === 0 ? <Skeleton /> : count}
           </dd>
           <dt className="text-center text-xl leading-7 text-gray-300">
-           Are you coming!
+            Are you coming!
           </dt>
         </div>
       </div>
