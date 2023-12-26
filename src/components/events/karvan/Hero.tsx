@@ -1,26 +1,54 @@
 import Image from "next/image";
-import React from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import bgImg from "../../../../public/Images/party-group.jpg";
 import { TimerContainer } from "../TimeContainer";
-const links = [
-  // { name: "Know More", href: "#" },
-  { name: "Register Here", href: "https://forms.gle/YQd8Txf9pHmoJdjv8" },
-];
+import MemberCard from "~/components/events/karvan/MembersCard";
+import { type User } from "~/utils/types/user.type";
+// import { randomUUID } from "crypto";
+// const links = [
+//   // { name: "Know More", href: "#" },
+//   { name: "Register Here", href: "https://forms.gle/YQd8Txf9pHmoJdjv8" },
+// ];
 // const stats = [
 //   { name: "", value: "COME" },
 //   { name: "", value: "CONNECT" },
 //   { name: "", value: "CELEBRATE" },
-  // { name: "Paid time off", value: "Unlimited" },
+// { name: "Paid time off", value: "Unlimited" },
 // ];
-type countProps ={
-  count: number,
-  days:number,
-  hours:number,
-  minutes:number,
-  seconds:number
-}
-const Hero: React.FC<countProps> = ({ count ,days, hours, minutes, seconds }) => {
+
+type countProps = {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+  members: User[];
+  searchText: string;
+  setSearchText: React.Dispatch<React.SetStateAction<string>>;
+};
+const Hero: React.FC<countProps> = ({
+  days,
+  hours,
+  minutes,
+  seconds,
+  members,
+  setSearchText,
+  searchText,
+}) => {
+  const modalRef = useRef<HTMLDialogElement>(null);
+  const [filteredMembers, setFilteredMembers] = useState<User[]>(members);
+  useEffect(() => {
+    if (searchText.length > 0) {
+      const filterMember = members.filter((member) =>
+        member.Name.toLowerCase().includes(searchText.toLowerCase()),
+      );
+      setFilteredMembers(filterMember);
+    } else {
+      setFilteredMembers(members);
+    }
+    return () => setFilteredMembers(members);
+  }, [searchText, members]);
+
   return (
     <div className="relative isolate w-full overflow-hidden bg-gray-900 py-24 sm:py-32">
       <Image
@@ -70,7 +98,10 @@ const Hero: React.FC<countProps> = ({ count ,days, hours, minutes, seconds }) =>
               Karvan-2024, Bhopal
             </h2>
             <p className="mt-6 text-lg leading-8 text-gray-300">
-            The Madhya-Bharat Association of Navodayan Students & Alumni (MANSA) is proud to present the National Navodayan Meet 2024, a two-day event that will bring together Navodayans from all over India to celebrate our shared heritage and culture.
+              The Madhya-Bharat Association of Navodayan Students & Alumni
+              (MANSA) is proud to present the National Navodayan Meet 2024, a
+              two-day event that will bring together Navodayans from all over
+              India to celebrate our shared heritage and culture.
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-300">
               Date: 6th & 7th January 2024
@@ -89,7 +120,7 @@ const Hero: React.FC<countProps> = ({ count ,days, hours, minutes, seconds }) =>
           </div>
           <div className="mx-auto mt-10 max-w-7xl lg:mx-0 lg:max-w-none">
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 text-base font-semibold leading-7 text-white sm:grid-cols-2 md:flex mb-12 lg:gap-x-10">
-              {links.map((link) => (
+              {/* {links.map((link) => (
                 <Link
                   key={link.name}
                   href={link.href}
@@ -97,15 +128,89 @@ const Hero: React.FC<countProps> = ({ count ,days, hours, minutes, seconds }) =>
                 >
                   {link.name} <span aria-hidden="true">&rarr;</span>
                 </Link>
-              ))}
+              ))} */}
+              {/* <div className="h-36 w-full py-8 bg-slate-100 flex flex-col  items-center"> */}
+              {/* <h1 className="text-lg">Check Who is Comming</h1> */}
+              <button
+                className="btn btn-outline btn-accent font-semibold text-lg"
+                onClick={() => modalRef.current?.showModal()}
+              >
+                Check Who is Comming
+              </button>
+              <dialog id="my_modal_4" className="modal" ref={modalRef}>
+                <div className="modal-box w-11/12 min-w-[98%] h-full p-0 ">
+                  <div className="sticky z-50 bg-gray-100 top-0 h-min-content flex flex-col gap-1 px-4 py-2">
+                    <div className="grid md:grid-cols-3 grid-cols-2 items-center">
+                      <h1 className="md:text-lg hidden md:block sm: text-brand">
+                        All Members Registered
+                      </h1>
+                      <form className="form-control">
+                        <input
+                          type="text"
+                          placeholder="Search Name here"
+                          className="input input-bordered input-info w-full min-w-max text-slate-700"
+                          onChange={(e) => setSearchText(e.target.value)}
+                          value={searchText}
+                        />
+                      </form>
+                      <form method="dialog" className="flex justify-end">
+                        <button className="btn btn-sm btn-circle text-brand text-lg btn-ghost">
+                          ✕
+                        </button>
+                      </form>
+                    </div>
+                    <div className="md:text-lg font-semibold text-brand flex justify-center">
+                      Total Members Registered : {members.length}
+                    </div>
+                    {searchText.length > 0 ? (
+                      <div className="text-lg font-semibold text-brand flex justify-center">
+                        Found Results : {filteredMembers.length}
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    <div className="font-light text-brand flex justify-center border rounded-full mx-4 p-3 border-warning-content">
+                      <q className="md:text-lg text-brand text-center text-xs">
+                        <b className="font-bold">NOTE:</b> If you haven't found
+                        your registration number, please feel free to contact us{" "}
+                        <b className=" text-green-700 font-semibold">
+                          {" "}
+                          via whatsapp on: 7805058023
+                        </b>{" "}
+                        - T-shirt distribution will be based on your
+                        registration number.
+                      </q>
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-3 gap-4 modal-scroll p-4">
+                    {filteredMembers.length > 0 ? (
+                      filteredMembers.map((member, index) => {
+                        return (
+                          <MemberCard
+                            key={index}
+                            name={member.Name}
+                            registrationNumber={member["Registration No."]}
+                            school={member["JNV Name"]}
+                            batchYear={member["Batch Passout"]}
+                          />
+                        );
+                      })
+                    ) : (
+                      <h1 className="text-lg"> No Member Found</h1>
+                    )}
+                  </div>
+                </div>
+              </dialog>
+              {/* </div> */}
             </div>
           </div>
-      <TimerContainer
-        days={days}
-        hours={hours}
-        minutes={minutes}
-        seconds={seconds}
-      />
+          <TimerContainer
+            days={days}
+            hours={hours}
+            minutes={minutes}
+            seconds={seconds}
+          />
         </div>
       </div>
     </div>

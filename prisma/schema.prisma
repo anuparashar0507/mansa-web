@@ -5,32 +5,23 @@ generator client {
     provider = "prisma-client-js"
 }
 
-// datasource db {
-//     provider = ""
-//     // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
-//     // Further reading:
-//     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
-//     // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-//     url      = env("DATABASE_URL")
-// }
-
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+    provider     = "mysql"
+    url          = env("DATABASE_URL")
+    relationMode = "prisma"
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+// model Post {
+//     id        Int      @id @default(autoincrement())
+//     name      String
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
 
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
+//     createdBy   User   @relation(fields: [createdById], references: [id])
+//     createdById String
 
-    @@index([name])
-}
+//     @@index([name])
+// }
 
 // Necessary for Next auth
 model Account {
@@ -39,16 +30,17 @@ model Account {
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String? // @db.Text
+    id_token          String? @db.Text
     session_state     String?
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+    @@index([userId])
 }
 
 model Session {
@@ -57,17 +49,46 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
 }
 
+// Profile model for additional user details
+// model Profile {
+//     id         Int     @id @default(autoincrement())
+//     userId     String  @unique
+//     user       User    @relation(fields: [userId], references: [id])
+//     occupation String?
+//     status     String? // e.g., "Seeking Opportunities"
+//     // Optional fields for future features
+//     bio        String?
+//     // skills     String[]
+//     // interests  String[]
+//     // ...other relevant fields
+// }
+
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    posts         Post[]
+    id              String    @id @default(cuid())
+    name            String
+    email           String    @unique
+    emailVerified   DateTime?
+    accounts        Account[]
+    sessions        Session[]
+    password        String // Optional due to Next-Auth handling
+    phone           String
+    gender          String
+    currentLocation String
+    state           String
+    district        String
+    jnvName         String
+    passoutYear     Int
+    createdAt       DateTime  @default(now())
+    updatedAt       DateTime  @updatedAt
+    // Relationships
+    // jobsPosted                @relation("PostedJobs")
+    // jobsApplied               @relation("AppliedJobs")
+    // jobsReferred              @relation("ReferredJobs")
+    // profile         Profile?
 }
 
 model VerificationToken {
@@ -77,3 +98,41 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+// Type model for job types
+// model Type {
+//     id   String @id @default(cuid())
+//     name String
+//     jobs Job[]
+// }
+
+// Sector model for job sectors
+// model Sector {
+//     id   String @id @default(cuid())
+//     name String
+//     jobs Job[]
+// }
+
+// Job model with comprehensive fields
+// model Job {
+//     id                 String   @id @default(cuid())
+//     title              String
+//     companyName        String
+//     description        String
+//     link               String?
+//     salaryRange        String?
+//     experienceRequired String?
+//     location           String?
+//     type               String   @relation(fields: [typeId], references: [id])
+//     typeId             String
+//     sector             String   @relation(fields: [sectorId], references: [id])
+//     sectorId           String
+//     createdAt          DateTime @default(now())
+//     updatedAt          DateTime @updatedAt
+
+//     // Relationships
+//     postedBy   User   @relation("PostedJobs", fields: [postedById], references: [id])
+//     postedById String
+//     applicants User[] @relation("AppliedJobs")
+//     referrers  User[] @relation("ReferredJobs")
+// }
