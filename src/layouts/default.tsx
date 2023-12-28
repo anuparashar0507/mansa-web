@@ -1,4 +1,4 @@
-// import Authenticated from "./authenticated";
+import Authenticated from "./authenticated";
 import LandingLayout from "./landingLayout";
 import { usePathname } from "next/navigation";
 type LayoutProps = {
@@ -13,12 +13,12 @@ const DefaultLayout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <>
-      {/* {mode === "dashboard" ? (
+      {mode === "dashboard" ? (
         <Authenticated>{children}</Authenticated>
       ) : (
         <LandingLayout>{children}</LandingLayout>
-      )} */}
-      <LandingLayout>{children}</LandingLayout>
+      )}
+      {/* <LandingLayout>{children}</LandingLayout> */}
     </>
   );
 };
