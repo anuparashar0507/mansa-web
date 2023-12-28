@@ -16,7 +16,17 @@ type Option = {
   label: string;
   value: string;
 };
+type TStateAndDistrict = Record<string, string[]>;
+// type TDistrict = string[];
+type TJnvSchoolsStateWise = Record<string, string[]>;
+// type TJnvSchools = string[];
 
+const jnvSchoolList: TJnvSchoolsStateWise = {
+  ...jnvSchools,
+} as TJnvSchoolsStateWise;
+const stateAndDistrictList: TStateAndDistrict = {
+  ...stateAndDistrict,
+} as TStateAndDistrict;
 const years = () => {
   const currentYear = new Date().getFullYear();
   const startYear = 1980;
@@ -78,14 +88,14 @@ const Registration: React.FC = () => {
   const handleStateChange = (selectedState: string) => {
     setValue("state", selectedState);
 
-    const districts = stateAndDistrict[selectedState];
-    const jnvs = jnvSchools[selectedState];
+    const districts = stateAndDistrictList[selectedState];
+    const jnvs = jnvSchoolList[selectedState];
 
     setValue("district", "");
     setValue("jnv", "");
 
-    setDistrictOptions(districts);
-    setJnvOptions(jnvs);
+    setDistrictOptions(districts ? districts : []);
+    setJnvOptions(jnvs ? jnvs : []);
   };
 
   const setDistrictOptions = (districts: string[]) => {

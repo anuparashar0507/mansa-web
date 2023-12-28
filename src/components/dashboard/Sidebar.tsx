@@ -46,12 +46,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-50 flex h-screen w-64 flex-col overflow-y-hidden bg-slate-50 duration-300 ease-linear lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-50 flex h-screen w-72 flex-col overflow-y-hidden duration-300 ease-linear lg:static lg:translate-x-0 ${
         sidebarOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-between gap-2 lg:py-4 px-2 py-4 shadow-2">
+      <div className="flex items-center justify-between gap-2 lg:py-4 md:px-6 px-2 py-4 shadow-2">
         <Link href="/dashboard" className="block flex-shrink-0">
           <Image
             height={400}
@@ -66,7 +66,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
       <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
         {/* <!-- Sidebar Menu --> */}
-        <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
+        <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-5">
           {/* <!-- Menu Group --> */}
           <div>
             <ul className="mb-6 flex flex-col gap-1.5">
@@ -75,13 +75,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <Link
                   href="/dashboard"
                   onClick={() => setSidebarOpen(false)}
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("calendar") &&
-                    "bg-graydark dark:bg-meta-4"
+                  className={`group relative flex items-center gap-2 rounded-sm py-2 px-4 font-medium text-lg text-slate-800 duration-300 ease-in-out hover:bg-blue-50 ${
+                    pathname?.split("/").pop() === "dashboard" &&
+                    "bg-blue-100 text-slate-900"
                   }`}
                 >
-                  <FaUsers />
-                  All Navodayans
+                  <FaUsers className=" text-brand h-8 w-8 p-1 rounded-md" />
+                  Navodayans
                 </Link>
               </li>
               {/* <!-- Menu Item All Navodayans --> */}
@@ -91,13 +91,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <Link
                   href="/dashboard/job-board"
                   onClick={() => setSidebarOpen(false)}
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("calendar") &&
-                    "bg-graydark dark:bg-meta-4"
+                  className={`group relative flex items-center gap-2 rounded-sm py-2 px-4 font-medium text-lg text-slate-800 duration-300 ease-in-out hover:bg-blue-50 ${
+                    pathname.includes("job-board") &&
+                    "bg-blue-100 text-slate-900"
                   }`}
                 >
-                  <FaRegCopy />
-                  All Jobs
+                  <FaRegCopy className=" text-brand h-8 w-8 p-1 rounded-md" />
+                  Jobs
                 </Link>
               </li>
               {/* <!-- Menu Item All Jobs --> */}
@@ -107,11 +107,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <Link
                   href="/dashboard/post-job"
                   onClick={() => setSidebarOpen(false)}
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("profile") && "bg-graydark dark:bg-meta-4"
+                  className={`group relative flex items-center gap-2 rounded-sm py-2 px-4 font-medium text-lg text-slate-800 duration-300 ease-in-out hover:bg-blue-50 ${
+                    pathname.includes("post-job") &&
+                    "bg-blue-100 text-slate-900"
                   }`}
                 >
-                  <MdOutlinePostAdd />
+                  <MdOutlinePostAdd className=" text-brand h-8 w-8 p-1 rounded-md" />
                   Post New Job
                 </Link>
               </li>
@@ -121,11 +122,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <Link
                   href="/dashboard/profile"
                   onClick={() => setSidebarOpen(false)}
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("tables") && "bg-graydark dark:bg-meta-4"
+                  className={`group relative flex items-center gap-2 rounded-sm py-2 px-4 font-medium text-lg text-slate-800 duration-300 ease-in-out hover:bg-blue-50 ${
+                    pathname.includes("profile") && "bg-blue-100 text-slate-900"
                   }`}
                 >
-                  <FaRegUser />
+                  <FaRegUser className=" text-brand h-8 w-8 p-1 rounded-md" />
                   Profile
                 </Link>
               </li>
@@ -136,12 +137,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <Link
                   href="/dashboard/edit-profile"
                   onClick={() => setSidebarOpen(false)}
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("settings") &&
-                    "bg-graydark dark:bg-meta-4"
+                  className={`group relative flex items-center gap-2 rounded-sm py-2 px-4 font-medium text-lg text-slate-800 duration-300 ease-in-out hover:bg-blue-50 ${
+                    pathname.includes("edit-profile") &&
+                    "bg-blue-100 text-slate-900"
                   }`}
                 >
-                  <MdOutlineSettings />
+                  <MdOutlineSettings className=" text-brand h-8 w-8 p-1 rounded-md" />
                   Settings
                 </Link>
               </li>

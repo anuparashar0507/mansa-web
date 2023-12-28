@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import Features from "~/components/events/karvan/Features";
 import EventContact from "~/components/events/EventContact";
 import Hero from "~/components/events/karvan/Hero";
-import { type User } from "~/utils/types/user.type";
+import { type User } from "~/types/user.type";
 const targetDate = new Date("2024-01-06T12:00:00"); // Replace with your desired date
 type CountdownState = {
   days: number;

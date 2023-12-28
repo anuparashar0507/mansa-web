@@ -12,7 +12,7 @@ const Header = (props: {
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
   return (
-    <header className="sticky top-0 z-20 flex w-full bg-slate-50 drop-shadow-1 dark:bg-boxlight dark:drop-shadow-none">
+    <header className="sticky top-0 z-20 flex w-full drop-shadow-md dark:bg-slate-600 bg-white dark:drop-shadow-none">
       <div className="flex flex-grow items-center justify-between lg:justify-end px-2 py-4 shadow-2 md:px-6 2xl:px-11">
         <div className="flex items-center gap-1 sm:gap-4 lg:hidden">
           <Link className="block flex-shrink-0 lg:hidden" href="/dashboard">

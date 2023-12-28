@@ -9,7 +9,7 @@ import { FaChevronDown } from "react-icons/fa";
 import { jnvSchools } from "~/constants/jnvList";
 import { stateAndDistrict } from "~/constants/stateAndDistrict";
 import { FaCaretDown } from "react-icons/fa";
-import { type UserData } from "~/utils/types/user.type";
+import { type UserData } from "~/types/user.type";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 type Option = {
@@ -75,10 +75,10 @@ const Dashboard: React.FC = () => {
   const filterModalRef = useRef<HTMLDialogElement>(null);
 
   const handleStateChange = (selectedState: string) => {
-    console.log("selectedState :- ", selectedState);
+    // console.log("selectedState :- ", selectedState);
 
     const districts = stateAndDistrictList[selectedState];
-    console.log("DISTRICTS :- ", districts);
+    // console.log("DISTRICTS :- ", districts);
     const jnvs = jnvSchoolList[selectedState];
     setFilter({ ...filter, state: selectedState });
     // setDistrictOptions(districts as string[]);
@@ -159,13 +159,21 @@ const Dashboard: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full  flex flex-col items-center justify-start p-0 md:p-6 gap-4 md:gap-8">
-      <div className="w-full bg-gray-50 z-10 border border-slate-200 shadow-md flex flex-col gap-2 items-center justify-start sticky top-20">
+    <div className="w-full flex flex-col items-center justify-start p-0 md:p-6 gap-4 md:gap-8">
+      {/* PAGE HEADING */}
+      <div className="w-full flex justify-between">
+        <h1 className="text-slate-800 font-semibold text-3xl">
+          All Navodayans
+        </h1>
+      </div>
+
+      {/* FILTERS AND ALL FILTER BUTTON */}
+      <div className="w-full bg-white z-10 rounded-md border flex flex-col gap-2 items-center justify-start sticky top-20">
         <div className="w-full p-2 md:p-6">
           <input
             type="text"
             placeholder="Search Name Here"
-            className="input input-bordered w-full"
+            className="input input-bordered w-full rounded-md"
             value={filter.name}
             onChange={(e) => setFilter({ ...filter, name: e.target.value })}
           />
@@ -198,7 +206,7 @@ const Dashboard: React.FC = () => {
         )}
         <div className="w-full flex justify-center">
           <button
-            className="btn btn-ghost w-full text-md"
+            className="btn btn-ghost w-full text-md hover:bg-gray-100 rounded-none"
             onClick={() => filterModalRef.current?.showModal()}
           >
             <MdFilterList className="text-2xl" /> Filters{" "}
@@ -206,12 +214,14 @@ const Dashboard: React.FC = () => {
           </button>
         </div>
       </div>
-      <div className="w-full flex flex-col items-center justify-start p-2 md:p-6 bg-gray-50 border border-slate-200 shadow-md ">
+
+      {/* MEMBERS LIST */}
+      <div className="w-full flex flex-col items-center justify-start p-2 md:p-6 rounded-md bg-white border ">
         <p>Result count: {filteredMembers?.length}</p>
         <div className="grid w-full sm:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-2">
           {filteredMembers.map((member, index) => (
             <div
-              className="card shadow-md z-0 p-4 justify-center bg-white rounded-md border"
+              className="card border z-0 p-4 justify-center bg-white rounded-sm"
               key={index}
             >
               <p>
@@ -270,7 +280,12 @@ const Dashboard: React.FC = () => {
                   className="select select-bordered min-w-full"
                   onChange={(e) => handleStateChange(e.target.value)}
                   value={filter.state}
+                  defaultValue={"Madhya Pradesh"}
+                  placeholder="Select State"
                 >
+                  <option key={0} defaultChecked value={""}>
+                    Select State
+                  </option>
                   {Object.keys(stateAndDistrict).map((state, index) => {
                     return (
                       <option key={index} value={state}>
@@ -334,6 +349,7 @@ const Dashboard: React.FC = () => {
                       fontColor: "brand",
                     }),
                   }}
+                  placeholder="Select JNV"
                   options={jnvSelectOptions}
                   // value={jnvSelectOptions.find((c) => c.value === field.value)}
                   // onChange={(val) => field.onChange(val)}
@@ -353,7 +369,11 @@ const Dashboard: React.FC = () => {
                     setFilter({ ...filter, passOutYear: e.target.value })
                   }
                   value={filter.passOutYear}
+                  placeholder="Select Batch/PassOut Year"
                 >
+                  <option key={0} defaultChecked value={""}>
+                    Select Batch/PassOut Year
+                  </option>
                   {years().map((year) => {
                     return (
                       <option key={year} value={year}>
@@ -373,6 +393,7 @@ const Dashboard: React.FC = () => {
                   type="text"
                   placeholder="Software Engineer"
                   className="input input-bordered w-full"
+                  value={filter.occupation}
                   onChange={(e) =>
                     setFilter({ ...filter, occupation: e.target.value })
                   }

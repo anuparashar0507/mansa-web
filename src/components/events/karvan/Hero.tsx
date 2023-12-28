@@ -4,7 +4,7 @@ import Link from "next/link";
 import bgImg from "../../../../public/Images/party-group.jpg";
 import { TimerContainer } from "../TimeContainer";
 import MemberCard from "~/components/events/karvan/MembersCard";
-import { type User } from "~/utils/types/user.type";
+import { type User } from "~/types/user.type";
 // import { randomUUID } from "crypto";
 // const links = [
 //   // { name: "Know More", href: "#" },

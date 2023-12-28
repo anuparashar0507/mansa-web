@@ -18,24 +18,24 @@ export default function Authenticated({
   }, []);
 
   return (
-    <div className="dark:bg-boxdark-2 dark:text-bodydark">
+    <div className="dark:bg-slate-700 bg-white">
       {loading ? (
         <Loader />
       ) : (
-        <div className="flex h-screen overflow-hidden">
+        <div className="flex h-screen overflow-hidden bg-white">
           {/* <!-- ===== Sidebar Start ===== --> */}
           <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
           {/* <!-- ===== Sidebar End ===== --> */}
 
           {/* <!-- ===== Content Area Start ===== --> */}
-          <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+          <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden bg-white">
             {/* <!-- ===== Header Start ===== --> */}
             <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
             {/* <!-- ===== Header End ===== --> */}
 
             {/* <!-- ===== Main Content Start ===== --> */}
             <main>
-              <div className="mx-auto z-10 max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+              <div className="mx-auto z-10 max-w-screen-2xl p-4 md:p-4 2xl:p-6 bg-gray-100">
                 {children}
               </div>
             </main>
