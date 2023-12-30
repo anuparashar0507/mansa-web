@@ -7,7 +7,7 @@ export default function Register() {
         title={"Register - MANSA"}
         description="Madhya Bharat Association of Students and Alumni"
       />
-      <main className="flex min-h-full md:py-16 items-center justify-center">
+      <main className="flex min-h-full md:py-6 py-2 items-center justify-center">
         <RegisterationForm />
       </main>
     </>

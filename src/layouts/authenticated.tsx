@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import Loader from "~/components/Loader";
-
+import Loader from "~/components/ui/Loader";
 import Sidebar from "~/components/dashboard/Sidebar";
 import Header from "~/components/dashboard/Header";
 

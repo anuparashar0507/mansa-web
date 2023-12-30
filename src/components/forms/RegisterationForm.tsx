@@ -1,34 +1,15 @@
-import React, { useState } from "react";
-// import DatePicker from "react-datepicker";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
-import Select, { components, type DropdownIndicatorProps } from "react-select";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-// import "react-datepicker/dist/react-datepicker.css";
 import { jnvSchools } from "~/constants/jnvList";
 import { stateAndDistrict } from "~/constants/stateAndDistrict";
 import { useRouter } from "next/router";
-import { FaCaretDown } from "react-icons/fa";
-
-// const maxYear = new Date().getFullYear();
-
-type Option = {
-  label: string;
-  value: string;
-};
-type TStateAndDistrict = Record<string, string[]>;
-// type TDistrict = string[];
-type TJnvSchoolsStateWise = Record<string, string[]>;
-// type TJnvSchools = string[];
-
-const jnvSchoolList: TJnvSchoolsStateWise = {
-  ...jnvSchools,
-} as TJnvSchoolsStateWise;
-const stateAndDistrictList: TStateAndDistrict = {
-  ...stateAndDistrict,
-} as TStateAndDistrict;
+import type { Option } from "~/types/selectOption.type";
+import ComboBoxWrapper from "../ui/ComboBoxWrapper";
+// import VerificationForm from "./VerificationForm";
+const currentYear = new Date().getFullYear();
 const years = () => {
-  const currentYear = new Date().getFullYear();
   const startYear = 1980;
   const yearsArray = [];
   for (let year = startYear; year <= currentYear; year++) {
@@ -37,31 +18,38 @@ const years = () => {
   return yearsArray;
 };
 
-const DropdownIndicator = (props: DropdownIndicatorProps<Option>) => {
-  return (
-    <components.DropdownIndicator {...props}>
-      <FaCaretDown />
-    </components.DropdownIndicator>
-  );
-};
-
 const schema = z.object({
   name: z.string().min(3).max(50),
   email: z.string().email(""),
   phone: z.string().min(10).max(15),
   gender: z.string().min(1),
+  age: z.string().min(2).max(3),
   state: z.string().min(1),
   district: z.string().min(1),
   jnv: z.string().min(1),
-  passoutYear: z.string().min(4).max(4),
+  passoutYear: z.number().min(1980).max(currentYear),
   occupation: z.string().min(1),
   currentLocation: z.string().min(1),
-  password: z.string().min(6),
 });
 
-type FormValues = z.infer<typeof schema>;
+const passwordSchema = z.object({
+  password: z
+    .string()
+    .min(8)
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+    ),
+  confirmPassword: z.string().min(8),
+});
+
+const registrationSchema = schema.merge(passwordSchema);
+type FormValues = z.infer<typeof registrationSchema>;
 
 const Registration: React.FC = () => {
+  // const [randomLine, setRandomLine] = useState<string>("");
+  // const [stringOptions, setStringOptions] = useState<string[]>([]);
+  // const [chances, setChances] = useState<number>(3);
+  const [isPasswordMatch, setIsPasswordMatch] = useState(true);
   const [districtSelectOptions, setDistrictSelectOptions] = useState<Option[]>(
     [],
   );
@@ -73,6 +61,7 @@ const Registration: React.FC = () => {
     register,
     setValue,
     formState: { errors },
+    watch,
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
   });
@@ -86,20 +75,21 @@ const Registration: React.FC = () => {
   };
 
   const handleStateChange = (selectedState: string) => {
-    setValue("state", selectedState);
+    // setValue("state", selectedState);
 
-    const districts = stateAndDistrictList[selectedState];
-    const jnvs = jnvSchoolList[selectedState];
+    const districts = stateAndDistrict[selectedState];
+    const jnvs = jnvSchools[selectedState];
 
-    setValue("district", "");
-    setValue("jnv", "");
+    // setValue("district", "");
+    // setValue("jnv", "");
 
     setDistrictOptions(districts ? districts : []);
     setJnvOptions(jnvs ? jnvs : []);
   };
 
   const setDistrictOptions = (districts: string[]) => {
-    const districtOptions = districts.map((district) => ({
+    const districtOptions = districts.map((district, index) => ({
+      id: index,
       label: district,
       value: district,
     }));
@@ -108,14 +98,23 @@ const Registration: React.FC = () => {
   };
 
   const setJnvOptions = (jnvs: string[]) => {
-    const jnvOptions = jnvs.map((jnv) => ({
+    const jnvOptions = jnvs.map((jnv, index) => ({
+      id: index,
       label: jnv,
       value: jnv,
     }));
 
     setJnvSelectOptions(jnvOptions);
   };
-  console.log("register :", register);
+
+  const handlePasswordMatch = () => {
+    const password = watch("password");
+    const confirmPassword = watch("confirmPassword");
+    password === confirmPassword
+      ? setIsPasswordMatch(true)
+      : setIsPasswordMatch(false);
+  };
+  // useEffect
   return (
     <div className="card-body max-w-2xl">
       <h1 className="card-title">Registration Form</h1>
@@ -136,214 +135,269 @@ const Registration: React.FC = () => {
             </span>
           )}
         </label>
-        <label>
-          <div className="label">
-            <span className="label-text">Email</span>
-          </div>
-          <input
-            type="text"
-            placeholder="john@doe.com"
-            className="input input-bordered w-full"
-            {...register("email")}
-          />
-          {errors.email && (
-            <span className="text-red-600 text-sm">{errors.email.message}</span>
-          )}
-        </label>
-        <label>
-          <div className="label">
-            <span className="label-text">Phone</span>
-          </div>
-          <input
-            type="tel"
-            placeholder="+91-8989****90"
-            className="input input-bordered w-full"
-            {...register("phone")}
-          />
-          {errors.phone && (
-            <span className="text-red-600 text-sm">{errors.phone.message}</span>
-          )}
-        </label>
-        <label>
-          <div className="label">
-            <span className="label-text">Gender</span>
-          </div>
-          <select
-            className="select select-bordered min-w-full"
-            {...register("gender")}
-          >
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-          </select>
-          {errors.gender && (
-            <span className="text-red-600 text-sm">
-              {errors.gender.message}
-            </span>
-          )}
-        </label>
-        <label>
-          <div className="label">
-            <span className="label-text">State</span>
-          </div>
-          <select
-            className="select select-bordered min-w-full"
-            {...register("state")}
-            onChange={(e) => handleStateChange(e.target.value)}
-          >
-            {Object.keys(stateAndDistrict).map((state) => {
-              return <option value={state}>{state}</option>;
-            })}
-          </select>
-          {errors?.state && (
-            <span className=" text-red-600 text-sm">
-              {errors.state.message}
-            </span>
-          )}
-        </label>
-        <label>
-          <div className="label">
-            <span className="label-text">District</span>
-          </div>
-          <Controller
-            name="district"
-            control={control}
-            render={({ field }) => (
-              <Select
-                {...field}
-                components={{ DropdownIndicator }}
-                styles={{
-                  control: (baseStyles) => ({
-                    ...baseStyles,
-                    border: "1px solid #ccc",
-                    borderRadius: "8px",
-                    padding: "6px",
-                  }),
-                  option: (baseStyles) => ({
-                    ...baseStyles,
-                    divider: false,
-                    fontColor: "brand",
-                  }),
-                }}
-                options={districtSelectOptions}
-                value={districtSelectOptions.find(
-                  (c) => c.value === field.value,
-                )}
-                onChange={(val) => field.onChange(val)}
-                isDisabled={!districtSelectOptions.length}
-              />
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+          <label>
+            <div className="label">
+              <span className="label-text">Email</span>
+            </div>
+            <input
+              type="text"
+              placeholder="john@doe.com"
+              className="input input-bordered w-full"
+              autoComplete="email"
+              {...register("email")}
+            />
+            {errors.email && (
+              <span className="text-red-600 text-sm">
+                {errors.email.message}
+              </span>
             )}
-          />
-          {errors.district && (
-            <span className=" text-red-600 text-sm">
-              {errors.district.message}
-            </span>
-          )}
-        </label>
-        <label>
-          <div className="label">
-            <span className="label-text">JNV</span>
-          </div>
-          <Controller
-            name="jnv"
-            control={control}
-            render={({ field }) => (
-              <Select
-                {...field}
-                components={{ DropdownIndicator }}
-                styles={{
-                  control: (baseStyles) => ({
-                    ...baseStyles,
-                    border: "1px solid #ccc",
-                    borderRadius: "8px",
-                    padding: "6px",
-                  }),
-                  option: (baseStyles) => ({
-                    ...baseStyles,
-                    divider: false,
-                    fontColor: "brand",
-                  }),
-                }}
-                options={jnvSelectOptions}
-                value={jnvSelectOptions.find((c) => c.value === field.value)}
-                onChange={(val) => field.onChange(val)}
-                isDisabled={!jnvSelectOptions.length}
-              />
+          </label>
+          <label>
+            <div className="label">
+              <span className="label-text">Phone</span>
+            </div>
+            <input
+              type="tel"
+              placeholder="+91-8989****90"
+              autoComplete="phone"
+              className="input input-bordered w-full"
+              {...register("phone")}
+            />
+            {errors.phone && (
+              <span className="text-red-600 text-sm">
+                {errors.phone.message}
+              </span>
             )}
-          />
-          {errors.jnv && (
-            <span className=" text-red-600 text-sm">
-              {errors?.jnv?.message}
-            </span>
-          )}
-        </label>
-        <label>
-          <div className="label">
-            <span className="label-text">Passout Year</span>
-          </div>
-          <select
-            className="select select-bordered min-w-full"
-            {...register("passoutYear")}
-          >
-            {years().map((year) => {
-              return <option value={year}>{year}</option>;
-            })}
-          </select>
-          {errors.passoutYear && (
-            <span className=" text-red-600 text-sm">
-              {errors.passoutYear.message}
-            </span>
-          )}
-        </label>
-        <label>
-          <div className="label">
-            <span className="label-text">Occupation</span>
-          </div>
-          <input
-            type="text"
-            placeholder="Software Engineer"
-            className="input input-bordered w-full"
-            {...register("occupation")}
-          />
-          {errors.occupation && (
-            <span className=" text-red-600 text-sm">
-              {errors.occupation.message}
-            </span>
-          )}
-        </label>
-        <label>
-          <div className="label">
-            <span className="label-text">Current Location</span>
-          </div>
-          <input
-            type="text"
-            placeholder="City, State, Country"
-            className="input input-bordered w-full"
-            {...register("currentLocation")}
-          />
-          {errors.currentLocation && (
-            <span className=" text-red-600 text-sm">
-              {errors.currentLocation.message}
-            </span>
-          )}
-        </label>
-
-        <label>
-          <div className="label">
-            <span className="label-text">Password</span>
-          </div>
-          <input
-            type="password"
-            placeholder="Enter Your Password"
-            className="input input-bordered w-full"
-            {...register("password")}
-          />
-          {errors.password && (
-            <span className=" text-red-600 text-sm">
-              {errors.password.message}
-            </span>
-          )}
-        </label>
+          </label>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+          <label>
+            <Controller
+              name="gender"
+              control={control}
+              rules={{
+                required: "Please select a Gender",
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <ComboBoxWrapper
+                  label="Gender"
+                  placeholder="Select Gender"
+                  value={value}
+                  onChange={(e) => {
+                    onChange(e);
+                    handleStateChange(e.toString());
+                    // do your own change event
+                  }}
+                  onBlur={onBlur}
+                  options={["Male", "Female", "Others"].map(
+                    (option, index) => ({
+                      id: index,
+                      label: option,
+                      value: option,
+                    }),
+                  )}
+                  error={errors.gender}
+                />
+              )}
+            />
+          </label>
+          <label>
+            <div className="label">
+              <span className="label-text">Age</span>
+            </div>
+            <input
+              type="number"
+              placeholder="24"
+              min={10}
+              max={120}
+              className="input input-bordered w-full"
+              {...register("age")}
+            />
+            {errors.age && (
+              <span className="text-red-600 text-sm">
+                {errors?.age?.message}
+              </span>
+            )}
+          </label>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+          <label>
+            {/* <select
+              className="select select-bordered min-w-full"
+              {...register("state")}
+              onChange={(e) => handleStateChange(e.target.value)}
+            >
+              {Object.keys(stateAndDistrict).map((state) => {
+                return <option value={state}>{state}</option>;
+              })}
+            </select> */}
+            <Controller
+              name="state"
+              control={control}
+              rules={{
+                required: "Please select a State",
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <ComboBoxWrapper
+                  label="State"
+                  placeholder="Select State"
+                  value={value}
+                  onChange={(e) => {
+                    onChange(e);
+                    handleStateChange(e.toString());
+                    // do your own change event
+                  }}
+                  onBlur={onBlur}
+                  options={Object.keys(stateAndDistrict).map(
+                    (state, index) => ({
+                      id: index,
+                      label: state,
+                      value: state,
+                    }),
+                  )}
+                  error={errors.state}
+                />
+              )}
+            />
+          </label>
+          <label>
+            <Controller
+              name="district"
+              control={control}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <ComboBoxWrapper
+                  label="District"
+                  value={value}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  options={districtSelectOptions}
+                  error={errors.district}
+                  placeholder="Select District"
+                />
+              )}
+            />
+          </label>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+          <label>
+            <Controller
+              name="jnv"
+              control={control}
+              rules={{
+                required: "Please select a user",
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <ComboBoxWrapper
+                  label="JNV"
+                  value={value}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  options={jnvSelectOptions}
+                  error={errors.jnv}
+                  placeholder="Select Jnv"
+                />
+              )}
+            />
+          </label>
+          <label>
+            <Controller
+              name="passoutYear"
+              control={control}
+              rules={{
+                required: "Please select a user",
+              }}
+              render={({ field: { onChange, value, onBlur } }) => (
+                <ComboBoxWrapper
+                  label="Passout Year"
+                  value={value}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  options={years().map((year) => ({
+                    id: year,
+                    label: year.toString(),
+                    value: year,
+                  }))}
+                  error={errors.passoutYear}
+                  placeholder="Select Jnv"
+                />
+              )}
+            />
+          </label>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+          <label>
+            <div className="label">
+              <span className="label-text">Occupation</span>
+            </div>
+            <input
+              type="text"
+              placeholder="Software Engineer"
+              className="input input-bordered w-full"
+              {...register("occupation")}
+            />
+            {errors.occupation && (
+              <span className=" text-red-600 text-sm">
+                {errors.occupation.message}
+              </span>
+            )}
+          </label>
+          <label>
+            <div className="label">
+              <span className="label-text">Current Location</span>
+            </div>
+            <input
+              type="text"
+              placeholder="City, State, Country"
+              className="input input-bordered w-full"
+              {...register("currentLocation")}
+            />
+            {errors.currentLocation && (
+              <span className=" text-red-600 text-sm">
+                {errors.currentLocation.message}
+              </span>
+            )}
+          </label>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+          <label>
+            <div className="label">
+              <span className="label-text">Password</span>
+            </div>
+            <input
+              type="password"
+              placeholder="Enter Your Password"
+              autoComplete="new-password"
+              className="input input-bordered w-full"
+              {...register("password", { required: true, minLength: 8 })}
+            />
+            {errors.password && (
+              <span className=" text-red-600 text-sm">
+                {errors.password.message}
+              </span>
+            )}
+          </label>
+          <label>
+            <div className="label">
+              <span className="label-text">Confirm Password</span>
+            </div>
+            <input
+              type="password"
+              id="confirmPassword"
+              autoComplete="confirm-password"
+              placeholder="Enter Your Password"
+              className="input input-bordered w-full"
+              {...register("confirmPassword", { required: true })}
+              onChange={handlePasswordMatch}
+            />
+            {/* {errors.password && (
+              <span className="error">{errors.password.message}</span>
+            )} */}
+            {!isPasswordMatch && (
+              <p className="error">Passwords do not match.</p>
+            )}
+          </label>
+        </div>
         <button
           className="btn btn-primary bg-brand hover:bg-blue-900 w-full mt-8"
           type="submit"
@@ -351,6 +405,7 @@ const Registration: React.FC = () => {
           Submit
         </button>
       </form>
+      {/* <VerificationForm /> */}
     </div>
   );
 };

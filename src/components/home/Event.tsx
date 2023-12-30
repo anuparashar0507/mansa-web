@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import Link from "next/link";
 import bgImg from "../../../public/Images/party-group.jpg";
-import Skeleton from "../Skeleton";
+import Skeleton from "../ui/Skeleton";
 
 const links = [
   { name: "Know More", href: "/events/karvan" },

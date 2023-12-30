@@ -1,4 +1,6 @@
-export const stateAndDistrict = {
+type TStateAndDistrict = Record<string, string[]>;
+
+export const stateAndDistrict: TStateAndDistrict = {
   "Andhra Pradesh": [
     "Anantapur",
     "Chittoor",

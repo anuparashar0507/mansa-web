@@ -1,4 +1,6 @@
-export const jnvSchools = {
+type TJnvSchoolsStateWise = Record<string, string[]>;
+
+export const jnvSchools: TJnvSchoolsStateWise = {
   "Andaman and Nicobar Islands": [
     "JNV Diglipur",
     "JNV Car Nicobar",
