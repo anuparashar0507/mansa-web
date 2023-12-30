@@ -1,11 +1,11 @@
 import { Fragment, useState } from "react";
-import { Combobox, Transition } from "@headlessui/react";
+import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { type FieldError } from "react-hook-form";
 // import { type FocusEventHandler } from "react";
 import { FaCaretDown } from "react-icons/fa";
 
-export default function ComboBoxWrapper({
+export default function ListBoxWrapper({
   value = "",
   onChange,
   // onBlur,
@@ -26,69 +26,65 @@ export default function ComboBoxWrapper({
   }[];
   error: FieldError | undefined;
 }) {
-  const [query, setQuery] = useState("");
+  //   const [query, setQuery] = useState("");
 
-  const filteredOptions =
-    query === ""
-      ? options
-      : options.filter((option) => {
-          return option.label.toLowerCase().includes(query.toLowerCase());
-        });
+  //   const options =
+  //     query === ""
+  //       ? options
+  //       : options.filter((option) => {
+  //           return option.label.toLowerCase().includes(query.toLowerCase());
+  //         });
 
-  const getNameFromValue = (value: string | number) => {
-    const option = options.find((option) => option.value === value);
-    return option ? option.label : "";
-  };
+  //   const getNameFromValue = (value: string | number) => {
+  //     const option = options.find((option) => option.value === value);
+  //     return option ? option.label : "";
+  //   };
 
   return (
     <>
-      <Combobox
+      <Listbox
         value={value}
-        disabled={
-          !(filteredOptions?.length > 0) && !(query?.length > 0) ? true : false
-        }
+        disabled={!(options?.length > 0) ? true : false}
         onChange={onChange}
-        nullable
       >
-        <Combobox.Label className="label text-sm">{label}</Combobox.Label>
+        <Listbox.Label className="label text-sm">{label}</Listbox.Label>
         <div className="relative">
-          <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-            <Combobox.Button
+          <div className="relative w-full select select-bordered min-w-full text-base cursor-default overflow-hidden rounded-lg bg-white text-left focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+            <Listbox.Button
               id={label}
               className="w-full inset-y-0 right-0 flex items-center"
+              //   onClick={(event) => setQuery(event.target.value)}
             >
-              <Combobox.Input
-                className="w-full select select-bordered min-w-full text-base "
-                onChange={(event) => setQuery(event.target.value)}
-                displayValue={(optionValue: string | number) =>
-                  getNameFromValue(optionValue)
-                }
-                placeholder={
-                  placeholder ? placeholder : "Start typing to search..."
-                }
-                // onBlur={onBlur}
-              />
-              <FaCaretDown
-                className="h-5 w-5 text-gray-400"
-                aria-hidden="true"
-              />
-            </Combobox.Button>
+              <span
+                className={`block truncate ${
+                  !(value.toString().length > 0) && "text-slate-400"
+                }`}
+              >
+                {/* {getNameFromValue(optionValue)} */}
+                {value.toString().length > 0 ? value : placeholder}
+              </span>
+              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                <FaCaretDown
+                  className="h-5 w-5 text-gray-400"
+                  aria-hidden="true"
+                />
+              </span>
+            </Listbox.Button>
           </div>
           <Transition
             as={Fragment}
             leave="transition ease-in duration-100"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
-            afterLeave={() => setQuery("")}
           >
-            <Combobox.Options className="absolute mt-1 z-40 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {filteredOptions.length === 0 && query !== "" ? (
+            <Listbox.Options className="absolute mt-1 z-40 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              {options.length === 0 ? (
                 <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                   Nothing found.
                 </div>
               ) : (
-                filteredOptions.map((option, index) => (
-                  <Combobox.Option
+                options.map((option, index) => (
+                  <Listbox.Option
                     key={option?.id ? option.id : index}
                     className={({ active }) =>
                       `relative cursor-default py-2 pl-10 pr-4 ${
@@ -117,13 +113,13 @@ export default function ComboBoxWrapper({
                         ) : null}
                       </>
                     )}
-                  </Combobox.Option>
+                  </Listbox.Option>
                 ))
               )}
-            </Combobox.Options>
+            </Listbox.Options>
           </Transition>
         </div>
-      </Combobox>
+      </Listbox>
       {error && (
         <p className="mt-2 text-sm text-red-600" id="email-error">
           {error.message}

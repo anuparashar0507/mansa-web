@@ -7,6 +7,7 @@ import { stateAndDistrict } from "~/constants/stateAndDistrict";
 import { useRouter } from "next/router";
 import type { Option } from "~/types/selectOption.type";
 import ComboBoxWrapper from "../ui/ComboBoxWrapper";
+import ListBoxWrapper from "../ui/ListBoxWrapper";
 // import VerificationForm from "./VerificationForm";
 const currentYear = new Date().getFullYear();
 const years = () => {
@@ -172,36 +173,34 @@ const Registration: React.FC = () => {
           </label>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-          <label>
-            <Controller
-              name="gender"
-              control={control}
-              rules={{
-                required: "Please select a Gender",
-              }}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <ComboBoxWrapper
-                  label="Gender"
-                  placeholder="Select Gender"
-                  value={value}
-                  onChange={(e) => {
-                    onChange(e);
-                    handleStateChange(e.toString());
-                    // do your own change event
-                  }}
-                  onBlur={onBlur}
-                  options={["Male", "Female", "Others"].map(
-                    (option, index) => ({
-                      id: index,
-                      label: option,
-                      value: option,
-                    }),
-                  )}
-                  error={errors.gender}
-                />
-              )}
-            />
-          </label>
+          {/* <label> */}
+          <Controller
+            name="gender"
+            control={control}
+            rules={{
+              required: "Please select a Gender",
+            }}
+            render={({ field: { onChange, value } }) => (
+              <ListBoxWrapper
+                label="Gender"
+                placeholder="Select Gender"
+                value={value}
+                onChange={(e) => {
+                  handleStateChange(e.toString());
+                  onChange(e);
+                  // do your own change event
+                }}
+                // onBlur={onBlur}
+                options={["Male", "Female", "Others"].map((option, index) => ({
+                  id: index,
+                  label: option,
+                  value: option,
+                }))}
+                error={errors.gender}
+              />
+            )}
+          />
+          {/* </label> */}
           <label>
             <div className="label">
               <span className="label-text">Age</span>
@@ -222,8 +221,8 @@ const Registration: React.FC = () => {
           </label>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-          <label>
-            {/* <select
+          {/* <label> */}
+          {/* <select
               className="select select-bordered min-w-full"
               {...register("state")}
               onChange={(e) => handleStateChange(e.target.value)}
@@ -232,98 +231,95 @@ const Registration: React.FC = () => {
                 return <option value={state}>{state}</option>;
               })}
             </select> */}
-            <Controller
-              name="state"
-              control={control}
-              rules={{
-                required: "Please select a State",
-              }}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <ComboBoxWrapper
-                  label="State"
-                  placeholder="Select State"
-                  value={value}
-                  onChange={(e) => {
-                    onChange(e);
-                    handleStateChange(e.toString());
-                    // do your own change event
-                  }}
-                  onBlur={onBlur}
-                  options={Object.keys(stateAndDistrict).map(
-                    (state, index) => ({
-                      id: index,
-                      label: state,
-                      value: state,
-                    }),
-                  )}
-                  error={errors.state}
-                />
-              )}
-            />
-          </label>
-          <label>
-            <Controller
-              name="district"
-              control={control}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <ComboBoxWrapper
-                  label="District"
-                  value={value}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  options={districtSelectOptions}
-                  error={errors.district}
-                  placeholder="Select District"
-                />
-              )}
-            />
-          </label>
+          <Controller
+            name="state"
+            control={control}
+            rules={{
+              required: "Please select a State",
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <ComboBoxWrapper
+                label="State"
+                placeholder="Select State"
+                value={value}
+                onChange={(e) => {
+                  onChange(e);
+                  handleStateChange(e.toString());
+                  // do your own change event
+                }}
+                // onBlur={onBlur}
+                options={Object.keys(stateAndDistrict).map((state, index) => ({
+                  id: index,
+                  label: state,
+                  value: state,
+                }))}
+                error={errors.state}
+              />
+            )}
+          />
+          {/* </label> */}
+          {/* <label> */}
+          <Controller
+            name="district"
+            control={control}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <ComboBoxWrapper
+                label="District"
+                value={value}
+                onChange={onChange}
+                options={districtSelectOptions}
+                error={errors.district}
+                placeholder="Select District"
+              />
+            )}
+          />
+          {/* </label> */}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-          <label>
-            <Controller
-              name="jnv"
-              control={control}
-              rules={{
-                required: "Please select a user",
-              }}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <ComboBoxWrapper
-                  label="JNV"
-                  value={value}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  options={jnvSelectOptions}
-                  error={errors.jnv}
-                  placeholder="Select Jnv"
-                />
-              )}
-            />
-          </label>
-          <label>
-            <Controller
-              name="passoutYear"
-              control={control}
-              rules={{
-                required: "Please select a user",
-              }}
-              render={({ field: { onChange, value, onBlur } }) => (
-                <ComboBoxWrapper
-                  label="Passout Year"
-                  value={value}
-                  onChange={onChange}
-                  onBlur={onBlur}
-                  options={years().map((year) => ({
-                    id: year,
-                    label: year.toString(),
-                    value: year,
-                  }))}
-                  error={errors.passoutYear}
-                  placeholder="Select Jnv"
-                />
-              )}
-            />
-          </label>
+          {/* <label> */}
+          <Controller
+            name="jnv"
+            control={control}
+            rules={{
+              required: "Please select a user",
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <ComboBoxWrapper
+                label="JNV"
+                value={value}
+                onChange={onChange}
+                // onBlur={onBlur}
+                options={jnvSelectOptions}
+                error={errors.jnv}
+                placeholder="Select Jnv"
+              />
+            )}
+          />
+          {/* </label> */}
+          {/* <label> */}
+          <Controller
+            name="passoutYear"
+            control={control}
+            rules={{
+              required: "Please select a user",
+            }}
+            render={({ field: { onChange, value, onBlur } }) => (
+              <ComboBoxWrapper
+                label="Passout Year"
+                value={value}
+                onChange={onChange}
+                // onBlur={onBlur}
+                options={years().map((year) => ({
+                  id: year,
+                  label: year.toString(),
+                  value: year,
+                }))}
+                error={errors.passoutYear}
+                placeholder="Select Jnv"
+              />
+            )}
+          />
+          {/* </label> */}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
           <label>
