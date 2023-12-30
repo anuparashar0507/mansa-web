@@ -196,7 +196,7 @@ const PostJobForm: React.FC = () => {
               <Select
                 {...field}
                 isMulti={false}
-                components={{ DropdownIndicator }}
+                // components={{ DropdownIndicator }}
                 styles={{
                   control: (baseStyles) => ({
                     ...baseStyles,
@@ -236,7 +236,7 @@ const PostJobForm: React.FC = () => {
               <Select
                 {...field}
                 isMulti={false}
-                components={{ DropdownIndicator }}
+                // components={{ DropdownIndicator }}
                 styles={{
                   control: (baseStyles) => ({
                     ...baseStyles,
