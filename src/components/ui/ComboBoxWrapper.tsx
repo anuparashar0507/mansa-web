@@ -2,13 +2,13 @@ import { Fragment, useState } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { type FieldError } from "react-hook-form";
-// import { type FocusEventHandler } from "react";
+import { type FocusEventHandler } from "react";
 import { FaCaretDown } from "react-icons/fa";
 
 export default function ComboBoxWrapper({
   value = "",
   onChange,
-  // onBlur,
+  onBlur,
   label,
   options,
   error,
@@ -16,7 +16,7 @@ export default function ComboBoxWrapper({
 }: {
   value: string | number;
   onChange: (value: string | number) => void;
-  // onBlur: FocusEventHandler<HTMLInputElement> | undefined;
+  onBlur?: FocusEventHandler<HTMLInputElement> | undefined;
   label: string;
   placeholder: string | undefined;
   options: {
@@ -24,7 +24,7 @@ export default function ComboBoxWrapper({
     label: string;
     id?: number | string | undefined;
   }[];
-  error: FieldError | undefined;
+  error?: FieldError | undefined;
 }) {
   const [query, setQuery] = useState("");
 
@@ -41,7 +41,7 @@ export default function ComboBoxWrapper({
   };
 
   return (
-    <>
+    <div className="p-0 m-0">
       <Combobox
         value={value}
         disabled={
@@ -58,7 +58,7 @@ export default function ComboBoxWrapper({
               className="w-full inset-y-0 right-0 flex items-center"
             >
               <Combobox.Input
-                className="w-full select select-bordered min-w-full text-base "
+                className="w-full select select-bordered min-w-full text-base"
                 onChange={(event) => setQuery(event.target.value)}
                 displayValue={(optionValue: string | number) =>
                   getNameFromValue(optionValue)
@@ -66,7 +66,7 @@ export default function ComboBoxWrapper({
                 placeholder={
                   placeholder ? placeholder : "Start typing to search..."
                 }
-                // onBlur={onBlur}
+                onBlur={onBlur}
               />
               <FaCaretDown
                 className="h-5 w-5 text-gray-400"
@@ -129,6 +129,6 @@ export default function ComboBoxWrapper({
           {error.message}
         </p>
       )}
-    </>
+    </div>
   );
 }

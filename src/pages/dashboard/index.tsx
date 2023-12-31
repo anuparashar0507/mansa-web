@@ -1,17 +1,14 @@
 import React, { useRef, useState, useEffect } from "react";
 import { MdFilterList } from "react-icons/md";
-import Select, {
-  components,
-  type DropdownIndicatorProps,
-  // type InputActionMeta,
-} from "react-select";
+import Select, { components, type DropdownIndicatorProps } from "react-select";
 import { FaChevronDown } from "react-icons/fa";
 import { jnvSchools } from "~/constants/jnvList";
 import { stateAndDistrict } from "~/constants/stateAndDistrict";
 import { FaCaretDown } from "react-icons/fa";
 import { type UserData } from "~/types/user.type";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-
+import ComboBoxWrapper from "~/components/ui/ComboBoxWrapper";
+import ListBoxWrapper from "~/components/ui/ListBoxWrapper";
 type Option = {
   label: string;
   value: string;
@@ -75,13 +72,9 @@ const Dashboard: React.FC = () => {
   const filterModalRef = useRef<HTMLDialogElement>(null);
 
   const handleStateChange = (selectedState: string) => {
-    // console.log("selectedState :- ", selectedState);
-
     const districts = stateAndDistrictList[selectedState];
-    // console.log("DISTRICTS :- ", districts);
     const jnvs = jnvSchoolList[selectedState];
     setFilter({ ...filter, state: selectedState });
-    // setDistrictOptions(districts as string[]);
     const districtOptions = districts?.map((district) => ({
       label: district,
       value: district,
@@ -96,50 +89,54 @@ const Dashboard: React.FC = () => {
     setJnvSelectOptions(jnvOptions as Option[]);
     // setJnvOptions(jnvs as string[]);
   };
-
-  useEffect(() => {
+  const applyFilters = () => {
     const filterMember = members.filter((member) => {
+      const isNameMatch =
+        filter.name === "" ||
+        member.Name.toLowerCase().includes(filter.name.toLowerCase());
+      const isCurrentLocationMatch =
+        filter.currentLocation === "" ||
+        member["Current Location"] === filter.currentLocation;
+      const isOccupationMatch =
+        filter.occupation === "" ||
+        member["Current Occupation & Designation"]
+          .toLowerCase()
+          .includes(filter.occupation.toLowerCase());
+      const isStateMatch =
+        filter.state === "" ||
+        member["State Name"]
+          ?.toLowerCase()
+          .includes(filter.state.toLowerCase());
+      const isJnvMatch =
+        filter.jnv === "" ||
+        member["JNV Name"].toLowerCase().includes(filter.jnv.toLowerCase());
+      const isDistrictMatch =
+        filter.district === "" ||
+        member["Home District"]
+          .toLowerCase()
+          .includes(filter.district.toLowerCase());
+      const isPassOutYearMatch =
+        filter.passOutYear === "" ||
+        member["Batch Passout"]
+          .toLowerCase()
+          .includes(filter.passOutYear.toLowerCase());
+
       return (
-        (filter.name === "" ||
-          member.Name.toLowerCase().includes(filter.name.toLowerCase())) &&
-        (filter.currentLocation === "" ||
-          member["Current Location"] === filter.currentLocation) &&
-        (filter.occupation === "" ||
-          member["Current Occupation & Designation"]
-            .toLowerCase()
-            .includes(filter.occupation.toLowerCase())) &&
-        (filter.state === "" ||
-          member["State Name"]
-            ?.toLowerCase()
-            .includes(filter.state.toLowerCase())) &&
-        (filter.jnv === "" ||
-          member["JNV Name"]
-            .toLowerCase()
-            .includes(filter.jnv.toLowerCase())) &&
-        (filter.district === "" ||
-          member["Home District"]
-            .toLowerCase()
-            .includes(filter.district.toLowerCase())) &&
-        (filter.passOutYear === "" ||
-          member["Batch Passout"]
-            .toLowerCase()
-            .includes(filter.passOutYear.toLowerCase()))
+        isNameMatch &&
+        isCurrentLocationMatch &&
+        isOccupationMatch &&
+        isStateMatch &&
+        isJnvMatch &&
+        isDistrictMatch &&
+        isPassOutYearMatch
       );
     });
 
     setFilteredMembers(filterMember);
-    return () => setFilteredMembers(members);
-  }, [
-    filter.name,
-    filter.currentLocation,
-    filter.state,
-    filter.district,
-    filter.jnv,
-    filter.occupation,
-    filter.passOutYear,
-    members,
-    districtSelectOptions,
-  ]);
+  };
+  useEffect(() => {
+    applyFilters();
+  }, [filter, members]);
 
   useEffect(() => {
     async function fetchData() {
@@ -272,63 +269,29 @@ const Dashboard: React.FC = () => {
               />
             </label>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-              <label>
-                <div className="label">
-                  <span className="label-text">State</span>
-                </div>
-                <select
-                  className="select select-bordered min-w-full"
-                  onChange={(e) => handleStateChange(e.target.value)}
-                  value={filter.state}
-                  defaultValue={"Madhya Pradesh"}
-                  placeholder="Select State"
-                >
-                  <option key={0} defaultChecked value={""}>
-                    Select State
-                  </option>
-                  {Object.keys(stateAndDistrict).map((state, index) => {
-                    return (
-                      <option key={index} value={state}>
-                        {state}
-                      </option>
-                    );
-                  })}
-                </select>
-              </label>
-              <label>
-                <div className="label">
-                  <span className="label-text">District</span>
-                </div>
-                <Select
-                  components={{ DropdownIndicator }}
-                  isMulti={false}
-                  styles={{
-                    control: (baseStyles) => ({
-                      ...baseStyles,
-                      border: "1px solid #ccc",
-                      borderRadius: "8px",
-                      padding: "6px",
-                    }),
-                    option: (baseStyles) => ({
-                      ...baseStyles,
-                      divider: false,
-                      fontColor: "brand",
-                    }),
-                  }}
-                  options={districtSelectOptions}
-                  // value={districtSelectOptions.find(
-                  //   (c) => c.value === field.value,
-                  // )}
-                  // value={}
-                  onChange={(e) =>
-                    setFilter({ ...filter, district: e?.value ? e.value : "" })
-                  }
-                  isDisabled={!districtSelectOptions.length}
-                />
-              </label>
+              <ComboBoxWrapper
+                label="State"
+                placeholder="Select State"
+                value={filter.state}
+                onChange={(e) => handleStateChange(e.toString())}
+                options={Object.keys(stateAndDistrict).map((state, index) => ({
+                  id: index,
+                  label: state,
+                  value: state,
+                }))}
+              />
+              <ComboBoxWrapper
+                label="District"
+                value={filter.district}
+                onChange={(e) =>
+                  setFilter({ ...filter, district: e.toString() })
+                }
+                options={districtSelectOptions}
+                placeholder="Select District"
+              />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-              <label>
+              {/* <label>
                 <div className="label">
                   <span className="label-text">JNV</span>
                 </div>
@@ -358,8 +321,15 @@ const Dashboard: React.FC = () => {
                   }
                   isDisabled={!jnvSelectOptions?.length}
                 />
-              </label>
-              <label>
+              </label> */}
+              <ComboBoxWrapper
+                label="JNV"
+                value={filter.jnv}
+                onChange={(e) => setFilter({ ...filter, jnv: e.toString() })}
+                options={jnvSelectOptions}
+                placeholder="Select JNV"
+              />
+              {/* <label>
                 <div className="label">
                   <span className="label-text">Passout Year</span>
                 </div>
@@ -382,7 +352,20 @@ const Dashboard: React.FC = () => {
                     );
                   })}
                 </select>
-              </label>
+              </label> */}
+              <ListBoxWrapper
+                label="Batch/Passout Year"
+                onChange={(e) =>
+                  setFilter({ ...filter, passOutYear: e.toString() })
+                }
+                value={filter.passOutYear}
+                options={years().map((year) => ({
+                  id: year,
+                  label: year.toString(),
+                  value: year,
+                }))}
+                placeholder="Select Batch/PassOut Year"
+              />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
               <label>

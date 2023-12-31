@@ -247,7 +247,7 @@ const Registration: React.FC = () => {
                   handleStateChange(e.toString());
                   // do your own change event
                 }}
-                // onBlur={onBlur}
+                onBlur={onBlur}
                 options={Object.keys(stateAndDistrict).map((state, index) => ({
                   id: index,
                   label: state,
@@ -267,6 +267,7 @@ const Registration: React.FC = () => {
                 label="District"
                 value={value}
                 onChange={onChange}
+                onBlur={onBlur}
                 options={districtSelectOptions}
                 error={errors.district}
                 placeholder="Select District"
@@ -288,7 +289,7 @@ const Registration: React.FC = () => {
                 label="JNV"
                 value={value}
                 onChange={onChange}
-                // onBlur={onBlur}
+                onBlur={onBlur}
                 options={jnvSelectOptions}
                 error={errors.jnv}
                 placeholder="Select Jnv"
@@ -308,7 +309,7 @@ const Registration: React.FC = () => {
                 label="Passout Year"
                 value={value}
                 onChange={onChange}
-                // onBlur={onBlur}
+                onBlur={onBlur}
                 options={years().map((year) => ({
                   id: year,
                   label: year.toString(),

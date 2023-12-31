@@ -2,13 +2,13 @@ import { Fragment, useState } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { type FieldError } from "react-hook-form";
-// import { type FocusEventHandler } from "react";
+import { type FocusEventHandler } from "react";
 import { FaCaretDown } from "react-icons/fa";
 
 export default function ListBoxWrapper({
   value = "",
   onChange,
-  // onBlur,
+  onBlur,
   label,
   options,
   error,
@@ -16,7 +16,7 @@ export default function ListBoxWrapper({
 }: {
   value: string | number;
   onChange: (value: string | number) => void;
-  // onBlur: FocusEventHandler<HTMLInputElement> | undefined;
+  onBlur?: FocusEventHandler<HTMLButtonElement> | undefined;
   label: string;
   placeholder: string | undefined;
   options: {
@@ -24,7 +24,7 @@ export default function ListBoxWrapper({
     label: string;
     id?: number | string | undefined;
   }[];
-  error: FieldError | undefined;
+  error?: FieldError | undefined;
 }) {
   //   const [query, setQuery] = useState("");
 
@@ -41,7 +41,7 @@ export default function ListBoxWrapper({
   //   };
 
   return (
-    <>
+    <div className="p-0 m-0">
       <Listbox
         value={value}
         disabled={!(options?.length > 0) ? true : false}
@@ -49,11 +49,12 @@ export default function ListBoxWrapper({
       >
         <Listbox.Label className="label text-sm">{label}</Listbox.Label>
         <div className="relative">
-          <div className="relative w-full select select-bordered min-w-full text-base cursor-default overflow-hidden rounded-lg bg-white text-left focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+          <div className="relative w-full  min-w-full text-base cursor-default overflow-hidden rounded-lg bg-white text-left focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
             <Listbox.Button
               id={label}
-              className="w-full inset-y-0 right-0 flex items-center"
+              className="w-full min-w-full select select-bordered text-base inset-y-0 right-0 flex items-center"
               //   onClick={(event) => setQuery(event.target.value)}
+              onBlur={onBlur}
             >
               <span
                 className={`block truncate ${
@@ -63,12 +64,12 @@ export default function ListBoxWrapper({
                 {/* {getNameFromValue(optionValue)} */}
                 {value.toString().length > 0 ? value : placeholder}
               </span>
-              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+              {/* <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                 <FaCaretDown
                   className="h-5 w-5 text-gray-400"
                   aria-hidden="true"
                 />
-              </span>
+              </span> */}
             </Listbox.Button>
           </div>
           <Transition
@@ -125,6 +126,6 @@ export default function ListBoxWrapper({
           {error.message}
         </p>
       )}
-    </>
+    </div>
   );
 }
