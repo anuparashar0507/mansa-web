@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .star-label {
+    @apply after:content-['*'] after:ml-0.5 after:text-red-500;
+  }
+}
+/* @layer components {
+  input:required {
+    @apply after:content-['*'] after:ml-0.5 after:text-red-500;
+  }
+} */

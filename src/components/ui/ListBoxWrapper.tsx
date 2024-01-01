@@ -1,9 +1,9 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { type FieldError } from "react-hook-form";
 import { type FocusEventHandler } from "react";
-import { FaCaretDown } from "react-icons/fa";
+// import { FaCaretDown } from "react-icons/fa";
 
 export default function ListBoxWrapper({
   value = "",
@@ -13,6 +13,7 @@ export default function ListBoxWrapper({
   options,
   error,
   placeholder,
+  required,
 }: {
   value: string | number;
   onChange: (value: string | number) => void;
@@ -25,21 +26,8 @@ export default function ListBoxWrapper({
     id?: number | string | undefined;
   }[];
   error?: FieldError | undefined;
+  required?: boolean;
 }) {
-  //   const [query, setQuery] = useState("");
-
-  //   const options =
-  //     query === ""
-  //       ? options
-  //       : options.filter((option) => {
-  //           return option.label.toLowerCase().includes(query.toLowerCase());
-  //         });
-
-  //   const getNameFromValue = (value: string | number) => {
-  //     const option = options.find((option) => option.value === value);
-  //     return option ? option.label : "";
-  //   };
-
   return (
     <div className="p-0 m-0">
       <Listbox
@@ -47,13 +35,18 @@ export default function ListBoxWrapper({
         disabled={!(options?.length > 0) ? true : false}
         onChange={onChange}
       >
-        <Listbox.Label className="label text-sm">{label}</Listbox.Label>
+        <Listbox.Label className="text-sm">
+          <div className="label">
+            <span className={`label-text ${required && "star-label"}`}>
+              {label}
+            </span>
+          </div>
+        </Listbox.Label>
         <div className="relative">
           <div className="relative w-full  min-w-full text-base cursor-default overflow-hidden rounded-lg bg-white text-left focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
             <Listbox.Button
               id={label}
               className="w-full min-w-full select select-bordered text-base inset-y-0 right-0 flex items-center"
-              //   onClick={(event) => setQuery(event.target.value)}
               onBlur={onBlur}
             >
               <span

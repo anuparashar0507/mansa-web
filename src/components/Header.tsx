@@ -1,4 +1,4 @@
-import { useState, Dispatch, SetStateAction, Fragment } from "react";
+import { useState, type Dispatch, type SetStateAction, Fragment } from "react";
 import { Dialog, Popover, Transition } from "@headlessui/react";
 import mansaLogo from "../../public/MANSALogo.png";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";

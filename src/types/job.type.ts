@@ -1,12 +1,17 @@
 export type Job = {
   title: string;
-  company: string;
-  description: string;
-  postedBy: string;
-  socialLinks: string[];
+  company?: string;
+  description?: string;
+  postedBy?: string;
+  socialLinks: {
+    LinkedIn?: string;
+    Facebook?: string;
+    Instagram?: string;
+    Discord?: string;
+  };
   link: string;
-  salaryRange: string;
-  experienceRequired: string;
+  salaryRange?: [string, string];
+  experienceRequired?: [string, string?];
   location: string;
   type: "Government" | "Private" | "Non-profit Organisation" | "Volunteer";
   sector:

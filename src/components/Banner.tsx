@@ -1,6 +1,6 @@
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import React from "react";
-import Link from "next/link";
+// import Link from "next/link";
 
 type BannerProps = {
   setClose: React.Dispatch<React.SetStateAction<boolean>>;

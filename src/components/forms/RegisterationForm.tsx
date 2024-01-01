@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { z } from "zod";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -60,7 +60,6 @@ const Registration: React.FC = () => {
     handleSubmit,
     control,
     register,
-    setValue,
     formState: { errors },
     watch,
   } = useForm<FormValues>({
@@ -244,7 +243,7 @@ const Registration: React.FC = () => {
                 value={value}
                 onChange={(e) => {
                   onChange(e);
-                  handleStateChange(e.toString());
+                  handleStateChange(e?.toString());
                   // do your own change event
                 }}
                 onBlur={onBlur}
@@ -302,11 +301,11 @@ const Registration: React.FC = () => {
             name="passoutYear"
             control={control}
             rules={{
-              required: "Please select a user",
+              required: "Please select Passout Year",
             }}
             render={({ field: { onChange, value, onBlur } }) => (
               <ComboBoxWrapper
-                label="Passout Year"
+                label="Batch/Passout Year"
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
@@ -316,7 +315,7 @@ const Registration: React.FC = () => {
                   value: year,
                 }))}
                 error={errors.passoutYear}
-                placeholder="Select Jnv"
+                placeholder="Select Batch/Passout Year"
               />
             )}
           />

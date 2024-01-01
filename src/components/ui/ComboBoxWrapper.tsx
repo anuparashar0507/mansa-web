@@ -13,6 +13,7 @@ export default function ComboBoxWrapper({
   options,
   error,
   placeholder,
+  required,
 }: {
   value: string | number;
   onChange: (value: string | number) => void;
@@ -25,6 +26,7 @@ export default function ComboBoxWrapper({
     id?: number | string | undefined;
   }[];
   error?: FieldError | undefined;
+  required?: boolean;
 }) {
   const [query, setQuery] = useState("");
 
@@ -50,7 +52,13 @@ export default function ComboBoxWrapper({
         onChange={onChange}
         nullable
       >
-        <Combobox.Label className="label text-sm">{label}</Combobox.Label>
+        <Combobox.Label className="text-sm">
+          <div className="label">
+            <span className={`label-text ${required && "star-label"}`}>
+              {label}
+            </span>
+          </div>
+        </Combobox.Label>
         <div className="relative">
           <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
             <Combobox.Button

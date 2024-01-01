@@ -9,8 +9,8 @@ type SpinnerProps = {
   bgColor?: string;
 };
 const Spinner: React.FC<SpinnerProps> = ({
-  width = 5,
-  height = 5,
+  // width = 5,
+  // height = 5,
   color,
   bgColor,
 }) => {
