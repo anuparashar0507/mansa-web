@@ -2,16 +2,22 @@ import { useState, useEffect } from "react";
 import Loader from "~/components/ui/Loader";
 import Sidebar from "~/components/dashboard/Sidebar";
 import Header from "~/components/dashboard/Header";
-
+// import { useSession } from "next-auth/react";
+// import { useRouter } from "next/router";
 export default function Authenticated({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // const { data: session } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [loading, setLoading] = useState<boolean>(true);
-
+  // const router = useRouter();
+  // if (session) {
+  //   await router.push("/login");
+  //   return null;
+  // }
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);
   }, []);

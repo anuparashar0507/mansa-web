@@ -4,7 +4,13 @@ import mansaLogo from "../../public/MANSALogo.png";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
+import DropdownUser from "~/components/dashboard/Header/DropdownUser";
 
+// import { authOptions } from "~/server/auth";
+// import { type GetServerSidePropsContext } from "next";
+// import { type GetServerSideProps } from "next";
+// import { getServerSession } from "next-auth";
+import { useSession, signIn, signOut } from "next-auth/react";
 type NavLinkProps = {
   href: string;
   title: string;
@@ -13,7 +19,8 @@ type NavLinkProps = {
 
 const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-
+  const { data: session, status } = useSession();
+  console.log(session, status);
   return (
     <header className="bg-gray-50">
       <nav
@@ -64,13 +71,32 @@ const Header: React.FC = () => {
             setMobileMenuOpen={setMobileMenuOpen}
           />
         </Popover.Group>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link
-            href="#"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Log in <span aria-hidden="true">&rarr;</span>
-          </Link>
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-8">
+          {!!session && (
+            <>
+              {/* <DropdownUser /> */}
+              <Link
+                href="/dashboard"
+                className="text-sm font-semibold leading-6 text-gray-50 bg-brand hover:bg-brand/80 rounded-3xl px-3 py-2 "
+              >
+                Dashboard
+              </Link>
+              <button
+                className="text-sm font-semibold leading-6 text-gray-900"
+                onClick={() => signOut()}
+              >
+                Log out <span aria-hidden="true">&rarr;</span>
+              </button>
+            </>
+          )}
+          {!session && (
+            <Link
+              href="/login"
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              Log in <span aria-hidden="true">&rarr;</span>
+            </Link>
+          )}
         </div>
       </nav>
       <Transition.Root show={mobileMenuOpen} as={Fragment}>
@@ -190,3 +216,13 @@ const NavLink: React.FC<NavLinkProps> = ({
     </Link>
   );
 };
+
+// export const getServerSideProps: GetServerSideProps = async (ctx: {
+//   req: GetServerSidePropsContext["req"];
+//   res: GetServerSidePropsContext["res"];
+// }) => {
+//   const session = await getServerSession(ctx.req, ctx.res, authOptions);
+//   return {
+//     props: { session },
+//   };
+// };

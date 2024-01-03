@@ -6,17 +6,16 @@ import About from "~/components/home/About";
 import Stats from "~/components/home/Stats";
 import Event from "~/components/home/Event";
 import Contact from "~/components/home/Contact";
-
-// export type SheetApiResponse = {
-//   count: number;
-//   users: string[][];
-// };
-
+import { type GetServerSidePropsContext } from "next";
+import { getServerSession } from "next-auth";
+// import
+import { useSession } from "next-auth/react";
+import { getServerAuthSession, authOptions } from "~/server/auth";
 export default function Home() {
-  // const [users, setUsers] = useState([]);
-  // const [data, setData] = useState<string[][]>([]);
   const [count, setCount] = useState<number>(0);
+  const { data, status } = useSession();
 
+  console.log("session :", data);
   useEffect(() => {
     async function fetchData() {
       try {

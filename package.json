@@ -25,6 +25,7 @@
     "@trpc/next": "^10.44.1",
     "@trpc/react-query": "^10.44.1",
     "@trpc/server": "^10.44.1",
+    "bcryptjs": "^2.4.3",
     "google-auth-library": "^9.4.1",
     "google-spreadsheet": "^4.1.1",
     "googleapis": "^129.0.0",
@@ -44,6 +45,7 @@
   "devDependencies": {
     "@next/eslint-plugin-next": "^14.0.3",
     "@svgr/webpack": "^8.1.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/eslint": "^8.44.7",
     "@types/node": "^18.17.0",
     "@types/react": "^18.2.37",

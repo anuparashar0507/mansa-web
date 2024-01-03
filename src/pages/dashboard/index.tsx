@@ -1,14 +1,15 @@
 import React, { useRef, useState, useEffect } from "react";
 import { MdFilterList } from "react-icons/md";
-import Select, { components, type DropdownIndicatorProps } from "react-select";
 import { FaChevronDown } from "react-icons/fa";
 import { jnvSchools } from "~/constants/jnvList";
 import { stateAndDistrict } from "~/constants/stateAndDistrict";
-import { FaCaretDown } from "react-icons/fa";
 import { type UserData } from "~/types/user.type";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import ComboBoxWrapper from "~/components/ui/ComboBoxWrapper";
 import ListBoxWrapper from "~/components/ui/ListBoxWrapper";
+// import { getServerAuthSession } from "~/server/auth";
+// import type { GetServerSidePropsContext } from "next";
+// import { useSession } from "next-auth/react";
 type Option = {
   label: string;
   value: string;
@@ -24,9 +25,7 @@ type Filter = {
 };
 
 type TStateAndDistrict = Record<string, string[]>;
-// type TDistrict = string[];
 type TJnvSchoolsStateWise = Record<string, string[]>;
-// type TJnvSchools = string[];
 
 const jnvSchoolList: TJnvSchoolsStateWise = {
   ...jnvSchools,
@@ -53,14 +52,10 @@ const initialFilterState = {
   district: "",
   passOutYear: "",
 };
-const DropdownIndicator = (props: DropdownIndicatorProps<Option>) => {
-  return (
-    <components.DropdownIndicator {...props}>
-      <FaCaretDown />
-    </components.DropdownIndicator>
-  );
-};
+
 const Dashboard: React.FC = () => {
+  // const { data: session, status } = useSession();
+
   const [members, setMembers] = useState<UserData[]>([]);
   const [filteredMembers, setFilteredMembers] = useState<UserData[]>(members);
 
@@ -291,37 +286,6 @@ const Dashboard: React.FC = () => {
               />
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-              {/* <label>
-                <div className="label">
-                  <span className="label-text">JNV</span>
-                </div>
-
-                <Select
-                  components={{ DropdownIndicator }}
-                  isMulti={false}
-                  styles={{
-                    control: (baseStyles) => ({
-                      ...baseStyles,
-                      border: "1px solid #ccc",
-                      borderRadius: "8px",
-                      padding: "6px",
-                    }),
-                    option: (baseStyles) => ({
-                      ...baseStyles,
-                      divider: false,
-                      fontColor: "brand",
-                    }),
-                  }}
-                  placeholder="Select JNV"
-                  options={jnvSelectOptions}
-                  // value={jnvSelectOptions.find((c) => c.value === field.value)}
-                  // onChange={(val) => field.onChange(val)}
-                  onChange={(e) =>
-                    setFilter({ ...filter, jnv: e?.value ? e.value : "" })
-                  }
-                  isDisabled={!jnvSelectOptions?.length}
-                />
-              </label> */}
               <ComboBoxWrapper
                 label="JNV"
                 value={filter.jnv}
@@ -329,30 +293,6 @@ const Dashboard: React.FC = () => {
                 options={jnvSelectOptions}
                 placeholder="Select JNV"
               />
-              {/* <label>
-                <div className="label">
-                  <span className="label-text">Passout Year</span>
-                </div>
-                <select
-                  className="select select-bordered min-w-full"
-                  onChange={(e) =>
-                    setFilter({ ...filter, passOutYear: e.target.value })
-                  }
-                  value={filter.passOutYear}
-                  placeholder="Select Batch/PassOut Year"
-                >
-                  <option key={0} defaultChecked value={""}>
-                    Select Batch/PassOut Year
-                  </option>
-                  {years().map((year) => {
-                    return (
-                      <option key={year} value={year}>
-                        {year}
-                      </option>
-                    );
-                  })}
-                </select>
-              </label> */}
               <ListBoxWrapper
                 label="Batch/Passout Year"
                 onChange={(e) =>
@@ -399,10 +339,3 @@ const Dashboard: React.FC = () => {
 };
 
 export default Dashboard;
-
-// - Current Location
-// - Occupation
-// - State
-// - JNV
-// - District
-// - PassOut Year

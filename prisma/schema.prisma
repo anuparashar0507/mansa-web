@@ -11,19 +11,6 @@ datasource db {
     relationMode = "prisma"
 }
 
-// model Post {
-//     id        Int      @id @default(autoincrement())
-//     name      String
-//     createdAt DateTime @default(now())
-//     updatedAt DateTime @updatedAt
-
-//     createdBy   User   @relation(fields: [createdById], references: [id])
-//     createdById String
-
-//     @@index([name])
-// }
-
-// Necessary for Next auth
 model Account {
     id                String  @id @default(cuid())
     userId            String
@@ -53,44 +40,7 @@ model Session {
     @@index([userId])
 }
 
-// Profile model for additional user details
-// model Profile {
-//     id         Int     @id @default(autoincrement())
-//     userId     String  @unique
-//     user       User    @relation(fields: [userId], references: [id])
-//     occupation String?
-//     status     String? // e.g., "Seeking Opportunities"
-//     // Optional fields for future features
-//     bio        String?
-//     // skills     String[]
-//     // interests  String[]
-//     // ...other relevant fields
-// }
-
-model User {
-    id              String    @id @default(cuid())
-    name            String
-    email           String    @unique
-    emailVerified   DateTime?
-    accounts        Account[]
-    sessions        Session[]
-    password        String // Optional due to Next-Auth handling
-    phone           String
-    gender          String
-    currentLocation String
-    state           String
-    district        String
-    jnvName         String
-    passoutYear     Int
-    createdAt       DateTime  @default(now())
-    updatedAt       DateTime  @updatedAt
-    // Relationships
-    // jobsPosted                @relation("PostedJobs")
-    // jobsApplied               @relation("AppliedJobs")
-    // jobsReferred              @relation("ReferredJobs")
-    // profile         Profile?
-}
-
+// create a verification token model
 model VerificationToken {
     identifier String
     token      String   @unique
@@ -99,40 +49,84 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-// Type model for job types
-// model Type {
-//     id   String @id @default(cuid())
-//     name String
-//     jobs Job[]
-// }
+// Models
+enum Role {
+    USER
+    ADMIN
+}
 
-// Sector model for job sectors
-// model Sector {
-//     id   String @id @default(cuid())
-//     name String
-//     jobs Job[]
-// }
+model User {
+    id              String    @id @default(cuid())
+    name            String
+    email           String    @unique
+    phone           String
+    gender          String
+    role            Role      @default(USER)
+    age             String
+    state           String
+    district        String
+    jnv             String
+    passoutYear     Int
+    occupation      String
+    currentLocation String
+    password        String
+    createdAt       DateTime  @default(now())
+    updatedAt       DateTime  @updatedAt
+    jobs            Job[] // Relationship with the Job model
+    accounts        Account[]
+    session         Session[]
+    // Account         Account[]
+}
 
-// Job model with comprehensive fields
-// model Job {
-//     id                 String   @id @default(cuid())
-//     title              String
-//     companyName        String
-//     description        String
-//     link               String?
-//     salaryRange        String?
-//     experienceRequired String?
-//     location           String?
-//     type               String   @relation(fields: [typeId], references: [id])
-//     typeId             String
-//     sector             String   @relation(fields: [sectorId], references: [id])
-//     sectorId           String
-//     createdAt          DateTime @default(now())
-//     updatedAt          DateTime @updatedAt
+model Job {
+    id             Int          @id @default(autoincrement())
+    companyName    String?
+    jobTitle       String
+    jobDescription String
+    jobLink        String
+    jobSector      String
+    industry       String
+    location       String?
+    workMode       String       @default("in office")
+    assistType     String       @default("Providing information only")
+    salaryRange    SalaryRange? @relation(fields: [salaryRangeId], references: [id])
+    experience     Experience?  @relation(fields: [experienceId], references: [id])
+    contact        Contact?     @relation(fields: [contactId], references: [id])
+    userId         String       @map("user_id") // Foreign key referencing User.id
+    user           User         @relation(fields: [userId], references: [id])
+    salaryRangeId  Int?
+    experienceId   Int?
+    createdAt      DateTime     @default(now())
+    updatedAt      DateTime     @updatedAt
+    contactId      Int?
 
-//     // Relationships
-//     postedBy   User   @relation("PostedJobs", fields: [postedById], references: [id])
-//     postedById String
-//     applicants User[] @relation("AppliedJobs")
-//     referrers  User[] @relation("ReferredJobs")
-// }
+    @@index([userId])
+}
+
+model SalaryRange {
+    id    Int     @id @unique @default(autoincrement())
+    min   String
+    max   String?
+    jobId Int // Foreign key referencing Job.id 
+    Job   Job[]
+}
+
+model Experience {
+    id    Int     @id @default(autoincrement())
+    min   String
+    max   String?
+    jobId Int // Remove @unique attribute to change it to one-to-many
+    jobs  Job[]
+    // Error parsing attribute "@relation": The relation field `jobs` on Model `Experience` must not specify the `fields` or `references` argument in the @relation attribute. You must only specify it on the opposite field `experience` on model `Job`.
+    // With `relationMode = "prisma"`, no foreign keys are used, so relation fields will not benefit from the index usually created by the relational database under the hood. This can lead to poor performance when querying these fields. We recommend adding an index manually. Learn more at https://pris.ly/d/relation-mode-prisma-indexes" 
+}
+
+model Contact {
+    id        Int     @id @default(autoincrement())
+    linkedin  String?
+    facebook  String?
+    instagram String?
+    email     String?
+    jobId     Int
+    Job       Job[]
+}

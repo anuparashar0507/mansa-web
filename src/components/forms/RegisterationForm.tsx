@@ -31,9 +31,6 @@ const schema = z.object({
   passoutYear: z.number().min(1980).max(currentYear),
   occupation: z.string().min(1),
   currentLocation: z.string().min(1),
-});
-
-const passwordSchema = z.object({
   password: z
     .string()
     .min(8)
@@ -43,8 +40,18 @@ const passwordSchema = z.object({
   confirmPassword: z.string().min(8),
 });
 
-const registrationSchema = schema.merge(passwordSchema);
-type FormValues = z.infer<typeof registrationSchema>;
+// const passwordSchema = z.object({
+//   password: z
+//     .string()
+//     .min(8)
+//     .regex(
+//       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+//     ),
+//   confirmPassword: z.string().min(8),
+// });
+
+// const registrationSchema = schema.merge(passwordSchema);
+type FormValues = z.infer<typeof schema>;
 
 const Registration: React.FC = () => {
   // const [randomLine, setRandomLine] = useState<string>("");
@@ -60,29 +67,37 @@ const Registration: React.FC = () => {
     handleSubmit,
     control,
     register,
+    // getValues,
     formState: { errors },
     watch,
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log("data :", data);
-    router.push("/dashboard").catch((error) => {
-      console.error("Failed to navigate to dashboard:", error);
-    });
+    const response = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        res.ok &&
+          router.push("/dashboard").catch((error) => {
+            console.error("Failed to navigate to dashboard:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error during form submission:", error);
+      });
     // Add your registration logic here
   };
 
   const handleStateChange = (selectedState: string) => {
-    // setValue("state", selectedState);
-
     const districts = stateAndDistrict[selectedState];
     const jnvs = jnvSchools[selectedState];
-
-    // setValue("district", "");
-    // setValue("jnv", "");
-
     setDistrictOptions(districts ? districts : []);
     setJnvOptions(jnvs ? jnvs : []);
   };
@@ -114,7 +129,6 @@ const Registration: React.FC = () => {
       ? setIsPasswordMatch(true)
       : setIsPasswordMatch(false);
   };
-  // useEffect
   return (
     <div className="card-body max-w-2xl">
       <h1 className="card-title">Registration Form</h1>
@@ -172,7 +186,6 @@ const Registration: React.FC = () => {
           </label>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-          {/* <label> */}
           <Controller
             name="gender"
             control={control}
@@ -187,9 +200,7 @@ const Registration: React.FC = () => {
                 onChange={(e) => {
                   handleStateChange(e.toString());
                   onChange(e);
-                  // do your own change event
                 }}
-                // onBlur={onBlur}
                 options={["Male", "Female", "Others"].map((option, index) => ({
                   id: index,
                   label: option,
@@ -199,7 +210,6 @@ const Registration: React.FC = () => {
               />
             )}
           />
-          {/* </label> */}
           <label>
             <div className="label">
               <span className="label-text">Age</span>
@@ -220,16 +230,6 @@ const Registration: React.FC = () => {
           </label>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-          {/* <label> */}
-          {/* <select
-              className="select select-bordered min-w-full"
-              {...register("state")}
-              onChange={(e) => handleStateChange(e.target.value)}
-            >
-              {Object.keys(stateAndDistrict).map((state) => {
-                return <option value={state}>{state}</option>;
-              })}
-            </select> */}
           <Controller
             name="state"
             control={control}
@@ -256,8 +256,6 @@ const Registration: React.FC = () => {
               />
             )}
           />
-          {/* </label> */}
-          {/* <label> */}
           <Controller
             name="district"
             control={control}
@@ -273,10 +271,8 @@ const Registration: React.FC = () => {
               />
             )}
           />
-          {/* </label> */}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-          {/* <label> */}
           <Controller
             name="jnv"
             control={control}
@@ -295,8 +291,6 @@ const Registration: React.FC = () => {
               />
             )}
           />
-          {/* </label> */}
-          {/* <label> */}
           <Controller
             name="passoutYear"
             control={control}
@@ -319,7 +313,6 @@ const Registration: React.FC = () => {
               />
             )}
           />
-          {/* </label> */}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
           <label>
@@ -386,9 +379,6 @@ const Registration: React.FC = () => {
               {...register("confirmPassword", { required: true })}
               onChange={handlePasswordMatch}
             />
-            {/* {errors.password && (
-              <span className="error">{errors.password.message}</span>
-            )} */}
             {!isPasswordMatch && (
               <p className="error">Passwords do not match.</p>
             )}
