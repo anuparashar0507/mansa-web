@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { jnvSchools } from "~/constants/jnvList";
 import { stateAndDistrict } from "~/constants/stateAndDistrict";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import type { Option } from "~/types/selectOption.type";
 import ComboBoxWrapper from "../ui/ComboBoxWrapper";
 import ListBoxWrapper from "../ui/ListBoxWrapper";
@@ -390,6 +391,12 @@ const Registration: React.FC = () => {
         >
           Submit
         </button>
+        <div className="flex gap-2 mt-2">
+          Already have an account?
+          <Link href="/login" className=" underline text-sky-800">
+            Login here
+          </Link>
+        </div>
       </form>
       {/* <VerificationForm /> */}
     </div>

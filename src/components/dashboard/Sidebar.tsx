@@ -66,10 +66,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
       <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
         {/* <!-- Sidebar Menu --> */}
-        <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-5">
+        <nav className="mt-5 py-4 px-4 lg:mt-4 lg:px-5">
           {/* <!-- Menu Group --> */}
           <div>
             <ul className="mb-6 flex flex-col gap-1.5">
+              <Link
+                href="/"
+                className="text-sm font-semibold  text-gray-900 pb-2 px-4 gap-2 flex items-center"
+              >
+                <span aria-hidden="true">&larr;</span> Back to Home
+              </Link>
               {/* <!-- Menu Item All Navodayans --> */}
               <li>
                 <Link

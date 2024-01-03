@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import type {
   GetServerSidePropsContext,
   InferGetServerSidePropsType,
@@ -6,42 +7,28 @@ import { getCsrfToken } from "next-auth/react";
 // import { authOptions } from "~/server/auth";
 // import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
+
 import { type FormEvent, useState } from "react";
+import Link from "next/link";
 export default function LogIn({
   csrfToken,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [creds, setCreds] = useState({ email: "", password: "" });
-  // const session = getSession();
+  // const { data: session } = useSession();
   // console.log("session", session);
 
   const handleSignIn = async (e: FormEvent<HTMLFormElement>) => {
     setLoading(true);
     e.preventDefault();
-    // const res = fetch("/api/auth/callback/credentials", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     email: creds.email,
-    //     password: creds.password,
-    //   }),
-    // });
     await signIn("credentials", {
       email: creds.email,
       password: creds.password,
       callbackUrl: "/dashboard",
     });
-    // .res.then(async () => {
-    //   await router.push("/dashboard");
-    //   setLoading(false);
-    // })
-    // .catch((error) => {
-    //   console.error("Failed to sign in:", error);
-    // });
+    setLoading(false);
   };
 
   // if (loading) {
@@ -49,23 +36,22 @@ export default function LogIn({
   //   return <div>Loading...</div>;
   // }
 
-  // const redirectToDashboard = async () => {
-  //   // If the user is already signed in, redirect to the dashboard
-  //   await router.push("/dashboard");
-  //   return null;
-  // };
+  useEffect(() => {
+    setLoading(true);
 
-  //   useEffect(() => {
-  //     // if csrfToken is available, redirect to dashboard
-  //   if (csrfToken) {
-  //     redirectToDashboard();
-  //   }
-  //   });
+    const redirectToDashboard = async () => {
+      const session = await getSession();
+      // If the user is already signed in, redirect to the dashboard
+      if (session) {
+        await router.push("/dashboard");
+      }
+    };
+    void redirectToDashboard();
+    setLoading(false);
+  }, [router]);
   return (
     <div className="flex h-full p-24 w-full items-center justify-center">
       <form
-        // method="post"
-        // action="/api/auth/callback/credentials"
         className="flex flex-col max-w-xl gap-4 w-full"
         onSubmit={(e) => handleSignIn(e)}
       >
@@ -97,6 +83,12 @@ export default function LogIn({
         >
           Sign in
         </button>
+        <div className="flex gap-2">
+          Not registered yet?
+          <Link href="/register" className=" underline text-sky-800">
+            Register here
+          </Link>
+        </div>
       </form>
     </div>
   );

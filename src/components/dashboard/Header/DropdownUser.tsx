@@ -3,12 +3,13 @@ import Link from "next/link";
 import { CiLogout } from "react-icons/ci";
 import { FaUserCircle, FaRegUser, FaChevronDown } from "react-icons/fa";
 import { MdOutlineSettings } from "react-icons/md";
+import { useSession, signOut } from "next-auth/react";
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<HTMLAnchorElement>(null);
   const dropdown = useRef<HTMLDivElement>(null);
-
+  const { data: session } = useSession();
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
@@ -45,9 +46,11 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black">
-            Thomas Anree
+            {session?.user?.name}
           </span>
-          <span className="block text-xs">UX Designer</span>
+          <span className="block text-xs">
+            {session?.user ? session.user.jnv : "JNV"}
+          </span>
         </span>
 
         <span className="md:h-12 md:w-12 h-10 w-10 bg-slate-400 flex items-center justify-center rounded-full">
@@ -78,7 +81,7 @@ const DropdownUser = () => {
           <li>
             <Link
               href="/profile"
-              className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+              className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-brand lg:text-base"
             >
               <FaRegUser />
               My Profile
@@ -87,14 +90,17 @@ const DropdownUser = () => {
           <li>
             <Link
               href="/pages/settings"
-              className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+              className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-brand lg:text-base"
             >
               <MdOutlineSettings />
               Account Settings
             </Link>
           </li>
         </ul>
-        <button className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+        <button
+          className="flex items-center gap-3.5 py-4 px-6 text-sm font-medium duration-300 ease-in-out hover:text-brand lg:text-base"
+          onClick={() => signOut()}
+        >
           <CiLogout />
           Log Out
         </button>

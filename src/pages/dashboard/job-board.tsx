@@ -5,7 +5,8 @@ import { FaChevronDown } from "react-icons/fa";
 import { jnvSchools } from "~/constants/jnvList";
 import { stateAndDistrict } from "~/constants/stateAndDistrict";
 import { FaCaretDown } from "react-icons/fa";
-import { type UserData } from "~/types/user.type";
+// import { type UserData } from "~/types/user.type";
+import { type Job } from "@prisma/client";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 type Option = {
@@ -61,8 +62,8 @@ const DropdownIndicator = (props: DropdownIndicatorProps<Option>) => {
 };
 
 const JobBoard = () => {
-  const [members, setMembers] = useState<UserData[]>([]);
-  const [filteredMembers, setFilteredMembers] = useState<UserData[]>(members);
+  const [members, setMembers] = useState<User[]>([]);
+  const [filteredMembers, setFilteredMembers] = useState<User[]>(members);
 
   const [districtSelectOptions, setDistrictSelectOptions] = useState<Option[]>(
     [],

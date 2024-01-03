@@ -3,10 +3,11 @@ import { MdFilterList } from "react-icons/md";
 import { FaChevronDown } from "react-icons/fa";
 import { jnvSchools } from "~/constants/jnvList";
 import { stateAndDistrict } from "~/constants/stateAndDistrict";
-import { type UserData } from "~/types/user.type";
+// import { type UserData } from "~/types/user.type";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import ComboBoxWrapper from "~/components/ui/ComboBoxWrapper";
 import ListBoxWrapper from "~/components/ui/ListBoxWrapper";
+import { type User } from "@prisma/client";
 // import { getServerAuthSession } from "~/server/auth";
 // import type { GetServerSidePropsContext } from "next";
 // import { useSession } from "next-auth/react";
@@ -56,8 +57,8 @@ const initialFilterState = {
 const Dashboard: React.FC = () => {
   // const { data: session, status } = useSession();
 
-  const [members, setMembers] = useState<UserData[]>([]);
-  const [filteredMembers, setFilteredMembers] = useState<UserData[]>(members);
+  const [members, setMembers] = useState<User[]>([]);
+  const [filteredMembers, setFilteredMembers] = useState<User[]>(members);
 
   const [districtSelectOptions, setDistrictSelectOptions] = useState<Option[]>(
     [],
@@ -85,34 +86,32 @@ const Dashboard: React.FC = () => {
     // setJnvOptions(jnvs as string[]);
   };
   const applyFilters = () => {
-    const filterMember = members.filter((member) => {
+    console.log("FILTERS :- ", filter);
+    const filterMember = members?.filter((member) => {
       const isNameMatch =
         filter.name === "" ||
-        member.Name.toLowerCase().includes(filter.name.toLowerCase());
+        member?.name.toLowerCase().includes(filter.name.toLowerCase());
       const isCurrentLocationMatch =
         filter.currentLocation === "" ||
-        member["Current Location"] === filter.currentLocation;
+        member?.currentLocation === filter.currentLocation;
       const isOccupationMatch =
         filter.occupation === "" ||
-        member["Current Occupation & Designation"]
+        member?.occupation
           .toLowerCase()
           .includes(filter.occupation.toLowerCase());
       const isStateMatch =
         filter.state === "" ||
-        member["State Name"]
-          ?.toLowerCase()
-          .includes(filter.state.toLowerCase());
+        member?.state?.toLowerCase().includes(filter.state.toLowerCase());
       const isJnvMatch =
         filter.jnv === "" ||
-        member["JNV Name"].toLowerCase().includes(filter.jnv.toLowerCase());
+        member?.jnv.toLowerCase().includes(filter.jnv.toLowerCase());
       const isDistrictMatch =
         filter.district === "" ||
-        member["Home District"]
-          .toLowerCase()
-          .includes(filter.district.toLowerCase());
+        member?.district.toLowerCase().includes(filter.district.toLowerCase());
       const isPassOutYearMatch =
         filter.passOutYear === "" ||
-        member["Batch Passout"]
+        member?.passoutYear
+          .toString()
           .toLowerCase()
           .includes(filter.passOutYear.toLowerCase());
 
@@ -136,12 +135,13 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch("/api/fetchSheetMembers");
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-        const data = await res.json();
+        // const res = await fetch("/api/fetchSheetMembers");
+        const res = await fetch("/api/user/route");
+
+        const data: unknown = await res.json();
+        console.log("data:", data);
         if (res.ok) {
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-          setMembers(data?.users);
+          setMembers((data as User[]) || []);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -183,7 +183,21 @@ const Dashboard: React.FC = () => {
                     {value}
                     <XMarkIcon
                       className="w-5 h-5 p-0 m-0"
-                      onClick={() => setFilter({ ...filter, [key]: "" })}
+                      onClick={() => {
+                        console.log("key:", key);
+                        if (key === "state") {
+                          setFilter({
+                            ...filter,
+                            state: "",
+                            district: "",
+                            jnv: "",
+                          });
+                          setDistrictSelectOptions([]);
+                          setJnvSelectOptions([]);
+                        } else {
+                          setFilter({ ...filter, [key]: "" });
+                        }
+                      }}
                     />
                   </button>
                 ),
@@ -211,36 +225,35 @@ const Dashboard: React.FC = () => {
       <div className="w-full flex flex-col items-center justify-start p-2 md:p-6 rounded-md bg-white border ">
         <p>Result count: {filteredMembers?.length}</p>
         <div className="grid w-full sm:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-2">
-          {filteredMembers.map((member, index) => (
+          {filteredMembers?.map((member, index) => (
             <div
               className="card border z-0 p-4 justify-center bg-white rounded-sm"
               key={index}
             >
               <p>
-                <b className="font-semibold">Name:</b> {member.Name}
+                <b className="font-semibold">Name:</b> {member?.name}
               </p>
               <p>
-                <b className="font-semibold">Home State:</b>{" "}
-                {member["State Name"]}
+                <b className="font-semibold">Home State:</b> {member?.state}
               </p>
               <p>
                 <b className="font-semibold">Home Distrct:</b>{" "}
-                {member["Home District"]}
+                {member?.district}
               </p>
               <p>
-                <b className="font-semibold">JNV:</b> {member["JNV Name"]}
+                <b className="font-semibold">JNV:</b> {member.jnv}
               </p>
               <p>
                 <b className="font-semibold">Batch/Passout Year:</b>{" "}
-                {member["Batch Passout"]}
+                {member?.passoutYear}
               </p>
               <p>
                 <b className="font-semibold">Current Location:</b>{" "}
-                {member["Current Location"]}
+                {member?.currentLocation}
               </p>
               <p>
                 <b className="font-semibold">Occupation:</b>{" "}
-                {member["Current Occupation & Designation"]}
+                {member?.occupation}
               </p>
             </div>
           ))}

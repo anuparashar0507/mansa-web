@@ -1,7 +1,8 @@
 import Authenticated from "./authenticated";
 import LandingLayout from "./landingLayout";
 import { usePathname } from "next/navigation";
-// import { getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -9,13 +10,14 @@ type LayoutProps = {
 
 const DefaultLayout: React.FC<LayoutProps> = ({ children }) => {
   // const session = getServerSession();
-
+  const { data: session, status } = useSession();
   const pathname = usePathname();
   const mode = pathname.split("/").filter((e) => e)[0];
   console.log("Pathname :", mode);
+
   return (
     <>
-      {mode === "dashboard" ? (
+      {mode === "dashboard" && session?.user ? (
         <Authenticated>{children}</Authenticated>
       ) : (
         <LandingLayout>{children}</LandingLayout>

@@ -8,7 +8,6 @@ import {
 } from "next-auth";
 import { compare } from "bcryptjs";
 import { db } from "~/server/db";
-
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -19,6 +18,9 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: DefaultSession["user"] & {
       id: string;
+      email: string;
+      name: string;
+      jnv: string;
       // ...other properties
       // role: UserRole;
     };
@@ -50,49 +52,66 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials.password) {
           return null;
         }
-        const user: { email: string; id: string; password: string } =
-          (await db?.user?.findUnique({
-            where: { email: credentials?.email },
-          }))!;
+        const user: {
+          email: string;
+          id: string;
+          password: string;
+          name: string;
+          jnv: string;
+          // passoutYear: number;
+          // role: string;
+          // gender: string;
+          // age: string;
+          // state: string;
+          // district: string;
+          // occupation: string;
+          // currentLocation: string;
+          // phone: string;
+          // createdAt: Date;
+          // updatedAt: Date;
+        } = (await db?.user?.findUnique({
+          where: { email: credentials?.email },
+        }))!;
 
         if (
           user &&
           credentials &&
           (await compare(credentials.password, user?.password))
         ) {
-          return { id: user?.id, email: user?.email };
+          return {
+            id: user?.id,
+            email: user?.email,
+            jnv: user?.jnv,
+            name: user?.name,
+          };
+          // return { ...user };
         }
         return null;
       },
     }),
   ],
   callbacks: {
-    // session: ({ session, user }) => ({
-    //   ...session,
-    //   user: {
-    //     ...session.user,
-    //     id: user.id,
-    //   },
-    // }),
     session: ({ session, token, user }) => {
-      console.log("Session Callback", { session, token });
+      console.log("Session Callback", { session, token, user });
+
       return {
         ...session,
         user: {
           ...session.user,
           id: token.id,
-          // name: user.name,
+          email: token?.email,
+          jnv: token?.jnv,
+          name: token?.name,
         },
       };
     },
-    jwt: ({ token, user, account }) => {
-      console.log("JWT Callback", { token, user });
+    jwt: async ({ token, user, account }) => {
+      console.log("JWT Callback", { token, user, account });
+
       if (account) {
         return {
-          // ...user,
           ...token,
-          id: user.id,
-          // name: user.name,
+          id: user?.id,
         };
       }
       return token;
