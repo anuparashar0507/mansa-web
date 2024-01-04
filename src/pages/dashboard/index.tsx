@@ -8,6 +8,7 @@ import ComboBoxWrapper from "~/components/ui/ComboBoxWrapper";
 import ListBoxWrapper from "~/components/ui/ListBoxWrapper";
 import { type User } from "@prisma/client";
 import Loader from "~/components/ui/Loader";
+import MemberCard from "~/components/cards/MemberCard";
 type Option = {
   label: string;
   value: string;
@@ -133,7 +134,6 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        // const res = await fetch("/api/fetchSheetMembers");
         const res = await fetch("/api/user/route");
         const data: unknown = await res.json();
         console.log("data:", data);
@@ -147,7 +147,6 @@ const Dashboard: React.FC = () => {
       }
     }
     void fetchData();
-    // setLoading(false);
   }, []);
 
   return (
@@ -159,7 +158,7 @@ const Dashboard: React.FC = () => {
           {/* PAGE HEADING */}
           <div className="w-full flex justify-between">
             <h1 className="text-slate-800 font-semibold text-3xl">
-              All Navodayans
+              The Family
             </h1>
           </div>
 
@@ -227,10 +226,16 @@ const Dashboard: React.FC = () => {
 
           {/* MEMBERS LIST */}
           <div className="w-full flex flex-col items-center justify-start p-2 md:p-6 rounded-md bg-white border ">
-            <p>Result count: {filteredMembers?.length}</p>
+            <div className="w-full flex justify-start mb-3">
+              <p>All Navodayans: {filteredMembers?.length}</p>
+            </div>
             <div className="grid w-full sm:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-2">
               {filteredMembers?.map((member, index) => (
-                <div
+                <MemberCard key={index} member={member} />
+              ))}
+            </div>
+          </div>
+          {/* <div
                   className="card border z-0 p-4 justify-center bg-white rounded-sm"
                   key={index}
                 >
@@ -259,10 +264,7 @@ const Dashboard: React.FC = () => {
                     <b className="font-semibold">Occupation:</b>{" "}
                     {member?.occupation}
                   </p>
-                </div>
-              ))}
-            </div>
-          </div>
+                </div> */}
 
           {/* FILTER MODAL  */}
           <dialog id="my_modal_4" ref={filterModalRef} className="modal">

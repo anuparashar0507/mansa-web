@@ -1,4 +1,5 @@
 export type Filter = {
+  id: number;
   companyName: string;
   jobTitle: string;
   jobDescription: string;

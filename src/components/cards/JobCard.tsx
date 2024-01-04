@@ -18,23 +18,28 @@ import { PiOfficeChair, PiSuitcaseLight } from "react-icons/pi";
 import { CgNotes } from "react-icons/cg";
 import { type Filter } from "~/types/jobFilter.type";
 import Link from "next/link";
+import { type Job } from "@prisma/client";
 
-const JobCard: React.FC<{ jobData: Filter }> = ({ jobData }) => {
-  const getBadgeColor = (jobData: Filter) => {
-    if (jobData.jobSector === "Government") {
-      return "badge-success";
-    } else if (jobData.jobSector === "Private") {
-      return "badge-primary";
-    } else if (jobData.jobSector === "Non-profit Organisation") {
-      return "badge-secondary";
-    } else {
-      return "badge-accent";
-    }
-  };
+type JobCardProps = {
+  jobData: Filter;
+  handleClick: (job: Filter) => void;
+};
+const JobCard: React.FC<JobCardProps> = ({ jobData, handleClick }) => {
+  // const getBadgeColor = (jobData: Filter) => {
+  //   if (jobData.jobSector === "Government") {
+  //     return "badge-success";
+  //   } else if (jobData.jobSector === "Private") {
+  //     return "badge-primary";
+  //   } else if (jobData.jobSector === "Non-profit Organisation") {
+  //     return "badge-secondary";
+  //   } else {
+  //     return "badge-accent";
+  //   }
+  // };
   return (
     <div
       className="card p-6 cursor-pointer bg-base-100 shadow-2xl border"
-      //   onClick={handleClick}
+      onClick={() => handleClick(jobData)}
     >
       {/* <div className="flex items-center justify-end gap-4 mb-2">
         <div

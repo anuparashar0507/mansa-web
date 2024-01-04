@@ -82,7 +82,7 @@ model Job {
     id             Int      @id @default(autoincrement())
     companyName    String?
     jobTitle       String
-    jobDescription String
+    jobDescription String   @db.Text
     jobLink        String
     jobSector      String
     industry       String

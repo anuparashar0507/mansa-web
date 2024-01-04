@@ -8,10 +8,12 @@ import { type Job } from "@prisma/client";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import ComboBoxWrapper from "~/components/ui/ComboBoxWrapper";
 import ListBoxWrapper from "~/components/ui/ListBoxWrapper";
-import JobCard from "~/components/jobs/JobCard";
+import JobCard from "~/components/cards/JobCard";
 import { type Filter } from "~/types/jobFilter.type";
+import JobDescModal from "~/components/modals/JobDescModal";
 
 const initialFilterState = {
+  id: 0,
   companyName: "",
   jobTitle: "",
   jobSector: "",
@@ -31,6 +33,10 @@ const initialFilterState = {
   instagram: "",
   twitter: "",
   postedBy: "",
+  // Date type
+  // createdAt:  ,
+  // updatedAt: ,
+  // userId: "",
 };
 
 const JobBoard = () => {
@@ -39,6 +45,12 @@ const JobBoard = () => {
   const [filter, setFilter] = useState<Filter>(initialFilterState);
   const [loading, setLoading] = useState<boolean>(true);
   const filterModalRef = useRef<HTMLDialogElement>(null);
+  const [isOpen, setIsOpen] = useState(true);
+  const [selectedJob, setSelectedJob] = useState<Filter | null>(null);
+  const handleJobClick = (job: Filter) => {
+    setIsOpen(true);
+    setSelectedJob(job);
+  };
 
   useEffect(() => {
     const filterMember = jobs?.filter((job) => {
@@ -136,12 +148,13 @@ const JobBoard = () => {
                 }
               />
             </div>
-            {Object.values(filter).filter((value) => value.length > 0).length >
-              0 && (
+            {Object.values(filter).filter(
+              (value) => value.toString().length > 0,
+            ).length > 0 && (
               <div className="w-full px-2 md:px-6 grid gap-1 grid-flow-col justify-start">
                 {Object.entries(filter).map(
                   ([key, value], index) =>
-                    value?.length > 0 && (
+                    value?.toString().length > 0 && (
                       <button
                         key={index}
                         className="btn btn-outline px-3 py-0 w-max min-h-max h-8 rounded-md"
@@ -180,7 +193,11 @@ const JobBoard = () => {
             </div>{" "}
             <div className="grid w-full  lg:grid-cols-2 grid-cols-1 gap-4">
               {filteredMembers?.map((job, index) => (
-                <JobCard key={index} jobData={job as Filter} />
+                <JobCard
+                  key={index}
+                  jobData={job as Filter}
+                  handleClick={handleJobClick}
+                />
               ))}
             </div>
           </div>
@@ -350,14 +367,14 @@ const JobBoard = () => {
                     </div>
                   </label>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-1 md:gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-1 md:gap-4 mt-2 md:mt-0">
                   <label>
                     <div className="label">
                       <span className="label-text star-label">
                         Choose the assistance type
                       </span>
                     </div>
-                    <div className="flex gap-4 flex-col md:flex-row">
+                    <div className="flex gap-4 flex-col justify-start items-start md:flex-row">
                       {[
                         "Hiring for my company",
                         "Open to providing a referral",
@@ -401,6 +418,14 @@ const JobBoard = () => {
             </div>
           </dialog>
         </div>
+      )}
+
+      {selectedJob && (
+        <JobDescModal
+          jobData={selectedJob}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+        />
       )}
     </>
   );
