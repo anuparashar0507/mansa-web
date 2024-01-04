@@ -79,7 +79,7 @@ model User {
 }
 
 model Job {
-    id             Int          @id @default(autoincrement())
+    id             Int      @id @default(autoincrement())
     companyName    String?
     jobTitle       String
     jobDescription String
@@ -87,46 +87,59 @@ model Job {
     jobSector      String
     industry       String
     location       String?
-    workMode       String       @default("in office")
-    assistType     String       @default("Providing information only")
-    salaryRange    SalaryRange? @relation(fields: [salaryRangeId], references: [id])
-    experience     Experience?  @relation(fields: [experienceId], references: [id])
-    contact        Contact?     @relation(fields: [contactId], references: [id])
-    userId         String       @map("user_id") // Foreign key referencing User.id
-    user           User         @relation(fields: [userId], references: [id])
-    salaryRangeId  Int?
-    experienceId   Int?
-    createdAt      DateTime     @default(now())
-    updatedAt      DateTime     @updatedAt
-    contactId      Int?
+    workMode       String   @default("in office")
+    assistType     String   @default("Providing information only")
+    userId         String   @map("user_id") // Foreign key referencing User.id
+    user           User     @relation(fields: [userId], references: [id])
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
+    // contact
+    email          String
+    linkedin       String?
+    facebook       String?
+    instagram      String?
+    twitter        String?
+    //salaryRange
+    minSalary      String
+    maxSalary      String?
+    //experience
+    minExperience  String
+    maxExperience  String?
+    postedBy       String
+    // salaryRange    SalaryRange? @relation(fields: [salaryRangeId], references: [id])
+    // experience     Experience?  @relation(fields: [experienceId], references: [id])
+    // contact        Contact?     @relation(fields: [contactId], references: [id])
+    // contactId      Int?
+    // salaryRangeId  Int?
+    // experienceId   Int?
 
     @@index([userId])
 }
 
-model SalaryRange {
-    id    Int     @id @unique @default(autoincrement())
-    min   String
-    max   String?
-    jobId Int // Foreign key referencing Job.id 
-    Job   Job[]
-}
+// model SalaryRange {
+//     id    Int     @id @unique @default(autoincrement())
+//     min   String
+//     max   String?
+//     jobId Int // Foreign key referencing Job.id 
+//     Job   Job[]
+// }
 
-model Experience {
-    id    Int     @id @default(autoincrement())
-    min   String
-    max   String?
-    jobId Int // Remove @unique attribute to change it to one-to-many
-    jobs  Job[]
-    // Error parsing attribute "@relation": The relation field `jobs` on Model `Experience` must not specify the `fields` or `references` argument in the @relation attribute. You must only specify it on the opposite field `experience` on model `Job`.
-    // With `relationMode = "prisma"`, no foreign keys are used, so relation fields will not benefit from the index usually created by the relational database under the hood. This can lead to poor performance when querying these fields. We recommend adding an index manually. Learn more at https://pris.ly/d/relation-mode-prisma-indexes" 
-}
+// model Experience {
+//     id    Int     @id @default(autoincrement())
+//     min   String
+//     max   String?
+//     jobId Int // Remove @unique attribute to change it to one-to-many
+//     jobs  Job[]
+//     // Error parsing attribute "@relation": The relation field `jobs` on Model `Experience` must not specify the `fields` or `references` argument in the @relation attribute. You must only specify it on the opposite field `experience` on model `Job`.
+//     // With `relationMode = "prisma"`, no foreign keys are used, so relation fields will not benefit from the index usually created by the relational database under the hood. This can lead to poor performance when querying these fields. We recommend adding an index manually. Learn more at https://pris.ly/d/relation-mode-prisma-indexes" 
+// }
 
-model Contact {
-    id        Int     @id @default(autoincrement())
-    linkedin  String?
-    facebook  String?
-    instagram String?
-    email     String?
-    jobId     Int
-    Job       Job[]
-}
+// model Contact {
+//     id        Int     @id @default(autoincrement())
+//     linkedin  String?
+//     facebook  String?
+//     instagram String?
+//     email     String?
+//     jobId     Int
+//     Job       Job[]
+// }

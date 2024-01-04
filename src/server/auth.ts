@@ -84,15 +84,14 @@ export const authOptions: NextAuthOptions = {
             jnv: user?.jnv,
             name: user?.name,
           };
-          // return { ...user };
         }
         return null;
       },
     }),
   ],
   callbacks: {
-    session: ({ session, token, user }) => {
-      console.log("Session Callback", { session, token, user });
+    session: ({ session, token }) => {
+      // console.log("Session Callback", { session, token, user });
 
       return {
         ...session,
@@ -100,13 +99,13 @@ export const authOptions: NextAuthOptions = {
           ...session.user,
           id: token.id,
           email: token?.email,
-          jnv: token?.jnv,
+          jnv: token.jnv,
           name: token?.name,
         },
       };
     },
     jwt: async ({ token, user, account }) => {
-      console.log("JWT Callback", { token, user, account });
+      // console.log("JWT Callback", { token, user, account });
 
       if (account) {
         return {

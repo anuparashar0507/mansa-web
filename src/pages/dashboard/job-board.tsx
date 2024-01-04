@@ -1,153 +1,112 @@
 import React, { useRef, useState, useEffect } from "react";
 import { MdFilterList } from "react-icons/md";
-import Select, { components, type DropdownIndicatorProps } from "react-select";
+// import Select, { components, type DropdownIndicatorProps } from "react-select";
 import { FaChevronDown } from "react-icons/fa";
-import { jnvSchools } from "~/constants/jnvList";
 import { stateAndDistrict } from "~/constants/stateAndDistrict";
 import { FaCaretDown } from "react-icons/fa";
 // import { type UserData } from "~/types/user.type";
+import { jobSectors, workModes } from "~/constants/jobs";
+import Industries from "~/constants/industries";
 import { type Job } from "@prisma/client";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-
+import ComboBoxWrapper from "~/components/ui/ComboBoxWrapper";
+import ListBoxWrapper from "~/components/ui/ListBoxWrapper";
+import JobCard from "~/components/jobs/JobCard";
+import { type Filter } from "~/types/jobFilter.type";
 type Option = {
   label: string;
   value: string;
 };
-type Filter = {
-  name: string;
-  currentLocation: string;
-  occupation: string;
-  state: string;
-  jnv: string;
-  district: string;
-  passOutYear: string;
-};
 
-type TStateAndDistrict = Record<string, string[]>;
-// type TDistrict = string[];
-type TJnvSchoolsStateWise = Record<string, string[]>;
-// type TJnvSchools = string[];
-
-const jnvSchoolList: TJnvSchoolsStateWise = {
-  ...jnvSchools,
-} as TJnvSchoolsStateWise;
-const stateAndDistrictList: TStateAndDistrict = {
-  ...stateAndDistrict,
-} as TStateAndDistrict;
-
-const years = () => {
-  const currentYear = new Date().getFullYear();
-  const startYear = 1980;
-  const yearsArray = [];
-  for (let year = startYear; year <= currentYear; year++) {
-    yearsArray.push(year);
-  }
-  return yearsArray;
-};
 const initialFilterState = {
-  name: "",
-  currentLocation: "",
-  occupation: "",
-  state: "",
-  jnv: "",
-  district: "",
-  passOutYear: "",
-};
-const DropdownIndicator = (props: DropdownIndicatorProps<Option>) => {
-  return (
-    <components.DropdownIndicator {...props}>
-      <FaCaretDown />
-    </components.DropdownIndicator>
-  );
+  companyName: "",
+  jobTitle: "",
+  jobSector: "",
+  industry: "",
+  location: "",
+  workMode: "",
+  assistType: "",
+  minExperience: "",
+  maxExperience: "",
+  minSalary: "",
+  maxSalary: "",
+  jobDescription: "",
+  jobLink: "",
+  email: "",
+  linkedin: "",
+  facebook: "",
+  instagram: "",
+  twitter: "",
+  postedBy: "",
 };
 
 const JobBoard = () => {
-  const [members, setMembers] = useState<User[]>([]);
-  const [filteredMembers, setFilteredMembers] = useState<User[]>(members);
-
-  const [districtSelectOptions, setDistrictSelectOptions] = useState<Option[]>(
-    [],
-  );
-  const [jnvSelectOptions, setJnvSelectOptions] = useState<Option[]>([]);
+  const [jobs, setMembers] = useState<Job[]>([]);
+  const [filteredMembers, setFilteredMembers] = useState<Job[]>(jobs);
   const [filter, setFilter] = useState<Filter>(initialFilterState);
   const filterModalRef = useRef<HTMLDialogElement>(null);
 
-  const handleStateChange = (selectedState: string) => {
-    console.log("selectedState :- ", selectedState);
-
-    const districts = stateAndDistrictList[selectedState];
-    console.log("DISTRICTS :- ", districts);
-    const jnvs = jnvSchoolList[selectedState];
-    setFilter({ ...filter, state: selectedState });
-    // setDistrictOptions(districts as string[]);
-    const districtOptions = districts?.map((district) => ({
-      label: district,
-      value: district,
-    }));
-
-    setDistrictSelectOptions(districtOptions as Option[]);
-    const jnvOptions = jnvs?.map((jnv) => ({
-      label: jnv,
-      value: jnv,
-    }));
-
-    setJnvSelectOptions(jnvOptions as Option[]);
-    // setJnvOptions(jnvs as string[]);
-  };
-
   useEffect(() => {
-    const filterMember = members.filter((member) => {
+    const filterMember = jobs?.filter((job) => {
       return (
-        (filter.name === "" ||
-          member.Name.toLowerCase().includes(filter.name.toLowerCase())) &&
-        (filter.currentLocation === "" ||
-          member["Current Location"] === filter.currentLocation) &&
-        (filter.occupation === "" ||
-          member["Current Occupation & Designation"]
+        (filter.jobTitle === "" ||
+          job.jobTitle.toLowerCase().includes(filter.jobTitle.toLowerCase())) &&
+        (filter.companyName === "" || job.companyName === filter.companyName) &&
+        (filter.jobSector === "" ||
+          job.jobSector
             .toLowerCase()
-            .includes(filter.occupation.toLowerCase())) &&
-        (filter.state === "" ||
-          member["State Name"]
+            .includes(filter.jobSector.toLowerCase())) &&
+        (filter.industry === "" ||
+          job.industry
             ?.toLowerCase()
-            .includes(filter.state.toLowerCase())) &&
-        (filter.jnv === "" ||
-          member["JNV Name"]
+            .includes(filter.industry.toLowerCase())) &&
+        (filter.location === "" ||
+          (job?.location &&
+            job?.location
+              .toLowerCase()
+              .includes(filter.location.toLowerCase()))) &&
+        (filter.workMode === "" ||
+          job.workMode.toLowerCase().includes(filter.workMode.toLowerCase())) &&
+        (filter.assistType === "" ||
+          job.assistType
             .toLowerCase()
-            .includes(filter.jnv.toLowerCase())) &&
-        (filter.district === "" ||
-          member["Home District"]
+            .includes(filter.assistType.toLowerCase())) &&
+        (filter.minExperience === "" ||
+          job.minExperience
             .toLowerCase()
-            .includes(filter.district.toLowerCase())) &&
-        (filter.passOutYear === "" ||
-          member["Batch Passout"]
-            .toLowerCase()
-            .includes(filter.passOutYear.toLowerCase()))
+            .includes(filter.minExperience.toLowerCase())) &&
+        (filter.maxExperience === "" ||
+          (job.maxExperience &&
+            job.maxExperience
+              .toLowerCase()
+              .includes(filter.maxExperience.toLowerCase())))
       );
     });
 
     setFilteredMembers(filterMember);
-    return () => setFilteredMembers(members);
+    return () => setFilteredMembers(jobs);
   }, [
-    filter.name,
-    filter.currentLocation,
-    filter.state,
-    filter.district,
-    filter.jnv,
-    filter.occupation,
-    filter.passOutYear,
-    members,
-    districtSelectOptions,
+    filter.jobTitle,
+    filter.companyName,
+    filter.jobSector,
+    filter.industry,
+    filter.location,
+    filter.workMode,
+    filter.assistType,
+    filter.minExperience,
+    filter.maxExperience,
+    jobs,
   ]);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch("/api/fetchSheetMembers");
+        const res = await fetch("/api/jobs/all");
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         const data = await res.json();
         if (res.ok) {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-          setMembers(data?.users);
+          setMembers(data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -169,10 +128,10 @@ const JobBoard = () => {
         <div className="w-full p-2 md:p-6">
           <input
             type="text"
-            placeholder="Search Name Here"
+            placeholder="Search by Job title"
             className="input input-bordered w-full"
-            value={filter.name}
-            onChange={(e) => setFilter({ ...filter, name: e.target.value })}
+            value={filter.jobTitle}
+            onChange={(e) => setFilter({ ...filter, jobTitle: e.target.value })}
           />
         </div>
         {Object.values(filter).filter((value) => value.length > 0).length >
@@ -212,46 +171,17 @@ const JobBoard = () => {
         </div>
       </div>
 
-      {/* MEMBERS LIST */}
+      {/* JOBS LIST */}
       <div className="w-full flex flex-col items-center justify-start p-2 md:p-6 rounded-xl bg-white border ">
-        <p>Result count: {filteredMembers?.length}</p>
-        <div className="grid w-full sm:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-2">
-          {filteredMembers.map((member, index) => (
-            <div
-              className="card border z-0 p-4 justify-center bg-white rounded-md"
-              key={index}
-            >
-              <p>
-                <b className="font-semibold">Name:</b> {member.Name}
-              </p>
-              <p>
-                <b className="font-semibold">Home State:</b>{" "}
-                {member["State Name"]}
-              </p>
-              <p>
-                <b className="font-semibold">Home Distrct:</b>{" "}
-                {member["Home District"]}
-              </p>
-              <p>
-                <b className="font-semibold">JNV:</b> {member["JNV Name"]}
-              </p>
-              <p>
-                <b className="font-semibold">Batch/Passout Year:</b>{" "}
-                {member["Batch Passout"]}
-              </p>
-              <p>
-                <b className="font-semibold">Current Location:</b>{" "}
-                {member["Current Location"]}
-              </p>
-              <p>
-                <b className="font-semibold">Occupation:</b>{" "}
-                {member["Current Occupation & Designation"]}
-              </p>
-            </div>
+        <div className="w-full flex justify-start mb-3">
+          <p>Available Jobs: {filteredMembers?.length}</p>
+        </div>{" "}
+        <div className="grid w-full  lg:grid-cols-2 grid-cols-1 gap-4">
+          {filteredMembers?.map((job, index) => (
+            <JobCard key={index} jobData={job as Filter} />
           ))}
         </div>
       </div>
-
       {/* FILTER MODAL  */}
       <dialog id="my_modal_4" ref={filterModalRef} className="modal">
         <div className="modal-box md:w-11/12 md:max-w-4xl w-full rounded-md p-3 md:p-4">
@@ -264,126 +194,180 @@ const JobBoard = () => {
                 type="text"
                 placeholder="Search Name Here"
                 className="input input-bordered w-full"
-                value={filter.name}
-                onChange={(e) => setFilter({ ...filter, name: e.target.value })}
+                value={filter.jobTitle}
+                onChange={(e) =>
+                  setFilter({ ...filter, jobTitle: e.target.value })
+                }
               />
             </label>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
               <label>
-                <div className="label">
-                  <span className="label-text">State</span>
-                </div>
-                <select
-                  className="select select-bordered min-w-full"
-                  onChange={(e) => handleStateChange(e.target.value)}
-                  value={filter.state}
-                >
-                  {Object.keys(stateAndDistrict).map((state, index) => {
-                    return (
-                      <option key={index} value={state}>
-                        {state}
-                      </option>
-                    );
-                  })}
-                </select>
+                <ComboBoxWrapper
+                  label="Company"
+                  value={filter.companyName}
+                  onChange={(e) =>
+                    setFilter({ ...filter, companyName: e.toString() })
+                  }
+                  options={[
+                    ...new Set(
+                      jobs
+                        .map((job) => job.companyName)
+                        .filter((company) => company),
+                    ),
+                  ].map((company, index) => ({
+                    label: company ? company : "NA",
+                    value: company ? company : "NA",
+                    id: index,
+                  }))}
+                  placeholder="Select Company"
+                />
               </label>
               <label>
-                <div className="label">
-                  <span className="label-text">District</span>
-                </div>
-                <Select
-                  components={{ DropdownIndicator }}
-                  isMulti={false}
-                  styles={{
-                    control: (baseStyles) => ({
-                      ...baseStyles,
-                      border: "1px solid #ccc",
-                      borderRadius: "8px",
-                      padding: "6px",
-                    }),
-                    option: (baseStyles) => ({
-                      ...baseStyles,
-                      divider: false,
-                      fontColor: "brand",
-                    }),
-                  }}
-                  options={districtSelectOptions}
-                  // value={districtSelectOptions.find(
-                  //   (c) => c.value === field.value,
-                  // )}
-                  // value={}
+                <ListBoxWrapper
+                  label="Job Sector"
+                  placeholder="Select Job Sector"
+                  value={filter.jobSector}
                   onChange={(e) =>
-                    setFilter({ ...filter, district: e?.value ? e.value : "" })
+                    setFilter({ ...filter, jobSector: e.toString() })
                   }
-                  isDisabled={!districtSelectOptions.length}
+                  options={jobSectors.map((sector, index) => ({
+                    id: index,
+                    label: sector,
+                    value: sector,
+                  }))}
                 />
               </label>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
               <label>
-                <div className="label">
-                  <span className="label-text">JNV</span>
-                </div>
-
-                <Select
-                  components={{ DropdownIndicator }}
-                  isMulti={false}
-                  styles={{
-                    control: (baseStyles) => ({
-                      ...baseStyles,
-                      border: "1px solid #ccc",
-                      borderRadius: "8px",
-                      padding: "6px",
-                    }),
-                    option: (baseStyles) => ({
-                      ...baseStyles,
-                      divider: false,
-                      fontColor: "brand",
-                    }),
-                  }}
-                  options={jnvSelectOptions}
-                  // value={jnvSelectOptions.find((c) => c.value === field.value)}
-                  // onChange={(val) => field.onChange(val)}
+                <ComboBoxWrapper
+                  label="Industry"
+                  placeholder="Select Industry"
+                  value={filter.industry}
                   onChange={(e) =>
-                    setFilter({ ...filter, jnv: e?.value ? e.value : "" })
+                    setFilter({ ...filter, industry: e.toString() })
                   }
-                  isDisabled={!jnvSelectOptions?.length}
+                  options={Industries.map((industry, index) => ({
+                    id: index,
+                    label: industry,
+                    value: industry,
+                  }))}
+                  required={true}
                 />
               </label>
               <label>
                 <div className="label">
-                  <span className="label-text">Passout Year</span>
+                  <span className="label-text star-label">Work Mode</span>
                 </div>
-                <select
-                  className="select select-bordered min-w-full"
-                  onChange={(e) =>
-                    setFilter({ ...filter, passOutYear: e.target.value })
-                  }
-                  value={filter.passOutYear}
-                >
-                  {years().map((year) => {
-                    return (
-                      <option key={year} value={year}>
-                        {year}
-                      </option>
-                    );
-                  })}
-                </select>
+                <div className="join gap-4">
+                  {workModes.map((mode) => (
+                    <div
+                      key={mode}
+                      className="join-item label cursor-pointer gap-2"
+                    >
+                      <input
+                        type="radio"
+                        value={mode.toLowerCase()}
+                        defaultChecked={
+                          mode.toLowerCase() === "in office" ? true : false
+                        }
+                        className="radio checked:bg-brand"
+                        onChange={(e) =>
+                          setFilter({ ...filter, workMode: e.target.value })
+                        }
+                      />
+                      <span className="label-text">{mode}</span>
+                    </div>
+                  ))}
+                </div>
               </label>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
               <label>
                 <div className="label">
-                  <span className="label-text">Occupation</span>
+                  <span className="label-text">
+                    Experience Required (Select 0 for no experience required)
+                  </span>
                 </div>
-                <input
-                  type="text"
-                  placeholder="Software Engineer"
-                  className="input input-bordered w-full"
-                  onChange={(e) =>
-                    setFilter({ ...filter, occupation: e.target.value })
-                  }
-                />
+                <div className="flex gap-2 max-w-full">
+                  <input
+                    type="number"
+                    placeholder="Min (in Years)"
+                    min={0}
+                    max={filter.maxExperience}
+                    onChange={(e) =>
+                      setFilter({ ...filter, minExperience: e.target.value })
+                    }
+                    className={`input input-bordered w-full `}
+                  />
+                  <input
+                    type="number"
+                    placeholder="Max (in Years)"
+                    min={filter.minExperience}
+                    onChange={(e) =>
+                      setFilter({ ...filter, maxExperience: e.target.value })
+                    }
+                    max={50}
+                    className={`input input-bordered w-full `}
+                  />
+                </div>
+              </label>
+              <label>
+                <div className="label">
+                  <span className="label-text">Salary Range (Per Year)</span>
+                </div>
+                <div className="flex gap-2 max-w-full">
+                  <input
+                    type="number"
+                    placeholder="Min (in rupees)"
+                    min={"0"}
+                    max={filter.maxSalary}
+                    onChange={(e) =>
+                      setFilter({ ...filter, minSalary: e.target.value })
+                    }
+                    className={`input input-bordered w-full `}
+                  />
+                  <input
+                    type="number"
+                    placeholder="Max (in rupees)"
+                    min={filter.minSalary}
+                    onChange={(e) =>
+                      setFilter({ ...filter, maxSalary: e.target.value })
+                    }
+                    className={`input input-bordered w-full`}
+                  />
+                </div>
+              </label>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-1 md:gap-4">
+              <label>
+                <div className="label">
+                  <span className="label-text star-label">
+                    Choose the assistance type
+                  </span>
+                </div>
+                <div className="flex gap-4 flex-col md:flex-row">
+                  {[
+                    "Hiring for my company",
+                    "Open to providing a referral",
+                    "Providing information only",
+                  ].map((option) => (
+                    <label key={option} className="label cursor-pointer gap-2">
+                      <input
+                        type="radio"
+                        value={option}
+                        defaultChecked={
+                          option === "Providing information only" ? true : false
+                        }
+                        className="radio checked:bg-brand"
+                        onChange={(e) =>
+                          setFilter({ ...filter, assistType: e.target.value })
+                        }
+                      />
+                      <span className="label-text">{option}</span>
+                    </label>
+                  ))}
+                </div>
               </label>
             </div>
           </div>

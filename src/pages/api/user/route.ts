@@ -8,8 +8,8 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const session = await getSession({ req });
-
-  // Check if the user is authenticated and has admin role
+  console.log("session at user route:", session);
+  // Check if the user is authenticated
   if (!session) {
     return res.status(401).json({ error: "Unauthorized" });
   }

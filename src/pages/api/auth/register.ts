@@ -1,8 +1,6 @@
 import { type NextApiRequest, type NextApiResponse } from "next";
 import { PrismaClient, type User } from "@prisma/client";
-// import { db } from "~/server/db";
 import { hash } from "bcryptjs";
-// import { getSession } from "next-auth/client";
 import { getSession } from "next-auth/react";
 const prisma = new PrismaClient();
 

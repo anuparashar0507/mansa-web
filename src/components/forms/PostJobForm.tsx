@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { z } from "zod";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,11 +7,12 @@ import ComboBoxWrapper from "../ui/ComboBoxWrapper";
 import ListBoxWrapper from "../ui/ListBoxWrapper";
 import { jobSectors, workModes } from "~/constants/jobs";
 import Industries from "~/constants/industries";
-
+import { useSession } from "next-auth/react";
 type SocialMediaLinks = {
   linkedin: string;
   facebook: string;
   instagram: string;
+  twitter: string;
   email: string;
 };
 
@@ -35,11 +36,15 @@ const socialMediaLinksConfig: {
     label: "Instagram",
     placeholder: "https://www.instagram.com/your-profile",
   },
-  { key: "email", label: "Email", placeholder: "johndoe@email.com" },
+  {
+    key: "twitter",
+    label: "twitter",
+    placeholder: "https://www.twitter.com/your-profile",
+  },
 ];
 
 const optionalUrl = z.union([z.string().url().nullish(), z.literal("")]);
-const optionalEmail = z.union([z.string().email().nullish(), z.literal("")]);
+// const optionalEmail = z.union([z.string().email().nullish(), z.literal("")]);
 
 const schema = z.object({
   companyName: z.string().optional(),
@@ -57,65 +62,68 @@ const schema = z.object({
       "Providing information only",
     ])
     .default("Providing information only"),
-  salaryRange: z
-    .object({
-      min: z.string(),
-      max: z.string().optional(),
-    })
-    .optional(),
-  // phone: z.string().min(10).max(15),
-  experience: z
-    .object({
-      min: z.string(),
-      max: z.string().optional(),
-    })
-    .optional(),
-  contact: z
-    .object({
-      linkedin: optionalUrl,
-      facebook: optionalUrl,
-      instagram: optionalUrl,
-      email: optionalEmail,
-    })
-    .optional(),
+  minSalary: z.string().optional(),
+  maxSalary: z.string().optional(),
+  minExperience: z.string().optional(),
+  maxExperience: z.string().optional(),
+  linkedin: optionalUrl,
+  facebook: optionalUrl,
+  instagram: optionalUrl,
+  twitter: optionalUrl,
+  email: z.string().email(),
 });
 
 type FormValues = z.infer<typeof schema>;
 
 const PostJobForm: React.FC = () => {
   // const router = useRouter();
+  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     handleSubmit,
     control,
     register,
     getValues,
-    formState: { errors },
+    reset,
+    formState: { errors, isSubmitSuccessful },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
     // defaultValues: defaultFormValues,
   });
-
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const { data: session } = useSession();
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    setIsSubmitting(true);
     console.log("Inside OnSubmit", getValues());
-    try {
-      console.log("data :", data);
-      // Your asynchronous logic here
-
-      // Wait for asynchronous operations to complete
-      // Example using async/await:
-      // await someAsyncFunction();
-
-      // Continue with navigation or other logic
-      // router.push("/dashboard").catch((error) => {
-      //   console.error("Failed to navigate to dashboard:", error);
-      // });
-    } catch (error) {
-      console.error("Error during form submission:", error);
-    }
+    const response = await fetch("/api/jobs/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        if (res.ok) {
+          setSubmitted(true);
+          setIsSubmitting(false);
+          reset();
+        }
+      })
+      .catch((error) => {
+        console.error("Error during form submission:", error);
+        setIsSubmitting(false);
+      });
+    setIsSubmitting(false);
   };
-  console.log(errors);
+
   return (
     <div className="card w-full max-w-7xl ">
+      {isSubmitSuccessful && submitted && (
+        <div className="toast z-50">
+          <div className="alert alert-info text-white">
+            <span>Your job has been posted successfully</span>
+          </div>
+        </div>
+      )}
       <div className="card-body w-full px-2 py-3">
         <h1 className="card-title">Job Details</h1>
         <form id="job-post-form" onSubmit={handleSubmit(onSubmit)}>
@@ -275,7 +283,6 @@ const PostJobForm: React.FC = () => {
               )}
             />
           </div>
-          {/* <div className="join gap-4"></div> */}
           <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
             <label>
               <div className="label">
@@ -285,69 +292,74 @@ const PostJobForm: React.FC = () => {
               </div>
               <div className="flex gap-2 max-w-full">
                 <input
-                  {...register("experience.min", { required: false })}
+                  {...register("minExperience", { required: false })}
                   type="number"
                   placeholder="Min (in Years)"
-                  min={"0"}
-                  max={getValues("experience.max")}
+                  min={0}
+                  max={getValues("maxExperience")}
                   className={`input input-bordered w-full ${
-                    errors?.experience?.min ? "border-red-600" : ""
+                    errors?.minExperience ? "border-red-600" : ""
                   }`}
                 />
                 <input
-                  {...register("experience.max", { required: false })}
+                  {...register("maxExperience", { required: false })}
                   type="number"
                   placeholder="Max (in Years)"
-                  min={getValues("experience.min")}
-                  max={"50"}
+                  min={getValues("minExperience")}
+                  max={50}
                   className={`input input-bordered w-full ${
-                    errors?.experience?.max ? "border-red-600" : ""
+                    errors?.maxExperience ? "border-red-600" : ""
                   }`}
                 />
               </div>
-              {errors.experience?.min && (
+              {errors.minExperience && (
                 <span className="text-red-600 text-sm">
-                  {errors.experience.min.message}
+                  {errors?.minExperience?.message}
                 </span>
               )}
-              {errors.experience?.max && (
+              {errors.maxExperience && (
                 <span className="text-red-600 text-sm">
-                  {errors.experience.max.message}
+                  {errors.maxExperience?.message}
                 </span>
               )}
             </label>
-            <Controller
-              name="salaryRange"
-              control={control}
-              render={() => (
-                <div>
-                  <div className="label">
-                    <span className="label-text">Salary Range (Per Year)</span>
-                  </div>
-                  <div className="flex gap-2 max-w-full">
-                    <input
-                      type="number"
-                      placeholder="Min"
-                      min={"0"}
-                      max={getValues("salaryRange.max")}
-                      className={`input input-bordered w-full ${
-                        errors?.salaryRange?.max ? "border-red-600" : ""
-                      }`}
-                      {...register("salaryRange.min")}
-                    />
-                    <input
-                      type="number"
-                      placeholder="Max"
-                      min={getValues("salaryRange.min")}
-                      className={`input input-bordered w-full ${
-                        errors?.salaryRange?.max ? "border-red-600" : ""
-                      }`}
-                      {...register("salaryRange.max")}
-                    />
-                  </div>
-                </div>
+            <label>
+              <div className="label">
+                <span className="label-text">Salary Range (Per Year)</span>
+              </div>
+              <div className="flex gap-2 max-w-full">
+                <input
+                  {...register("minSalary", { required: false })}
+                  type="number"
+                  placeholder="Min (in rupees)"
+                  min={"0"}
+                  max={getValues("maxSalary")}
+                  className={`input input-bordered w-full ${
+                    errors?.minSalary ? "border-red-600" : ""
+                  }`}
+                />
+                <input
+                  {...register("maxSalary", { required: false })}
+                  type="number"
+                  placeholder="Max (in rupees)"
+                  min={getValues("minSalary")}
+                  // max={"50"}
+                  className={`input input-bordered w-full ${
+                    errors?.maxSalary ? "border-red-600" : ""
+                  }`}
+                />
+              </div>
+              {errors.minSalary && (
+                <span className="text-red-600 text-sm">
+                  {errors?.minSalary?.message}
+                </span>
               )}
-            />
+              {errors.maxSalary && (
+                <span className="text-red-600 text-sm">
+                  {errors.maxSalary?.message}
+                </span>
+              )}
+            </label>
           </div>
           <div className="flex flex-col gap-4 mt-8">
             {/* Assistance Details */}
@@ -412,22 +424,43 @@ const PostJobForm: React.FC = () => {
                     type="text"
                     placeholder={placeholder}
                     className={`input input-bordered w-full ${
-                      errors?.contact?.[key] ? "border-red-600" : ""
+                      errors?.[key] ? "border-red-600" : ""
                     }`}
-                    {...register(`contact.${key}`, { required: false })}
+                    {...register(`${key}`, { required: false })}
                   />
-                  {errors?.contact?.[key] && (
+                  {errors?.[key] && (
                     <span className="text-red-600 text-sm">
-                      {errors?.contact?.[key]?.message}
+                      {errors?.[key]?.message}
                     </span>
                   )}
                 </label>
               ))}
+              <label>
+                <div className="label">
+                  <span className="label-text">Email</span>
+                </div>
+                <input
+                  type="text"
+                  placeholder={"Yourmail@email.com"}
+                  className={`input input-bordered w-full ${
+                    errors?.email ? "border-red-600" : ""
+                  }`}
+                  value={session?.user?.email ? session?.user?.email : ""}
+                  readOnly={true}
+                  {...register("email", { required: true })}
+                />
+                {errors?.email && (
+                  <span className="text-red-600 text-sm">
+                    {errors?.email?.message}
+                  </span>
+                )}
+              </label>
             </div>
           </div>
           <button
             type="submit"
             className="btn btn-primary bg-brand hover:bg-sky-700 text-white w-full mt-8"
+            disabled={isSubmitting}
           >
             Submit
           </button>

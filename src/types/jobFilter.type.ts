@@ -1,0 +1,21 @@
+export type Filter = {
+  companyName: string;
+  jobTitle: string;
+  jobDescription: string;
+  jobLink: string;
+  jobSector: string;
+  industry: string;
+  location: string;
+  minSalary: string;
+  maxSalary: string;
+  workMode: string;
+  assistType: string;
+  email: string;
+  linkedin: string;
+  facebook: string;
+  instagram: string;
+  twitter: string;
+  minExperience: string;
+  maxExperience: string;
+  postedBy: string;
+};
