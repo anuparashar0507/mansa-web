@@ -22,11 +22,14 @@ const Footer: React.FC = () => {
         <div className="mx-4 flex flex-wrap justify-between">
           <div className="w-full px-4 sm:w-2/3 lg:w-4/12">
             <div className="mb-4 w-full">
-              <Link href="/#" className="mb-6 inline-block max-w-[300px]">
+              <Link
+                href="/"
+                className="mb-3 inline-block max-w-[300px] md:-mx-8 -mx-2"
+              >
                 <Image
                   src={mansaLogo}
                   alt="logo"
-                  className="hidden h-12 w-auto dark:block md:h-32 md:w-auto"
+                  className="h-12 w-auto dark:block md:h-32 md:w-auto"
                   height={800}
                   width={1200}
                 />

@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+// import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { CiLogout } from "react-icons/ci";
-import { FaUserCircle, FaRegUser, FaChevronDown } from "react-icons/fa";
-import { MdOutlineSettings } from "react-icons/md";
-import { useSession, signOut } from "next-auth/react";
+// import { CiLogout } from "react-icons/ci";
+import { FaUserCircle } from "react-icons/fa";
+// import { MdOutlineSettings } from "react-icons/md";
+import { useSession } from "next-auth/react";
 const DropdownUser = () => {
   // const [dropdownOpen, setDropdownOpen] = useState(false);
 

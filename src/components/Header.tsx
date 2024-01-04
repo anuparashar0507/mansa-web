@@ -4,11 +4,6 @@ import mansaLogo from "../../public/MANSALogo.png";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
-
-// import { authOptions } from "~/server/auth";
-// import { type GetServerSidePropsContext } from "next";
-// import { type GetServerSideProps } from "next";
-// import { getServerSession } from "next-auth";
 import { useSession, signIn, signOut } from "next-auth/react";
 type NavLinkProps = {
   href: string;
@@ -18,8 +13,11 @@ type NavLinkProps = {
 
 const Header: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-  const { data: session, status } = useSession();
-  console.log(session, status);
+  const { data: session } = useSession();
+  const handleLogout = async () => {
+    await signOut();
+    setMobileMenuOpen(false);
+  };
   return (
     <header className="bg-gray-50">
       <nav
@@ -27,7 +25,7 @@ const Header: React.FC = () => {
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
-          <Link href="/" className="-m-1.5 p-1.5">
+          <Link href="/" className="-mx-5 p-1.5">
             <span className="sr-only">MANSA</span>
             <Image
               className="h-12 w-auto  md:h-16"
@@ -126,8 +124,8 @@ const Header: React.FC = () => {
             leaveTo="translate-x-0 opacity-0 scale-95"
           >
             <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-              <div className="flex items-center justify-between">
-                <Link href="#" className="-m-1.5 p-1.5">
+              <div className="flex items-center justify-between w-full">
+                <Link href="/" className="-mx-4 p-1.5">
                   <span className="sr-only">MANSA</span>
                   <Image
                     className="h-12 w-auto"
@@ -149,7 +147,7 @@ const Header: React.FC = () => {
               </div>
               <div className="mt-6 flow-root">
                 <div className="-my-6 divide-y divide-gray-500/10">
-                  <div className="space-y-2 py-6">
+                  <div className="space-y-2 py-6  border-b-2">
                     <Link
                       href="/about"
                       onClick={() => setMobileMenuOpen(false)}
@@ -180,14 +178,34 @@ const Header: React.FC = () => {
                       Contact Us
                     </Link>
                   </div>
-                  <div className="py-6">
-                    <Link
-                      href="#"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                    >
-                      Log in
-                    </Link>
+                  <div className="space-y-2 py-6">
+                    {!!session && (
+                      <>
+                        {/* <DropdownUser /> */}
+                        <Link
+                          href="/dashboard"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                        >
+                          Dashboard
+                        </Link>
+                        <button
+                          className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                          onClick={handleLogout}
+                        >
+                          Log out <span aria-hidden="true">&rarr;</span>
+                        </button>
+                      </>
+                    )}
+                    {!session && (
+                      <Link
+                        href="/login"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                      >
+                        Log in <span aria-hidden="true">&rarr;</span>
+                      </Link>
+                    )}
                   </div>
                 </div>
               </div>
@@ -215,13 +233,3 @@ const NavLink: React.FC<NavLinkProps> = ({
     </Link>
   );
 };
-
-// export const getServerSideProps: GetServerSideProps = async (ctx: {
-//   req: GetServerSidePropsContext["req"];
-//   res: GetServerSidePropsContext["res"];
-// }) => {
-//   const session = await getServerSession(ctx.req, ctx.res, authOptions);
-//   return {
-//     props: { session },
-//   };
-// };

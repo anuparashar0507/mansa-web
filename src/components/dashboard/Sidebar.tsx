@@ -6,6 +6,9 @@ import Image from "next/image";
 import mansaLogo from "../../../public/MANSALogo.png";
 import { FaRegCopy, FaUsers, FaRegUser } from "react-icons/fa";
 import { MdOutlinePostAdd, MdOutlineSettings } from "react-icons/md";
+import { useSession, signOut } from "next-auth/react";
+import { CiLogout } from "react-icons/ci";
+
 type SidebarProps = {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -153,6 +156,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </Link>
               </li> */}
               {/* <!-- Menu Item Settings --> */}
+              <div className="divider mt-6"></div>
+              <li>
+                <button
+                  onClick={() => signOut()}
+                  className={`group relative flex items-center gap-2 rounded-sm py-2 px-4 font-medium text-lg text-slate-800 duration-300 ease-in-out hover:bg-blue-50 ${
+                    pathname.includes("profile") && "bg-blue-100 text-slate-900"
+                  }`}
+                >
+                  <CiLogout className=" text-brand h-8 w-8 p-1 rounded-md" />
+                  Logout
+                </button>
+              </li>
             </ul>
           </div>
         </nav>

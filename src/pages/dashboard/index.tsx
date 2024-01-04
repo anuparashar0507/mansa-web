@@ -3,14 +3,11 @@ import { MdFilterList } from "react-icons/md";
 import { FaChevronDown } from "react-icons/fa";
 import { jnvSchools } from "~/constants/jnvList";
 import { stateAndDistrict } from "~/constants/stateAndDistrict";
-// import { type UserData } from "~/types/user.type";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import ComboBoxWrapper from "~/components/ui/ComboBoxWrapper";
 import ListBoxWrapper from "~/components/ui/ListBoxWrapper";
 import { type User } from "@prisma/client";
-// import { getServerAuthSession } from "~/server/auth";
-// import type { GetServerSidePropsContext } from "next";
-// import { useSession } from "next-auth/react";
+import Loader from "~/components/ui/Loader";
 type Option = {
   label: string;
   value: string;
@@ -56,6 +53,7 @@ const initialFilterState = {
 
 const Dashboard: React.FC = () => {
   // const { data: session, status } = useSession();
+  const [loading, setLoading] = useState<boolean>(true);
 
   const [members, setMembers] = useState<User[]>([]);
   const [filteredMembers, setFilteredMembers] = useState<User[]>(members);
@@ -137,217 +135,231 @@ const Dashboard: React.FC = () => {
       try {
         // const res = await fetch("/api/fetchSheetMembers");
         const res = await fetch("/api/user/route");
-
         const data: unknown = await res.json();
         console.log("data:", data);
         if (res.ok) {
           setMembers((data as User[]) || []);
         }
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoading(false);
       }
     }
     void fetchData();
+    // setLoading(false);
   }, []);
 
   return (
-    <div className="w-full flex flex-col items-center justify-start p-0 md:p-6 gap-4 md:gap-8">
-      {/* PAGE HEADING */}
-      <div className="w-full flex justify-between">
-        <h1 className="text-slate-800 font-semibold text-3xl">
-          All Navodayans
-        </h1>
-      </div>
-
-      {/* FILTERS AND ALL FILTER BUTTON */}
-      <div className="w-full bg-white z-10 rounded-md border flex flex-col gap-2 items-center justify-start sticky top-20">
-        <div className="w-full p-2 md:p-6">
-          <input
-            type="text"
-            placeholder="Search Name Here"
-            className="input input-bordered w-full rounded-md"
-            value={filter.name}
-            onChange={(e) => setFilter({ ...filter, name: e.target.value })}
-          />
-        </div>
-        {Object.values(filter).filter((value) => value.length > 0).length >
-          0 && (
-          <div className="w-full px-2 md:px-6 grid gap-1 grid-flow-col justify-start">
-            {Object.entries(filter).map(
-              ([key, value], index) =>
-                value?.length > 0 && (
-                  <button
-                    key={index}
-                    className="btn btn-outline px-3 py-0 w-max min-h-max h-8 rounded-md"
-                  >
-                    {value}
-                    <XMarkIcon
-                      className="w-5 h-5 p-0 m-0"
-                      onClick={() => {
-                        console.log("key:", key);
-                        if (key === "state") {
-                          setFilter({
-                            ...filter,
-                            state: "",
-                            district: "",
-                            jnv: "",
-                          });
-                          setDistrictSelectOptions([]);
-                          setJnvSelectOptions([]);
-                        } else {
-                          setFilter({ ...filter, [key]: "" });
-                        }
-                      }}
-                    />
-                  </button>
-                ),
-            )}
-            <button
-              className="btn btn-ghost hover:bg-transparent px-3 py-0 w-max min-h-max h-8 rounded-md"
-              onClick={() => setFilter(initialFilterState)}
-            >
-              Clear All
-            </button>
+    <>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="w-full flex flex-col items-center justify-start p-0 md:p-6 gap-4 md:gap-8">
+          {/* PAGE HEADING */}
+          <div className="w-full flex justify-between">
+            <h1 className="text-slate-800 font-semibold text-3xl">
+              All Navodayans
+            </h1>
           </div>
-        )}
-        <div className="w-full flex justify-center">
-          <button
-            className="btn btn-ghost w-full text-md hover:bg-gray-100 rounded-none"
-            onClick={() => filterModalRef.current?.showModal()}
-          >
-            <MdFilterList className="text-2xl" /> Filters{" "}
-            <FaChevronDown className="text-md" />
-          </button>
-        </div>
-      </div>
 
-      {/* MEMBERS LIST */}
-      <div className="w-full flex flex-col items-center justify-start p-2 md:p-6 rounded-md bg-white border ">
-        <p>Result count: {filteredMembers?.length}</p>
-        <div className="grid w-full sm:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-2">
-          {filteredMembers?.map((member, index) => (
-            <div
-              className="card border z-0 p-4 justify-center bg-white rounded-sm"
-              key={index}
-            >
-              <p>
-                <b className="font-semibold">Name:</b> {member?.name}
-              </p>
-              <p>
-                <b className="font-semibold">Home State:</b> {member?.state}
-              </p>
-              <p>
-                <b className="font-semibold">Home Distrct:</b>{" "}
-                {member?.district}
-              </p>
-              <p>
-                <b className="font-semibold">JNV:</b> {member.jnv}
-              </p>
-              <p>
-                <b className="font-semibold">Batch/Passout Year:</b>{" "}
-                {member?.passoutYear}
-              </p>
-              <p>
-                <b className="font-semibold">Current Location:</b>{" "}
-                {member?.currentLocation}
-              </p>
-              <p>
-                <b className="font-semibold">Occupation:</b>{" "}
-                {member?.occupation}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* FILTER MODAL  */}
-      <dialog id="my_modal_4" ref={filterModalRef} className="modal">
-        <div className="modal-box md:w-11/12 md:max-w-4xl w-full rounded-md p-3 md:p-4">
-          <div className="w-full md:p-6">
-            <label>
-              <div className="label">
-                <span className="label-text">Name</span>
-              </div>
+          {/* FILTERS AND ALL FILTER BUTTON */}
+          <div className="w-full bg-white z-10 rounded-md border flex flex-col gap-2 items-center justify-start sticky top-20">
+            <div className="w-full p-2 md:p-6">
               <input
                 type="text"
                 placeholder="Search Name Here"
-                className="input input-bordered w-full"
+                className="input input-bordered w-full rounded-md"
                 value={filter.name}
                 onChange={(e) => setFilter({ ...filter, name: e.target.value })}
               />
-            </label>
-            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-              <ComboBoxWrapper
-                label="State"
-                placeholder="Select State"
-                value={filter.state}
-                onChange={(e) => handleStateChange(e.toString())}
-                options={Object.keys(stateAndDistrict).map((state, index) => ({
-                  id: index,
-                  label: state,
-                  value: state,
-                }))}
-              />
-              <ComboBoxWrapper
-                label="District"
-                value={filter.district}
-                onChange={(e) =>
-                  setFilter({ ...filter, district: e.toString() })
-                }
-                options={districtSelectOptions}
-                placeholder="Select District"
-              />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-              <ComboBoxWrapper
-                label="JNV"
-                value={filter.jnv}
-                onChange={(e) => setFilter({ ...filter, jnv: e.toString() })}
-                options={jnvSelectOptions}
-                placeholder="Select JNV"
-              />
-              <ListBoxWrapper
-                label="Batch/Passout Year"
-                onChange={(e) =>
-                  setFilter({ ...filter, passOutYear: e.toString() })
-                }
-                value={filter.passOutYear}
-                options={years().map((year) => ({
-                  id: year,
-                  label: year.toString(),
-                  value: year,
-                }))}
-                placeholder="Select Batch/PassOut Year"
-              />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-              <label>
-                <div className="label">
-                  <span className="label-text">Occupation</span>
-                </div>
-                <input
-                  type="text"
-                  placeholder="Software Engineer"
-                  className="input input-bordered w-full"
-                  value={filter.occupation}
-                  onChange={(e) =>
-                    setFilter({ ...filter, occupation: e.target.value })
-                  }
-                />
-              </label>
-            </div>
-          </div>
-          <div className="modal-action">
-            <form method="dialog" className="flex gap-4">
-              {/* if there is a button, it will close the modal */}
-              <button className="btn btn-accent border-none bg-brand text-white">
-                View Results
+            {Object.values(filter).filter((value) => value.length > 0).length >
+              0 && (
+              <div className="w-full px-2 md:px-6 grid gap-1 grid-flow-col justify-start">
+                {Object.entries(filter).map(
+                  ([key, value], index) =>
+                    value?.length > 0 && (
+                      <button
+                        key={index}
+                        className="btn btn-outline px-3 py-0 w-max min-h-max h-8 rounded-md"
+                      >
+                        {value}
+                        <XMarkIcon
+                          className="w-5 h-5 p-0 m-0"
+                          onClick={() => {
+                            console.log("key:", key);
+                            if (key === "state") {
+                              setFilter({
+                                ...filter,
+                                state: "",
+                                district: "",
+                                jnv: "",
+                              });
+                              setDistrictSelectOptions([]);
+                              setJnvSelectOptions([]);
+                            } else {
+                              setFilter({ ...filter, [key]: "" });
+                            }
+                          }}
+                        />
+                      </button>
+                    ),
+                )}
+                <button
+                  className="btn btn-ghost hover:bg-transparent px-3 py-0 w-max min-h-max h-8 rounded-md"
+                  onClick={() => setFilter(initialFilterState)}
+                >
+                  Clear All
+                </button>
+              </div>
+            )}
+            <div className="w-full flex justify-center">
+              <button
+                className="btn btn-ghost w-full text-md hover:bg-gray-100 rounded-none"
+                onClick={() => filterModalRef.current?.showModal()}
+              >
+                <MdFilterList className="text-2xl" /> Filters{" "}
+                <FaChevronDown className="text-md" />
               </button>
-            </form>
+            </div>
           </div>
+
+          {/* MEMBERS LIST */}
+          <div className="w-full flex flex-col items-center justify-start p-2 md:p-6 rounded-md bg-white border ">
+            <p>Result count: {filteredMembers?.length}</p>
+            <div className="grid w-full sm:grid-cols-2 lg:grid-cols-3 grid-cols-1 gap-2">
+              {filteredMembers?.map((member, index) => (
+                <div
+                  className="card border z-0 p-4 justify-center bg-white rounded-sm"
+                  key={index}
+                >
+                  <p>
+                    <b className="font-semibold">Name:</b> {member?.name}
+                  </p>
+                  <p>
+                    <b className="font-semibold">Home State:</b> {member?.state}
+                  </p>
+                  <p>
+                    <b className="font-semibold">Home Distrct:</b>{" "}
+                    {member?.district}
+                  </p>
+                  <p>
+                    <b className="font-semibold">JNV:</b> {member.jnv}
+                  </p>
+                  <p>
+                    <b className="font-semibold">Batch/Passout Year:</b>{" "}
+                    {member?.passoutYear}
+                  </p>
+                  <p>
+                    <b className="font-semibold">Current Location:</b>{" "}
+                    {member?.currentLocation}
+                  </p>
+                  <p>
+                    <b className="font-semibold">Occupation:</b>{" "}
+                    {member?.occupation}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* FILTER MODAL  */}
+          <dialog id="my_modal_4" ref={filterModalRef} className="modal">
+            <div className="modal-box md:w-11/12 md:max-w-4xl w-full rounded-md p-3 md:p-4">
+              <div className="w-full md:p-6">
+                <label>
+                  <div className="label">
+                    <span className="label-text">Name</span>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search Name Here"
+                    className="input input-bordered w-full"
+                    value={filter.name}
+                    onChange={(e) =>
+                      setFilter({ ...filter, name: e.target.value })
+                    }
+                  />
+                </label>
+                <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+                  <ComboBoxWrapper
+                    label="State"
+                    placeholder="Select State"
+                    value={filter.state}
+                    onChange={(e) => handleStateChange(e.toString())}
+                    options={Object.keys(stateAndDistrict).map(
+                      (state, index) => ({
+                        id: index,
+                        label: state,
+                        value: state,
+                      }),
+                    )}
+                  />
+                  <ComboBoxWrapper
+                    label="District"
+                    value={filter.district}
+                    onChange={(e) =>
+                      setFilter({ ...filter, district: e.toString() })
+                    }
+                    options={districtSelectOptions}
+                    placeholder="Select District"
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+                  <ComboBoxWrapper
+                    label="JNV"
+                    value={filter.jnv}
+                    onChange={(e) =>
+                      setFilter({ ...filter, jnv: e.toString() })
+                    }
+                    options={jnvSelectOptions}
+                    placeholder="Select JNV"
+                  />
+                  <ListBoxWrapper
+                    label="Batch/Passout Year"
+                    onChange={(e) =>
+                      setFilter({ ...filter, passOutYear: e.toString() })
+                    }
+                    value={filter.passOutYear}
+                    options={years().map((year) => ({
+                      id: year,
+                      label: year.toString(),
+                      value: year,
+                    }))}
+                    placeholder="Select Batch/PassOut Year"
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+                  <label>
+                    <div className="label">
+                      <span className="label-text">Occupation</span>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Software Engineer"
+                      className="input input-bordered w-full"
+                      value={filter.occupation}
+                      onChange={(e) =>
+                        setFilter({ ...filter, occupation: e.target.value })
+                      }
+                    />
+                  </label>
+                </div>
+              </div>
+              <div className="modal-action">
+                <form method="dialog" className="flex gap-4">
+                  {/* if there is a button, it will close the modal */}
+                  <button className="btn btn-accent border-none bg-brand text-white">
+                    View Results
+                  </button>
+                </form>
+              </div>
+            </div>
+          </dialog>
         </div>
-      </dialog>
-    </div>
+      )}
+    </>
   );
 };
 
