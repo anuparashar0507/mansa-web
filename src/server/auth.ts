@@ -7,7 +7,10 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import { compare } from "bcryptjs";
-import { db } from "~/server/db";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -49,49 +52,45 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        if (!credentials?.email || !credentials.password) {
+        try {
+          if (!credentials?.email || !credentials.password) {
+            return null;
+          }
+
+          // Input validation
+          if (!credentials.email) {
+            return null; // Or return a more specific error message
+          }
+
+          const user = await prisma.user.findUnique({
+            where: { email: credentials.email },
+          });
+
+          if (
+            user &&
+            credentials &&
+            (await compare(credentials.password, user.password))
+          ) {
+            return {
+              id: user.id,
+              email: user.email,
+              jnv: user.jnv,
+              name: user.name,
+            };
+          }
+
+          return null;
+        } catch (error) {
+          // Log the error
+          console.error("Authentication error:", error);
           return null;
         }
-        const user: {
-          email: string;
-          id: string;
-          password: string;
-          name: string;
-          jnv: string;
-          // passoutYear: number;
-          // role: string;
-          // gender: string;
-          // age: string;
-          // state: string;
-          // district: string;
-          // occupation: string;
-          // currentLocation: string;
-          // phone: string;
-          // createdAt: Date;
-          // updatedAt: Date;
-        } = (await db?.user?.findUnique({
-          where: { email: credentials?.email },
-        }))!;
-
-        if (
-          user &&
-          credentials &&
-          (await compare(credentials.password, user?.password))
-        ) {
-          return {
-            id: user?.id,
-            email: user?.email,
-            jnv: user?.jnv,
-            name: user?.name,
-          };
-        }
-        return null;
       },
     }),
   ],
   callbacks: {
     session: ({ session, token }) => {
-      // console.log("Session Callback", { session, token, user });
+      // console.log("Session Callback", { session, token });
 
       return {
         ...session,
@@ -117,7 +116,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
 
-  adapter: PrismaAdapter(db),
+  adapter: PrismaAdapter(prisma),
 
   pages: {
     signIn: "/login",

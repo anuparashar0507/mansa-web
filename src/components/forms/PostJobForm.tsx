@@ -370,7 +370,7 @@ const PostJobForm: React.FC = () => {
                     How Can You Assist With This Job Posting?
                   </span>
                 </div>
-                <div className="flex gap-4 flex-col md:flex-row">
+                <div className="flex gap-4 flex-col items-start md:flex-row">
                   {[
                     "Hiring for my company",
                     "Open to providing a referral",
@@ -405,6 +405,14 @@ const PostJobForm: React.FC = () => {
                   autoComplete="off"
                   {...register("jobLink")}
                 />
+                {!errors.jobLink && (
+                  <div className="label">
+                    <span className="label-text-alt">
+                      Provide a link to the job portal | Business owners can
+                      provide google form or whatsapp group link
+                    </span>
+                  </div>
+                )}
                 {errors.jobLink && (
                   <span className="text-red-600 text-sm">
                     {errors.jobLink.message}
@@ -412,8 +420,12 @@ const PostJobForm: React.FC = () => {
                 )}
               </label>
             </div>
-            <h2 className="text-lg">Your Contact Details</h2>
-
+            <div className="flex flex-col gap-1">
+              <h2 className="text-lg">Your Contact Details</h2>
+              <span className="label-text-alt">
+                Where you would like to get in touch with the candidate
+              </span>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6 ">
               {socialMediaLinksConfig.map(({ key, label, placeholder }) => (
                 <label key={key}>
@@ -462,6 +474,7 @@ const PostJobForm: React.FC = () => {
             className="btn btn-primary bg-brand hover:bg-sky-700 text-white w-full mt-8"
             disabled={isSubmitting}
           >
+            {isSubmitting && <span className="loading loading-spinner"></span>}
             Submit
           </button>
         </form>

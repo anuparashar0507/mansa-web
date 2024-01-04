@@ -6,7 +6,7 @@ import { stateAndDistrict } from "~/constants/stateAndDistrict";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import ComboBoxWrapper from "~/components/ui/ComboBoxWrapper";
 import ListBoxWrapper from "~/components/ui/ListBoxWrapper";
-import { type User } from "@prisma/client";
+import { type Member } from "~/types/member.type";
 import Loader from "~/components/ui/Loader";
 import MemberCard from "~/components/cards/MemberCard";
 type Option = {
@@ -56,8 +56,8 @@ const Dashboard: React.FC = () => {
   // const { data: session, status } = useSession();
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [members, setMembers] = useState<User[]>([]);
-  const [filteredMembers, setFilteredMembers] = useState<User[]>(members);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [filteredMembers, setFilteredMembers] = useState<Member[]>(members);
 
   const [districtSelectOptions, setDistrictSelectOptions] = useState<Option[]>(
     [],
@@ -132,20 +132,26 @@ const Dashboard: React.FC = () => {
   }, [filter, members]);
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
+      setLoading(true);
       try {
-        const res = await fetch("/api/user/route");
-        const data: unknown = await res.json();
-        console.log("data:", data);
-        if (res.ok) {
-          setMembers((data as User[]) || []);
+        const response = await fetch("/api/user/route");
+
+        // Ensure successful response before parsing JSON
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        setLoading(false);
+
+        const data = (await response.json()) as Member[];
+        setMembers(data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error(error);
+        // Handle errors in UI if needed
+      } finally {
         setLoading(false);
       }
-    }
+    };
+
     void fetchData();
   }, []);
 
@@ -175,7 +181,7 @@ const Dashboard: React.FC = () => {
             </div>
             {Object.values(filter).filter((value) => value.length > 0).length >
               0 && (
-              <div className="w-full px-2 md:px-6 grid gap-1 grid-flow-col justify-start">
+              <div className="w-full px-2 py-2 md:px-6 grid gap-1 grid-flow-col justify-start max-w-full overflow-x-auto">
                 {Object.entries(filter).map(
                   ([key, value], index) =>
                     value?.length > 0 && (

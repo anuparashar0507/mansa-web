@@ -12,11 +12,11 @@ export default async function handler(
   if (!session) {
     return res.status(401).json({ error: "Unauthorized" });
   }
-  const { params } = req.query;
-  console.log("params:", params);
-  const userId = params;
+  const { id } = req.query;
+  console.log("params:", id);
+  const userId = id;
   try {
-    const user: unknown = await prisma.user.findMany({
+    const user: unknown = await prisma.user.findUnique({
       where: {
         id: userId as string,
       },

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 import { z } from "zod";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +9,7 @@ import Link from "next/link";
 import type { Option } from "~/types/selectOption.type";
 import ComboBoxWrapper from "../ui/ComboBoxWrapper";
 import ListBoxWrapper from "../ui/ListBoxWrapper";
+// import {}
 // import VerificationForm from "./VerificationForm";
 const currentYear = new Date().getFullYear();
 const years = () => {
@@ -123,12 +124,20 @@ const Registration: React.FC = () => {
     setJnvSelectOptions(jnvOptions);
   };
 
-  const handlePasswordMatch = () => {
+  const handlePasswordMatch = (
+    field: React.InputHTMLAttributes<HTMLInputElement>,
+  ) => {
     const password = watch("password");
     const confirmPassword = watch("confirmPassword");
-    password === confirmPassword
-      ? setIsPasswordMatch(true)
-      : setIsPasswordMatch(false);
+    setIsPasswordMatch(password === confirmPassword);
+
+    // Trigger validation for better user experience
+    // Trigger validation
+    field?.onChange &&
+      field?.onChange({
+        target: { value: field?.value },
+      } as ChangeEvent<HTMLInputElement>);
+    // field?.onChange(field?.value); // Validate the changed field
   };
   return (
     <div className="card bg-base-100 py-4 px-4 w-full max-w-2xl justify-center">
@@ -368,7 +377,16 @@ const Registration: React.FC = () => {
                 autoComplete="new-password"
                 className="input input-bordered w-full"
                 {...register("password", { required: true, minLength: 8 })}
+                // onChange={(e) => handlePasswordMatch(e.target)} // Pass the field
               />
+              {!errors.password && (
+                <div className="label">
+                  <span className="label-text">
+                    Must contain uppercase/lowercase/numeric/special characters
+                    - min 8 characters
+                  </span>
+                </div>
+              )}
               {errors.password && (
                 <span className=" text-red-600 text-sm">
                   {errors.password.message}
@@ -380,15 +398,24 @@ const Registration: React.FC = () => {
                 <span className="label-text">Confirm Password</span>
               </div>
               <input
-                type="password"
+                type="text"
                 id="confirmPassword"
                 autoComplete="confirm-password"
                 placeholder="Enter Your Password"
                 className="input input-bordered w-full"
                 {...register("confirmPassword", { required: true })}
-                onChange={handlePasswordMatch}
+                // onChange={(e) => handlePasswordMatch(e.target)} // Pass the field
               />
-              {!isPasswordMatch && (
+              {/* {watch("password") === watch("confirmPassword") && ( */}
+              {/* // <div className="label"> */}
+              {/* <span className="label-text"> */}
+              {/*give me a strong password label text */}
+              {/* Make a strong password with a mix of letters (Aa), numbers,
+                    and symbols - min 8 characters
+                  </span>
+                </div> */}
+              {/* )} */}
+              {watch("password") !== watch("confirmPassword") && (
                 <p className="error">Passwords do not match.</p>
               )}
             </label>

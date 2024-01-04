@@ -94,7 +94,7 @@ model Job {
     createdAt      DateTime @default(now())
     updatedAt      DateTime @updatedAt
     // contact
-    email          String
+    email          String   @unique
     linkedin       String?
     facebook       String?
     instagram      String?

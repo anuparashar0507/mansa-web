@@ -1,8 +1,8 @@
 import React from "react";
 import {
   FaExternalLinkAlt,
-  FaHeart,
-  FaHome,
+  // FaHeart,
+  // FaHome,
   FaLinkedin,
   FaFacebook,
   FaInstagram,
@@ -10,6 +10,8 @@ import {
   FaEnvelope,
   FaRegMoneyBillAlt,
 } from "react-icons/fa";
+import moment from "moment";
+
 import { LuHeartHandshake, LuPieChart } from "react-icons/lu";
 import { HiOutlineOfficeBuilding } from "react-icons/hi";
 import { LiaIndustrySolid } from "react-icons/lia";
@@ -18,7 +20,7 @@ import { PiOfficeChair, PiSuitcaseLight } from "react-icons/pi";
 import { CgNotes } from "react-icons/cg";
 import { type Filter } from "~/types/jobFilter.type";
 import Link from "next/link";
-import { type Job } from "@prisma/client";
+// import { type Job } from "@prisma/client";
 
 type JobCardProps = {
   jobData: Filter;
@@ -131,8 +133,8 @@ const JobCard: React.FC<JobCardProps> = ({ jobData, handleClick }) => {
       <div className="md:flex items-center  hidden">
         <div className="flex items-center">
           <CgNotes className="mr-2 text-gray-500" />
-          <span className="mr-3 text-gray-700 text-sm text-clip max-w-full">
-            {jobData.jobDescription}
+          <span className="mr-3 text-gray-700 text-sm text-clip max-w-full truncate max-w-full overflow-hidden">
+            {jobData.jobDescription.trim().substring(0, 80) + "..."}
           </span>
         </div>
       </div>
@@ -157,14 +159,14 @@ const JobCard: React.FC<JobCardProps> = ({ jobData, handleClick }) => {
         {/* contact */}
         <div className="flex items-center">
           <button className="bg-gray-50 hover:text-blue-500  rounded-full text-gray-500 font-semibold mr-2">
-            <FaEnvelope />
+            <FaEnvelope className="w-5 h-5" />
           </button>
           {jobData.linkedin && (
             <a
               href={jobData.linkedin}
               className="bg-gray-50 hover:text-blue-500  rounded-full text-gray-500 font-semibold mr-2"
             >
-              <FaLinkedin />
+              <FaLinkedin className="w-5 h-5" />
             </a>
           )}
           {jobData.facebook && (
@@ -172,7 +174,7 @@ const JobCard: React.FC<JobCardProps> = ({ jobData, handleClick }) => {
               href={jobData.facebook}
               className="bg-gray-50 hover:text-blue-500 rounded-full text-gray-500 font-semibold mr-2"
             >
-              <FaFacebook />
+              <FaFacebook className="w-5 h-5" />
             </a>
           )}
           {jobData.instagram && (
@@ -180,7 +182,7 @@ const JobCard: React.FC<JobCardProps> = ({ jobData, handleClick }) => {
               href={jobData.instagram}
               className="bg-gray-50 hover:text-blue-500  rounded-full text-gray-500 font-semibold mr-2"
             >
-              <FaInstagram />
+              <FaInstagram className="w-5 h-5" />
             </a>
           )}
           {jobData.twitter && (
@@ -188,18 +190,25 @@ const JobCard: React.FC<JobCardProps> = ({ jobData, handleClick }) => {
               href={jobData.twitter}
               className="bg-gray-50 hover:text-blue-500  rounded-full text-gray-500 font-semibold"
             >
-              <FaTwitter />
+              <FaTwitter className="w-5 h-5" />
             </a>
           )}
         </div>
-
-        <button
+        <div>
+          {/* Posted : x days ago */}
+          <span className="text-gray-700 text-sm">
+            Posted :{" "}
+            {jobData.createdAt ? moment(jobData.createdAt).fromNow() : ""}
+            {/* use dayjs library */}
+          </span>
+        </div>
+        {/* <button
           className=" hover:bg-gray-100 text-gray-500 hover:text-blue-500  flex items-center   rounded-full font-medium text-sm px-2 py-1"
           // onClick={handleInterested}
         >
           <FaHeart className="bg-gray-50 hover:text-blue-500  rounded-full font-semibold mr-2" />{" "}
           Interested
-        </button>
+        </button> */}
       </div>
     </div>
   );

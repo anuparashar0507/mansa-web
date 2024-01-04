@@ -48,9 +48,7 @@ const DropdownUser = () => {
           <span className="block text-sm font-medium text-black">
             {session?.user?.name}
           </span>
-          <span className="block text-xs">
-            {session?.user ? session.user.jnv : "JNV"}
-          </span>
+          <span className="block text-xs">{session?.user.jnv}</span>
         </span>
 
         <span className="md:h-12 md:w-12 h-10 w-10 bg-slate-400 flex items-center justify-center rounded-full">

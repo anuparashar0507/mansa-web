@@ -160,9 +160,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <li>
                 <button
                   onClick={() => signOut()}
-                  className={`group relative flex items-center gap-2 rounded-sm py-2 px-4 font-medium text-lg text-slate-800 duration-300 ease-in-out hover:bg-blue-50 ${
-                    pathname.includes("profile") && "bg-blue-100 text-slate-900"
-                  }`}
+                  className={`group relative flex items-center gap-2 rounded-sm py-2 px-4 font-medium text-lg text-slate-800 duration-300 ease-in-out hover:bg-blue-50`}
                 >
                   <CiLogout className=" text-brand h-8 w-8 p-1 rounded-md" />
                   Logout

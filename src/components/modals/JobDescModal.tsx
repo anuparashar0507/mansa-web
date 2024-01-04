@@ -83,18 +83,18 @@ export default function JobDescModal({
                   <div className="flex md:items-center flex-col md:flex-row mb-2 gap-4">
                     <div className="flex items-center ">
                       <HiOutlineOfficeBuilding className="mr-2 text-gray-500" />
-                      <span className="text-gray-700 text-sm capitalize">
+                      <span className="text-gray-700 text-md capitalize">
                         {jobData.companyName ? jobData.companyName : "NA"}
                       </span>
                     </div>
-                    <div className="md:flex items-center justify-end gap-4 hidden">
+                    <div className="flex items-center justify-start gap-4">
                       <div className={`flex items-center`}>
                         <LuPieChart className="mr-2 " />
-                        <span className=" text-sm">{jobData.jobSector}</span>
+                        <span className=" text-md">{jobData.jobSector}</span>
                       </div>
                       <div className={`flex items-center`}>
                         <LiaIndustrySolid className="mr-2 text-gray-500" />
-                        <span className="text-gray-700 text-sm">
+                        <span className="text-gray-700 text-md">
                           {jobData.industry}
                         </span>
                       </div>
@@ -105,7 +105,7 @@ export default function JobDescModal({
                     <div className="flex items-center gap-4 mb-1">
                       <div className="flex items-center">
                         <IoLocationOutline className="mr-2 text-gray-500" />
-                        <span className="text-gray-700 text-sm capitalize">
+                        <span className="text-gray-700 text-md capitalize">
                           {jobData.location ? jobData.location : "NA"}
                         </span>
                       </div>
@@ -113,7 +113,7 @@ export default function JobDescModal({
                       {/* work mode */}
                       <div className="flex items-center">
                         <PiOfficeChair className="mr-2 text-gray-500" />
-                        <span className="text-gray-700 text-sm capitalize">
+                        <span className="text-gray-700 text-md capitalize">
                           {jobData.workMode}
                         </span>
                       </div>
@@ -123,7 +123,7 @@ export default function JobDescModal({
                       {/* experience */}
                       <div className="flex items-center">
                         <PiSuitcaseLight className="mr-2 text-gray-500" />
-                        <span className="text-gray-700 text-sm">
+                        <span className="text-gray-700 text-md">
                           {jobData.minExperience} - {jobData.maxExperience}{" "}
                           {jobData.minExperience || jobData.maxExperience
                             ? "Years"
@@ -134,7 +134,7 @@ export default function JobDescModal({
                       {/* salary */}
                       <div className="flex items-center">
                         <FaRegMoneyBillAlt className="mr-2 text-gray-500" />
-                        <span className="text-gray-700 text-sm">
+                        <span className="text-gray-700 text-md">
                           {jobData.minSalary} - {jobData.maxSalary}{" "}
                           {jobData.minSalary || jobData.maxSalary
                             ? "INR"
@@ -146,14 +146,16 @@ export default function JobDescModal({
 
                   {/* description */}
                   <div className="md:flex mt-8">
-                    <div className="flex flex-col ">
+                    <div className="flex flex-col w-full">
                       {/* <CgNotes className="mr-2 text-gray-500" /> */}
                       <h2 className="text-lg font-medium leading-6 text-gray-900">
                         Job Description
                       </h2>
-                      <span className="mr-3 border p-2 rounded-md mt-2 text-gray-700 text-sm text-clip max-w-full">
-                        {jobData.jobDescription}
-                      </span>
+                      <div className="border w-full p-5 rounded-md mt-2">
+                        <span className="mr-3  text-gray-700 text-md text-clip max-w-full text-pretty">
+                          {jobData.jobDescription}
+                        </span>
+                      </div>
                     </div>
                   </div>
                   <div className="divider m-1 " />
@@ -161,10 +163,10 @@ export default function JobDescModal({
                   <div className="flex md:items-center flex-col md:flex-row justify-between md:gap-4 gap-2 mb-2 md:mb-0">
                     {/* posted by */}
                     <div className="flex items-center">
-                      <span className="mr-2 text-gray-500 text-sm">
+                      <span className="mr-2 text-gray-500 text-md">
                         Posted By:
                       </span>
-                      <span className="text-gray-700 text-sm font-medium capitalize">
+                      <span className="text-gray-700 text-md font-medium capitalize">
                         {jobData.postedBy}
                       </span>
                     </div>
@@ -172,7 +174,7 @@ export default function JobDescModal({
                     {/* assist type */}
                     <div className="flex md:items-center ">
                       <LuHeartHandshake className="mr-2 text-gray-500" />
-                      <span className="text-gray-700 text-sm">
+                      <span className="text-gray-700 text-md">
                         {jobData.assistType}
                       </span>
                     </div>
@@ -181,14 +183,14 @@ export default function JobDescModal({
                     {/* contact */}
                     <div className="flex items-center">
                       <button className="bg-gray-50 hover:text-blue-500  rounded-full text-gray-500 font-semibold mr-2">
-                        <FaEnvelope />
+                        <FaEnvelope className="w-6 h-6" />
                       </button>
                       {jobData.linkedin && (
                         <a
                           href={jobData.linkedin}
                           className="bg-gray-50 hover:text-blue-500  rounded-full text-gray-500 font-semibold mr-2"
                         >
-                          <FaLinkedin />
+                          <FaLinkedin className="w-6 h-6" />
                         </a>
                       )}
                       {jobData.facebook && (
@@ -196,7 +198,7 @@ export default function JobDescModal({
                           href={jobData.facebook}
                           className="bg-gray-50 hover:text-blue-500 rounded-full text-gray-500 font-semibold mr-2"
                         >
-                          <FaFacebook />
+                          <FaFacebook className="w-6 h-6" />
                         </a>
                       )}
                       {jobData.instagram && (
@@ -204,21 +206,21 @@ export default function JobDescModal({
                           href={jobData.instagram}
                           className="bg-gray-50 hover:text-blue-500  rounded-full text-gray-500 font-semibold mr-2"
                         >
-                          <FaInstagram />
+                          <FaInstagram className="w-6 h-6" />
                         </a>
                       )}
                       {jobData.twitter && (
                         <a
                           href={jobData.twitter}
-                          className="bg-gray-50 hover:text-blue-500  rounded-full text-gray-500 font-semibold"
+                          className="bg-gray-50 hover:text-blue-500 w-8 h-8 rounded-full text-gray-500 font-semibold"
                         >
-                          <FaTwitter />
+                          <FaTwitter className="w-6 h-6" />
                         </a>
                       )}
                     </div>
 
                     <button
-                      className=" hover:bg-gray-100 text-gray-500 hover:text-blue-500  flex items-center   rounded-full font-medium text-sm px-2 py-1"
+                      className=" hover:bg-gray-100 text-gray-500 hover:text-blue-500  flex items-center   rounded-full font-medium text-md px-2 py-1"
                       // onClick={handleInterested}
                     >
                       <FaHeart className="bg-gray-50 hover:text-blue-500  rounded-full font-semibold mr-2" />{" "}
@@ -227,10 +229,19 @@ export default function JobDescModal({
                   </div>
                 </div>
 
-                <div className="mt-4">
+                <div className="flex mt-4 w-full gap-6 justify-end items-end">
+                  <Link
+                    // type="button"
+                    href={jobData.jobLink}
+                    target="_blank"
+                    className="rounded-md border border-transparent bg-blue-100 px-4 py-2 text-md font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    onClick={closeModal}
+                  >
+                    Apply
+                  </Link>
                   <button
                     type="button"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    className="rounded-md border   px-4 py-2 text-md font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                     onClick={closeModal}
                   >
                     Close

@@ -4,8 +4,6 @@ import type {
   InferGetServerSidePropsType,
 } from "next";
 import { getCsrfToken } from "next-auth/react";
-// import { authOptions } from "~/server/auth";
-// import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { signIn, getSession } from "next-auth/react";
 import { SEO } from "~/components/SEO";
@@ -18,11 +16,10 @@ export default function LogIn({
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [creds, setCreds] = useState({ email: "", password: "" });
-  // const { data: session } = useSession();
-  // console.log("session", session);
 
   const handleSignIn = async (e: FormEvent<HTMLFormElement>) => {
     setLoading(true);
+    console.log("creds :", creds);
     e.preventDefault();
     await signIn("credentials", {
       email: creds.email,
@@ -31,11 +28,6 @@ export default function LogIn({
     });
     setLoading(false);
   };
-
-  // if (loading) {
-  //   // Render a loading state if the session is still being fetched
-  //   return <div>Loading...</div>;
-  // }
 
   useEffect(() => {
     setLoading(true);
@@ -90,6 +82,7 @@ export default function LogIn({
               type="submit"
               disabled={loading}
             >
+              {loading && <span className="loading loading-spinner"></span>}
               Sign in
             </button>
             <div className="flex gap-2">

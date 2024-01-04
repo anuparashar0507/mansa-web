@@ -19,4 +19,5 @@ export type Filter = {
   minExperience: string;
   maxExperience: string;
   postedBy: string;
+  createdAt: Date;
 };

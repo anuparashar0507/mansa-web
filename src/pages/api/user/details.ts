@@ -3,7 +3,7 @@
 // import { getSession } from "next-auth/react";
 // // import prisma from "../../../lib/prisma";
 // import { PrismaClient, type User } from "@prisma/client";
-// imp
+// // imp;
 // const prisma = new PrismaClient();
 // export default async function handler(
 //   req: NextApiRequest,
