@@ -5,42 +5,42 @@ import { FaUserCircle, FaRegUser, FaChevronDown } from "react-icons/fa";
 import { MdOutlineSettings } from "react-icons/md";
 import { useSession, signOut } from "next-auth/react";
 const DropdownUser = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  // const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const trigger = useRef<HTMLAnchorElement>(null);
-  const dropdown = useRef<HTMLDivElement>(null);
+  // const trigger = useRef<HTMLAnchorElement>(null);
+  // const dropdown = useRef<HTMLDivElement>(null);
   const { data: session } = useSession();
-  // close on click outside
-  useEffect(() => {
-    const clickHandler = ({ target }: MouseEvent) => {
-      if (!dropdown.current) return;
-      if (
-        !dropdownOpen ||
-        dropdown.current.contains(target as Node) ||
-        trigger?.current?.contains(target as Node)
-      )
-        return;
-      setDropdownOpen(false);
-    };
-    document.addEventListener("click", clickHandler);
-    return () => document.removeEventListener("click", clickHandler);
-  });
+  // // close on click outside
+  // useEffect(() => {
+  //   const clickHandler = ({ target }: MouseEvent) => {
+  //     if (!dropdown.current) return;
+  //     if (
+  //       !dropdownOpen ||
+  //       dropdown.current.contains(target as Node) ||
+  //       trigger?.current?.contains(target as Node)
+  //     )
+  //       return;
+  //     setDropdownOpen(false);
+  //   };
+  //   document.addEventListener("click", clickHandler);
+  //   return () => document.removeEventListener("click", clickHandler);
+  // });
 
-  // close if the esc key is pressed
-  useEffect(() => {
-    const keyHandler = ({ keyCode }: KeyboardEvent) => {
-      if (!dropdownOpen || keyCode !== 27) return;
-      setDropdownOpen(false);
-    };
-    document.addEventListener("keydown", keyHandler);
-    return () => document.removeEventListener("keydown", keyHandler);
-  });
+  // // close if the esc key is pressed
+  // useEffect(() => {
+  //   const keyHandler = ({ keyCode }: KeyboardEvent) => {
+  //     if (!dropdownOpen || keyCode !== 27) return;
+  //     setDropdownOpen(false);
+  //   };
+  //   document.addEventListener("keydown", keyHandler);
+  //   return () => document.removeEventListener("keydown", keyHandler);
+  // });
 
   return (
     <div className="relative">
       <Link
-        ref={trigger}
-        onClick={() => setDropdownOpen(!dropdownOpen)}
+        // ref={trigger}
+        // onClick={() => setDropdownOpen(!dropdownOpen)}
         className="flex items-center gap-4"
         href="#"
       >
@@ -65,11 +65,11 @@ const DropdownUser = () => {
             alt="User"
           />
         </span>
-        <FaChevronDown className="hidden fill-current sm:block" />
+        {/* <FaChevronDown className="hidden fill-current sm:block" /> */}
       </Link>
 
       {/* <!-- Dropdown Start --> */}
-      <div
+      {/* <div
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
@@ -104,7 +104,7 @@ const DropdownUser = () => {
           <CiLogout />
           Log Out
         </button>
-      </div>
+      </div> */}
       {/* <!-- Dropdown End --> */}
     </div>
   );
