@@ -64,7 +64,7 @@ const Registered: React.FC = () => {
         title={"Check Your Registration Number - MANSA"}
         description="List of all registered members coming for Karvan-2023, Check your registration number."
       />
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+      <main className="flex min-h-screen flex-col items-center justify-center">
         <div className="w-full max-w-7xl mx-auto">
           {loading ? (
             <Loader />
