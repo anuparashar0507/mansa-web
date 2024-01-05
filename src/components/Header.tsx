@@ -19,7 +19,7 @@ const Header: React.FC = () => {
     setMobileMenuOpen(false);
   };
   return (
-    <header className="bg-gray-50">
+    <header className="bg-gray-50 sticky z-50 top-0">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2 lg:px-8"
         aria-label="Global"
@@ -88,7 +88,8 @@ const Header: React.FC = () => {
           )}
           {!session && (
             <Link
-              href="/login"
+              href="#"
+              // href="/login"
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               Log in <span aria-hidden="true">&rarr;</span>

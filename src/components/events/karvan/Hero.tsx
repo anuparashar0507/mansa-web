@@ -1,53 +1,41 @@
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import bgImg from "../../../../public/Images/party-group.jpg";
 import { TimerContainer } from "../TimeContainer";
-import MemberCard from "~/components/events/karvan/MembersCard";
-import { type User } from "~/types/user.type";
-// import { randomUUID } from "crypto";
-// const links = [
-//   // { name: "Know More", href: "#" },
-//   { name: "Register Here", href: "https://forms.gle/YQd8Txf9pHmoJdjv8" },
-// ];
-// const stats = [
-//   { name: "", value: "COME" },
-//   { name: "", value: "CONNECT" },
-//   { name: "", value: "CELEBRATE" },
-// { name: "Paid time off", value: "Unlimited" },
-// ];
-
+import { useRouter } from "next/router";
+import { SiGooglemaps } from "react-icons/si";
 type countProps = {
   days: number;
   hours: number;
   minutes: number;
   seconds: number;
-  members: User[];
-  searchText: string;
-  setSearchText: React.Dispatch<React.SetStateAction<string>>;
+  // members: User[];
+  // searchText: string;
+  // setSearchText: React.Dispatch<React.SetStateAction<string>>;
 };
 const Hero: React.FC<countProps> = ({
   days,
   hours,
   minutes,
   seconds,
-  members,
-  setSearchText,
-  searchText,
+  // members,
+  // setSearchText,
+  // searchText,
 }) => {
-  const modalRef = useRef<HTMLDialogElement>(null);
-  const [filteredMembers, setFilteredMembers] = useState<User[]>(members);
-  useEffect(() => {
-    if (searchText.length > 0) {
-      const filterMember = members.filter((member) =>
-        member.Name.toLowerCase().includes(searchText.toLowerCase()),
-      );
-      setFilteredMembers(filterMember);
-    } else {
-      setFilteredMembers(members);
-    }
-    return () => setFilteredMembers(members);
-  }, [searchText, members]);
+  const router = useRouter();
+  // const modalRef = useRef<HTMLDialogElement>(null);
+  // const [filteredMembers, setFilteredMembers] = useState<User[]>(members);
+  // useEffect(() => {
+  //   if (searchText.length > 0) {
+  //     const filterMember = members.filter((member) =>
+  //       member.Name.toLowerCase().includes(searchText.toLowerCase()),
+  //     );
+  //     setFilteredMembers(filterMember);
+  //   } else {
+  //     setFilteredMembers(members);
+  //   }
+  //   return () => setFilteredMembers(members);
+  // }, [searchText, members]);
 
   return (
     <div className="relative isolate w-full overflow-hidden bg-gray-900 py-24 sm:py-32">
@@ -107,37 +95,35 @@ const Hero: React.FC<countProps> = ({
               Date: 6th & 7th January 2024
             </p>
             <p className="mt-6 text-lg leading-8 text-gray-300">
-              Venue: LNCT University Campus, Kolar Road, Bhopal(M.P.){" "}
               <Link
                 href={"https://maps.app.goo.gl/cmkvHg6N6fE5ULHm7"}
                 target="_blank"
               >
-                <span className="ml-3 text-yellow-500 underline underline-offset-4">
-                  Locate Here
+                <span className="text-yellow-500 underline underline-offset-4">
+                  Venue: LNCT University Campus, Kolar Road, Bhopal(M.P.){" "}
                 </span>
               </Link>
             </p>
           </div>
           <div className="mx-auto mt-10 max-w-7xl lg:mx-0 lg:max-w-none">
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 text-base font-semibold leading-7 text-white sm:grid-cols-2 md:flex mb-12 lg:gap-x-10">
-              {/* {links.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="w-max rounded-xl px-3 py-2 text-white ring-2 ring-inset ring-pink-50"
-                >
-                  {link.name} <span aria-hidden="true">&rarr;</span>
-                </Link>
-              ))} */}
-              {/* <div className="h-36 w-full py-8 bg-slate-100 flex flex-col  items-center"> */}
-              {/* <h1 className="text-lg">Check Who is Comming</h1> */}
               <button
                 className="btn btn-outline btn-accent font-semibold text-lg"
-                onClick={() => modalRef.current?.showModal()}
+                onClick={() => router.push("/events/karvan/registered")}
               >
                 Check Who is Comming
               </button>
-              <dialog id="my_modal_4" className="modal" ref={modalRef}>
+              <div>
+                <Link
+                  className="text-white flex gap-2 items-center justify-center bg-green-700 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded-lg text-lg text-center"
+                  href={"https://maps.app.goo.gl/cmkvHg6N6fE5ULHm7"}
+                  target="_blank"
+                >
+                  <SiGooglemaps />
+                  Start Navigation to the venue
+                </Link>
+              </div>
+              {/* <dialog id="my_modal_4" className="modal" ref={modalRef}>
                 <div className="modal-box w-11/12 min-w-[98%] h-full p-0 ">
                   <div className="sticky z-50 bg-gray-100 top-0 h-min-content flex flex-col gap-1 px-4 py-2">
                     <div className="grid md:grid-cols-3 grid-cols-2 items-center">
@@ -201,7 +187,7 @@ const Hero: React.FC<countProps> = ({
                     )}
                   </div>
                 </div>
-              </dialog>
+              </dialog> */}
               {/* </div> */}
             </div>
           </div>
