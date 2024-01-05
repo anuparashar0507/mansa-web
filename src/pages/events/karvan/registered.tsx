@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import MemberCard from "~/components/events/karvan/MembersCard";
 import Loader from "~/components/ui/Loader";
 import { type User } from "~/types/user.type";
@@ -7,37 +7,56 @@ const Registered: React.FC = () => {
   const [members, setMembers] = useState<User[]>([]);
   const [searchText, setSearchText] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
-  const [filteredMembers, setFilteredMembers] = useState<User[]>(members);
-  useEffect(() => {
+  // const [filteredMembers, setFilteredMembers] = useState<User[]>(members);
+  // useEffect(() => {
+  //   if (searchText.trim().length > 0) {
+  //     const filterMember = members.filter((member) =>
+  //       member.Name.toLowerCase().includes(searchText.toLowerCase()),
+  //     );
+  //     setFilteredMembers(filterMember);
+  //   } else {
+  //     setFilteredMembers(members);
+  //   }
+  //   return () => setFilteredMembers(members);
+  // }, [searchText, members]);
+
+  const filteredMembers = useMemo(() => {
     if (searchText.trim().length > 0) {
-      const filterMember = members.filter((member) =>
+      return members.filter((member) =>
         member.Name.toLowerCase().includes(searchText.toLowerCase()),
       );
-      setFilteredMembers(filterMember);
     } else {
-      setFilteredMembers(members);
+      return members;
     }
-    return () => setFilteredMembers(members);
   }, [searchText, members]);
-  async function fetchData() {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/fetchSheet");
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const data = await res.json();
-      if (res.ok) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
-        setMembers(data?.users);
-      }
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setLoading(false);
-    }
-  }
+
   useEffect(() => {
+    setLoading(true);
+    async function fetchData() {
+      try {
+        const res = await fetch("/api/fetchSheet");
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const data = await res.json();
+        if (res.ok) {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-member-access
+          setMembers(data?.users);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    }
     void fetchData();
   }, []);
+
+  const handleSearchTextChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const searchText = event.target.value;
+      setSearchText(searchText);
+    },
+    [],
+  );
   return (
     <div className="w-full max-w-7xl mx-auto">
       {loading ? (
@@ -57,9 +76,6 @@ const Registered: React.FC = () => {
             </q>
           </div>
           <div className="sticky z-40 top-[72px] md:top-[86px] grid grid-cols-1 md:grid-cols-2 w-full gap-1 px-4 bg-gray-50 items-center justify-between py-2 shadow-sm">
-            {/* <h1 className="md:text-lg hidden md:block sm: text-brand">
-              All Registered Members
-            </h1> */}
             <div className="flex items-center justify-between w-full">
               {!(searchText.length > 0) && (
                 <div className="text-lg font-medium text-brand flex justify-center">
@@ -80,9 +96,9 @@ const Registered: React.FC = () => {
               <form className="form-control w-full md:max-w-lg">
                 <input
                   type="text"
-                  placeholder="Search Name here"
+                  placeholder="Search Your Name here"
                   className="input input-bordered border-gray-200 rounded-full input-info w-full  text-slate-700"
-                  onChange={(e) => setSearchText(e.target.value.toString())}
+                  onChange={handleSearchTextChange}
                   value={searchText}
                 />
               </form>
