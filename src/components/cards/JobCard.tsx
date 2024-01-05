@@ -158,7 +158,15 @@ const JobCard: React.FC<JobCardProps> = ({ jobData, handleClick }) => {
       <div className="flex items-center justify-between gap-4">
         {/* contact */}
         <div className="flex items-center">
-          <button className="bg-gray-50 hover:text-blue-500  rounded-full text-gray-500 font-semibold mr-2">
+          <button
+            className="bg-gray-50 hover:text-blue-500 rounded-full text-gray-500 font-semibold mr-2"
+            onClick={() => {
+              // const emailId = "example@example.com"; // Replace with your dynamic email prop
+              const mailtoLink = `mailto:${jobData.email}`;
+              // Open the mailto link in a new tab
+              window.open(mailtoLink, "_blank");
+            }}
+          >
             <FaEnvelope className="w-5 h-5" />
           </button>
           {jobData.linkedin && (

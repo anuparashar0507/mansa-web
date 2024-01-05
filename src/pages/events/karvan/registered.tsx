@@ -83,7 +83,7 @@ const Registered: React.FC = () => {
                   number.
                 </q>
               </div>
-              <div className="sticky z-40 top-[72px] md:top-[86px] grid grid-cols-1 md:grid-cols-2 w-full gap-1 px-4 bg-gray-50 items-center justify-between py-2 shadow-sm">
+              <div className="sticky z-10 top-[72px] md:top-[86px] grid grid-cols-1 md:grid-cols-2 w-full gap-1 px-4 bg-gray-50 items-center justify-between py-2 shadow-sm">
                 <div className="flex items-center justify-between w-full">
                   {!(searchText.length > 0) && (
                     <div className="text-lg font-medium text-brand flex justify-center">
