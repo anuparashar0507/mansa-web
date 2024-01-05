@@ -1,4 +1,5 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, type ChangeEvent } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { z } from "zod";
 import { useForm, Controller, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -59,6 +60,7 @@ const Registration: React.FC = () => {
   // const [randomLine, setRandomLine] = useState<string>("");
   // const [stringOptions, setStringOptions] = useState<string[]>([]);
   // const [chances, setChances] = useState<number>(3);
+  const [showPassword, setShowPassword] = useState(false);
   const [isPasswordMatch, setIsPasswordMatch] = useState(true);
   const [districtSelectOptions, setDistrictSelectOptions] = useState<Option[]>(
     [],
@@ -76,6 +78,9 @@ const Registration: React.FC = () => {
     resolver: zodResolver(schema),
   });
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log("data :", data);
     const response = await fetch("/api/auth/register", {
@@ -371,19 +376,33 @@ const Registration: React.FC = () => {
               <div className="label">
                 <span className="label-text">Password</span>
               </div>
-              <input
-                type="password"
-                placeholder="Enter Your Password"
-                autoComplete="new-password"
-                className="input input-bordered w-full"
-                {...register("password", { required: true, minLength: 8 })}
-                // onChange={(e) => handlePasswordMatch(e.target)} // Pass the field
-              />
+              {/* Password */}
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter Your Password"
+                  autoComplete="new-password"
+                  {...register("password", { required: true, minLength: 8 })}
+                  className=" input input-bordered block w-full pr-20"
+                />
+                <div className="absolute inset-y-0 right-0 flex items-center">
+                  <div
+                    className="h-full flex items-center bg-transparent py-0 pl-2 pr-4 text-gray-500"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <FaEyeSlash size={20} />
+                    ) : (
+                      <FaEye size={20} />
+                    )}
+                  </div>
+                </div>
+              </div>
               {!errors.password && (
                 <div className="label">
-                  <span className="label-text">
+                  <span className="label-text text-xs">
                     Must contain uppercase/lowercase/numeric/special characters
-                    - min 8 characters
+                    {/* - min 8 characters */}
                   </span>
                 </div>
               )}
@@ -404,19 +423,13 @@ const Registration: React.FC = () => {
                 placeholder="Enter Your Password"
                 className="input input-bordered w-full"
                 {...register("confirmPassword", { required: true })}
-                // onChange={(e) => handlePasswordMatch(e.target)} // Pass the field
               />
-              {/* {watch("password") === watch("confirmPassword") && ( */}
-              {/* // <div className="label"> */}
-              {/* <span className="label-text"> */}
-              {/*give me a strong password label text */}
-              {/* Make a strong password with a mix of letters (Aa), numbers,
-                    and symbols - min 8 characters
-                  </span>
-                </div> */}
-              {/* )} */}
               {watch("password") !== watch("confirmPassword") && (
-                <p className="error">Passwords do not match.</p>
+                <div className="label">
+                  <span className="text-red-600 text-sm">
+                    Passwords do not match.
+                  </span>
+                </div>
               )}
             </label>
           </div>

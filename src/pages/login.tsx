@@ -7,6 +7,7 @@ import { getCsrfToken } from "next-auth/react";
 import { useRouter } from "next/router";
 import { signIn, getSession } from "next-auth/react";
 import { SEO } from "~/components/SEO";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import { type FormEvent, useState } from "react";
 import Link from "next/link";
@@ -16,6 +17,7 @@ export default function LogIn({
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [creds, setCreds] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSignIn = async (e: FormEvent<HTMLFormElement>) => {
     setLoading(true);
@@ -27,6 +29,10 @@ export default function LogIn({
       callbackUrl: "/dashboard",
     });
     setLoading(false);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   useEffect(() => {
@@ -67,7 +73,7 @@ export default function LogIn({
             </label>
             <label>
               Password
-              <input
+              {/* <input
                 name="password"
                 type="password"
                 placeholder="*********"
@@ -75,7 +81,31 @@ export default function LogIn({
                 onChange={(e) =>
                   setCreds({ ...creds, password: e.target.value })
                 }
-              />
+              /> */}
+              <div className="relative">
+                <input
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="*********"
+                  autoComplete="password"
+                  className=" input input-bordered block w-full py-1.5 pr-20"
+                  onChange={(e) =>
+                    setCreds({ ...creds, password: e.target.value })
+                  }
+                />
+                <div className="absolute inset-y-0 right-0 flex items-center">
+                  <div
+                    className="h-full flex items-center bg-transparent py-0 pl-2 pr-4 text-gray-500"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {showPassword ? (
+                      <FaEyeSlash size={20} />
+                    ) : (
+                      <FaEye size={20} />
+                    )}
+                  </div>
+                </div>
+              </div>
             </label>
             <button
               className="btn btn-primary bg-brand hover:bg-sky-700"
