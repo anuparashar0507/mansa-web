@@ -26,6 +26,7 @@
     "@trpc/react-query": "^10.44.1",
     "@trpc/server": "^10.44.1",
     "@vercel/analytics": "^1.1.1",
+    "@vercel/speed-insights": "^1.0.2",
     "bcryptjs": "^2.4.3",
     "cuid": "^3.0.0",
     "google-auth-library": "^9.4.1",

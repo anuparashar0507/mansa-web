@@ -1,5 +1,6 @@
 import { type Session } from "next-auth";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { SessionProvider } from "next-auth/react";
 // import { getCsrfToken, signIn, signOut } from "next-auth/react";
 import { type AppType } from "next/app";
@@ -21,6 +22,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <DefaultLayout>
         <Component {...pageProps} />
         <Analytics />
+        <SpeedInsights />
       </DefaultLayout>
     </SessionProvider>
   );

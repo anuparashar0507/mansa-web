@@ -4,7 +4,7 @@ import mansaLogo from "../../public/MANSALogo.png";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 type NavLinkProps = {
   href: string;
   title: string;
