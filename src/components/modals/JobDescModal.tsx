@@ -1,10 +1,8 @@
 import { Dialog, Transition } from "@headlessui/react";
+import { useRef } from "react";
 import { Fragment, type Dispatch, type SetStateAction } from "react";
 import { type Filter } from "~/types/jobFilter.type";
 import {
-  FaExternalLinkAlt,
-  FaHeart,
-  FaHome,
   FaLinkedin,
   FaFacebook,
   FaInstagram,
@@ -17,7 +15,6 @@ import { HiOutlineOfficeBuilding } from "react-icons/hi";
 import { LiaIndustrySolid } from "react-icons/lia";
 import { IoLocationOutline } from "react-icons/io5";
 import { PiOfficeChair, PiSuitcaseLight } from "react-icons/pi";
-import { CgNotes } from "react-icons/cg";
 import Link from "next/link";
 
 export default function JobDescModal({
@@ -29,6 +26,7 @@ export default function JobDescModal({
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   isOpen: boolean;
 }) {
+  const completeButtonRef = useRef(null);
   function closeModal() {
     setIsOpen(false);
   }
@@ -38,7 +36,12 @@ export default function JobDescModal({
   }
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={closeModal}>
+      <Dialog
+        as="div"
+        className="relative z-50"
+        onClose={closeModal}
+        initialFocus={completeButtonRef}
+      >
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -51,7 +54,7 @@ export default function JobDescModal({
           <div className="fixed inset-0 bg-black/25" />
         </Transition.Child>
 
-        <div className="fixed inset-0  w-screen overflow-y-auto">
+        <div className="fixed inset-0  w-screen ">
           <div className="flex min-h-full items-center justify-center p-4 text-center">
             <Transition.Child
               as={Fragment}
@@ -62,10 +65,11 @@ export default function JobDescModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-5xl max-h-full transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-5xl max-h-screen transform overflow-y-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
                   className="text-xl font-medium leading-6 text-gray-900"
+                  ref={completeButtonRef}
                 >
                   {jobData.jobTitle}
                 </Dialog.Title>
@@ -150,8 +154,8 @@ export default function JobDescModal({
                       <h2 className="text-lg font-medium leading-6 text-gray-900">
                         Job Description
                       </h2>
-                      <div className="border w-full max-h-60 sm:max-h-80 lg:max-h-full overflow-y-auto p-5 rounded-md mt-2">
-                        <span className="mr-3  text-gray-700 text-md text-clip max-w-full text-pretty">
+                      <div className="border w-full lg:max-h-full p-2 md:p-5 rounded-md mt-2 text-pretty">
+                        <span className="mr-2  text-gray-700 text-md text-clip max-w-full">
                           {jobData.jobDescription}
                         </span>
                       </div>
@@ -221,14 +225,14 @@ export default function JobDescModal({
                       <Link
                         href={jobData.jobLink}
                         target="_blank"
-                        className="rounded-md border border-transparent bg-blue-100 px-4 py-2 text-md font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        className="rounded-md border border-transparent bg-blue-100 px-4 py-2 text-md font-medium text-blue-900 hover:bg-blue-200"
                         onClick={closeModal}
                       >
                         Apply
                       </Link>
                       <button
                         type="button"
-                        className="rounded-md border px-4 py-2 text-md font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        className="rounded-md border px-4 py-2 text-md font-medium text-blue-900 hover:bg-blue-200"
                         onClick={closeModal}
                       >
                         Close
