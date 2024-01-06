@@ -197,6 +197,14 @@ const Hero: React.FC<countProps> = ({
             minutes={minutes}
             seconds={seconds}
           />
+          {(days === 0 || days <= 0) &&
+            (hours === 0 || hours <= 0) &&
+            (minutes === 0 || minutes <= 0) &&
+            (seconds === 0 || seconds <= 0) && (
+              <div className="text-center text-3xl font-semibold text-gray-50">
+                Event Started... We welcome all of you.
+              </div>
+            )}
         </div>
       </div>
     </div>
