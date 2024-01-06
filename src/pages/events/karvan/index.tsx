@@ -19,23 +19,23 @@ const Karvan: React.FC = () => {
     minutes: 0,
     seconds: 0,
   });
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      const diff = targetDate.getTime() - now.getTime();
-      // Calculate the remaining time in seconds
-      const secondsRemaining = Math.floor(diff / 1000);
-      // Calculate days, hours, minutes, and seconds
-      const days = Math.floor(secondsRemaining / (3600 * 24));
-      const hours = Math.floor((secondsRemaining % (3600 * 24)) / 3600);
-      const minutes = Math.floor((secondsRemaining % 3600) / 60);
-      const seconds = Math.floor(secondsRemaining % 60);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     const now = new Date();
+  //     const diff = targetDate.getTime() - now.getTime();
+  //     // Calculate the remaining time in seconds
+  //     const secondsRemaining = Math.floor(diff / 1000);
+  //     // Calculate days, hours, minutes, and seconds
+  //     const days = Math.floor(secondsRemaining / (3600 * 24));
+  //     const hours = Math.floor((secondsRemaining % (3600 * 24)) / 3600);
+  //     const minutes = Math.floor((secondsRemaining % 3600) / 60);
+  //     const seconds = Math.floor(secondsRemaining % 60);
 
-      setTimeLeft({ days, hours, minutes, seconds });
-    }, 1000);
+  //     setTimeLeft({ days, hours, minutes, seconds });
+  //   }, 1000);
 
-    return () => clearInterval(interval);
-  }, []);
+  //   return () => clearInterval(interval);
+  // }, []);
   return (
     <>
       <SEO

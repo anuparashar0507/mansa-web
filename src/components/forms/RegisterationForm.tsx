@@ -493,12 +493,7 @@ const Registration: React.FC = () => {
               </Link>
             </div>
           </form>
-          <button
-            className="btn btn-primary bg-brand hover:bg-blue-900 w-full mt-8"
-            onClick={() => setShowModal(true)}
-          >
-            Modal
-          </button>
+
           {/* <VerificationForm />*/}
         </div>
       </div>
