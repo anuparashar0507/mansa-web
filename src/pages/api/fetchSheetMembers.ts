@@ -33,7 +33,6 @@ export default async function handler(
     const values = response.data.values;
 
     if (!values) {
-      console.log("No data found.");
       res.status(202).json({
         count: 0, // Set count to 0 as no data is available
         users: [], // Set users to an empty array
@@ -70,7 +69,6 @@ export default async function handler(
       });
     }
   } catch (error) {
-    console.error("Error for server:", error);
     res.status(500).json({
       count: 0, // Set count to 0 as no data is available
       users: [], // Set users to an empty array

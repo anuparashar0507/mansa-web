@@ -19,7 +19,7 @@ const Header: React.FC = () => {
     setMobileMenuOpen(false);
   };
   return (
-    <header className="bg-gray-50 sticky z-10 top-0">
+    <header className="bg-gray-50 sticky z-20 top-0">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2 lg:px-8"
         aria-label="Global"
@@ -88,8 +88,8 @@ const Header: React.FC = () => {
           )}
           {!session && (
             <Link
-              href="#"
-              // href="/login"
+              // href="#"
+              href="/login"
               className="text-sm font-semibold leading-6 text-gray-900"
             >
               Log in <span aria-hidden="true">&rarr;</span>
@@ -113,7 +113,7 @@ const Header: React.FC = () => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 z-20 transition-opacity" />
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 z-30 transition-opacity" />
           </Transition.Child>
           <Transition.Child
             as={Fragment}
@@ -124,7 +124,7 @@ const Header: React.FC = () => {
             leaveFrom="translate-x-full"
             leaveTo="translate-x-0 opacity-0 scale-95"
           >
-            <Dialog.Panel className="fixed inset-y-0 right-0 z-20 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+            <Dialog.Panel className="fixed inset-y-0 right-0 z-30 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
               <div className="flex items-center justify-between w-full">
                 <Link href="/" className="-mx-4 p-1.5">
                   <span className="sr-only">MANSA</span>

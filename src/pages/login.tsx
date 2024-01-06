@@ -21,7 +21,6 @@ export default function LogIn({
 
   const handleSignIn = async (e: FormEvent<HTMLFormElement>) => {
     setLoading(true);
-    console.log("creds :", creds);
     e.preventDefault();
     await signIn("credentials", {
       email: creds.email,

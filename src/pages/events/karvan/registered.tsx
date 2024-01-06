@@ -22,7 +22,7 @@ const Registered: React.FC = () => {
   // }, [searchText, members]);
 
   const filteredMembers = useMemo(() => {
-    if (searchText.trim().length > 0) {
+    if (searchText.trim().length > 1) {
       return members.filter((member) =>
         member.Name.toLowerCase().includes(searchText.toLowerCase()),
       );
@@ -51,38 +51,32 @@ const Registered: React.FC = () => {
     void fetchData();
   }, []);
 
-  const handleSearchTextChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const searchText = event.target.value;
-      setSearchText(searchText);
-    },
-    [],
-  );
+  const handleSearchTextChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const searchText = event.target.value;
+    setSearchText(searchText);
+  };
+
+  // const handleSearchTextChange = useCallback(
+  //   (event: React.ChangeEvent<HTMLInputElement>) => {
+  //     const searchText = event.target.value;
+  //     setSearchText(searchText);
+  //   },
+  //   [],
+  // );
   return (
     <>
       <SEO
         title={"Check Your Registration Number - MANSA"}
         description="List of all registered members coming for Karvan-2023, Check your registration number."
       />
-      <main className="flex min-h-screen flex-col items-center justify-center">
+      <main className="flex min-h-screen flex-col items-center">
         <div className="w-full max-w-7xl mx-auto">
           {loading ? (
             <Loader />
           ) : (
             <div className="w-full flex flex-col items-center justify-start p-0 md:p-6 gap-4 md:gap-8">
-              <div className="font-light text-brand bg-orange-50 flex justify-center  rounded-md mx-4 p-3">
-                <q className="text-sm text-center">
-                  <b className="font-bold text-sm md:text-md">NOTE:</b> If you
-                  haven't found your registration number, please feel free to
-                  contact us{" "}
-                  <b className=" text-green-700 font-semibold text-sm md:text-md">
-                    {" "}
-                    via whatsapp on: 7805058023
-                  </b>{" "}
-                  - T-shirt distribution will be based on your registration
-                  number.
-                </q>
-              </div>
               <div className="sticky z-10 top-[72px] md:top-[86px] grid grid-cols-1 md:grid-cols-2 w-full gap-1 px-4 bg-gray-50 items-center justify-between py-2 shadow-sm">
                 <div className="flex items-center justify-between w-full">
                   {!(searchText.length > 0) && (
@@ -129,6 +123,19 @@ const Registered: React.FC = () => {
                 ) : (
                   <h1 className="text-lg w-full"> No Member Found</h1>
                 )}
+              </div>
+              <div className="font-light text-brand bg-orange-50 flex justify-center  rounded-md mx-4 p-3">
+                <q className="text-sm text-center">
+                  <b className="font-bold text-sm md:text-md">NOTE:</b> If you
+                  haven't found your registration number, please feel free to
+                  contact us{" "}
+                  <b className=" text-green-700 font-semibold text-sm md:text-md">
+                    {" "}
+                    via whatsapp on: 7805058023
+                  </b>{" "}
+                  - T-shirt distribution will be based on your registration
+                  number.
+                </q>
               </div>
             </div>
           )}

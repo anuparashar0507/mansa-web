@@ -13,7 +13,6 @@ const LandingLayout: React.FC<LayoutProps> = ({ children }) => {
   const [close, setClose] = useState(false);
   //   const pathname = usePathname();
   //   const mode = pathname.split("/")[0];
-  //   console.log("Pathname :", mode);
   //   const { isAuthenticated } = useContext(AuthContext);
 
   return (

@@ -85,7 +85,6 @@ const Dashboard: React.FC = () => {
     // setJnvOptions(jnvs as string[]);
   };
   const applyFilters = () => {
-    console.log("FILTERS :- ", filter);
     const filterMember = members?.filter((member) => {
       const isNameMatch =
         filter.name === "" ||
@@ -145,7 +144,6 @@ const Dashboard: React.FC = () => {
         const data = (await response.json()) as Member[];
         setMembers(data);
       } catch (error) {
-        console.error(error);
         // Handle errors in UI if needed
       } finally {
         setLoading(false);
@@ -193,7 +191,6 @@ const Dashboard: React.FC = () => {
                         <XMarkIcon
                           className="w-5 h-5 p-0 m-0"
                           onClick={() => {
-                            console.log("key:", key);
                             if (key === "state") {
                               setFilter({
                                 ...filter,

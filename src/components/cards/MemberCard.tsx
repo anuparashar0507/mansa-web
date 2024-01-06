@@ -18,7 +18,6 @@ const MemberCard: React.FC<{ member: Member }> = ({ member }) => {
   //       return "badge-accent";
   //     }
   //   };
-  console.log(member);
   return (
     <div className="card px-6 py-5 cursor-pointer bg-base-100 shadow-2xl border">
       {/* Member  Name */}

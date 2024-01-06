@@ -1,21 +1,5 @@
-// import React, { useEffect, useState } from "react";
-
-// const poemLines: string[] = [
-//   "रंग जाति पद भेद रहित हम",
-//   "सबका एक भगवन हो",
-//   "संतान हैं धरती माँ की हम",
-//   "धरती पूजा स्थान हो",
-//   "पूजा के खिल रहे कमल दल",
-//   "हम भावजल में हों",
-//   "सर्वोदय के नव बसंत के, हमी नवोदय हों",
-//   "मानव हैं हम हलचल हम",
-//   "प्रकृति के पावन वेश में",
-//   "खिलें फलें हम में संस्कृति",
-//   "इस अपने भारत देश की, अपने भारत देश की",
-//   "हम हिमगिरि हम नदियाँ हम",
-//   "सागर की लहरें हों",
-//   "जीवन की मंगलमाटी के, हमीं नवोदय हों",
-// ];
+// import React, { useEffect, useState, type ChangeEvent } from "react";
+// import ComboBoxWrapper from "../ui/ComboBoxWrapper";
 
 // const VerificationForm: React.FC = () => {
 //   const [error, setError] = useState<string | null>(null);
@@ -24,12 +8,6 @@
 //   const [selectedOption, setSelectedOption] = useState<string>("");
 
 //   const [chances, setChances] = useState<number>(3);
-//   //   const {
-//   //     control,
-//   //     watch,
-//   //     formState: { errors },
-//   //     handleSubmit,
-//   //   } = useForm<FormData>();
 
 //   const getRandomLine = (): string => {
 //     const randomIndex = Math.floor(Math.random() * (poemLines.length - 1));
@@ -64,26 +42,26 @@
 //     setOptions(randomOpt);
 //   }
 
-//   const handleFormSubmit = (
-//     data: React.SyntheticEvent<HTMLInputElement, Event>,
-//   ) => {
-//     console.log("CLICKED :- ", data);
-//     // if (data.nextLine === getNextLine(randomLine)) {
-//     //   //   setRandomLine(getRandomLine());
-//     //   //   setOptions(generateOptions(getNextLine(randomLine)));
-//     //   setChances(3);
-//     //   console.log("CORRECT ");
-//     //   //   setError(null);
-//     //   //   onSubmit(data);
-//     // } else {
-//     //   setChances(chances - 1);
-//     //   if (chances === 1) {
-//     //     // window.location.href = "/";
-//     //     setError("You're a proud Navodayan");
-//     //   } else {
-//     //     setError("Incorrect answer. Please try again.");
-//     //   }
-//     // }
+//   const handleFormSubmit = () => {
+//     // console.log("CLICKED :- ", data);
+//     // preventDefault();
+
+//     if (selectedOption === getNextLine(randomLine)) {
+//       //   setRandomLine(getRandomLine());
+//       //   setOptions(generateOptions(getNextLine(randomLine)));
+//       setChances(3);
+//       console.log("CORRECT ");
+//       //   setError(null);
+//       //   onSubmit(data);
+//     } else {
+//       setChances(chances - 1);
+//       if (chances === 1) {
+//         // window.location.href = "/";
+//         setError("You're a proud Navodayan");
+//       } else {
+//         setError("Incorrect answer. Please try again.");
+//       }
+//     }
 //   };
 
 //   useEffect(() => {
@@ -96,21 +74,37 @@
 //       {randomLine && (
 //         <form>
 //           <p className="font-bold mt-4">{randomLine}</p>
-//           {options.map((option, index) => (
-//             <div key={index} className="flex gap-2">
-//               <input
+//           {/* {options.map((option, index) => ( */}
+//           {/* <div key={index} className="flex gap-2"> */}
+//           {/* <ComboBoxWrapper
 //                 type="radio"
 //                 value={option}
-//                 onSelect={(e) => setSelectedOption(e.target.value)}
+//                 onSelect={(e) => }
 //                 className="form-radio"
-//               />
-//               <label htmlFor={`option${index}`}>{option}</label>
-//             </div>
-//           ))}
+//               /> */}
+//           <ComboBoxWrapper
+//             label="State"
+//             placeholder="Select State"
+//             value={selectedOption}
+//             onChange={(e) => {
+//               setSelectedOption(e.toString());
+//               // do your own change event
+//             }}
+//             options={options.map((state, index) => ({
+//               id: index,
+//               label: state,
+//               value: state,
+//             }))}
+//             required={true}
+//           />
+//           {/* <label htmlFor={`option${index}`}>{option}</label> */}
+//           {/* </div> */}
+//           {/* ))} */}
 
 //           <button
 //             type="submit"
 //             className="btn btn-outline font-bold py-2 px-4 rounded"
+//             onClick={handleFormSubmit}
 //           >
 //             Verify
 //           </button>

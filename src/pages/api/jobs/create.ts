@@ -22,9 +22,9 @@ export default async function handler(
   const token = await getToken({ req, secret });
   // Check if the user is authenticated and has admin role
   // const { data: session } = useSession({ required: true });
-  console.log("session at create job:", token);
+  // console.log("session at create job:", token);
   if (!token) {
-    return res.status(401).json({ error: "Unauthorized" });
+    return res.status(401).json({ error: "User not authenticated" });
   }
   // if (!session?.user) {
   //   return res.status(401).json({ error: "User not authenticated" });
@@ -81,7 +81,9 @@ export default async function handler(
       console.log("newJob:", newJob);
       res.status(201).json({ message: "Job published successfully" });
     }
+    console.log("token:", token.sub, token.name);
   } catch (error) {
+    console.error("Error creating job:", error);
     return res.status(500).json({ error: "Internal Server Error" });
   }
 }

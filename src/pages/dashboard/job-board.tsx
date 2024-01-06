@@ -117,7 +117,6 @@ const JobBoard = () => {
         }
         setLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
         setLoading(false);
       }
     }
@@ -152,37 +151,33 @@ const JobBoard = () => {
             {Object.values(filter).filter(
               (value) =>
                 value && typeof value === "string" && value?.length > 0,
-            ).length > 0 &&
-              (console.log("filter :", filter),
-              (
-                <div className="w-full px-2 py-2 md:px-6 grid gap-1 grid-flow-col justify-start max-w-full overflow-x-auto">
-                  {Object.entries(filter)
-                    .filter(([key, value]) => value && key !== "createdAt")
-                    .map(
-                      ([key, value], index) =>
-                        value && (
-                          <button
-                            key={index}
-                            className="btn btn-outline px-3 py-0 w-max min-h-max h-8 rounded-md"
-                          >
-                            {value as string}
-                            <XMarkIcon
-                              className="w-5 h-5 p-0 m-0"
-                              onClick={() =>
-                                setFilter({ ...filter, [key]: "" })
-                              }
-                            />
-                          </button>
-                        ),
-                    )}
-                  <button
-                    className="btn btn-ghost hover:bg-transparent px-3 py-0 w-max min-h-max h-8 rounded-md"
-                    onClick={() => setFilter(initialFilterState)}
-                  >
-                    Clear All
-                  </button>
-                </div>
-              ))}
+            ).length > 0 && (
+              <div className="w-full px-2 py-2 md:px-6 grid gap-1 grid-flow-col justify-start max-w-full overflow-x-auto">
+                {Object.entries(filter)
+                  .filter(([key, value]) => value && key !== "createdAt")
+                  .map(
+                    ([key, value], index) =>
+                      value && (
+                        <button
+                          key={index}
+                          className="btn btn-outline px-3 py-0 w-max min-h-max h-8 rounded-md"
+                        >
+                          {value as string}
+                          <XMarkIcon
+                            className="w-5 h-5 p-0 m-0"
+                            onClick={() => setFilter({ ...filter, [key]: "" })}
+                          />
+                        </button>
+                      ),
+                  )}
+                <button
+                  className="btn btn-ghost hover:bg-transparent px-3 py-0 w-max min-h-max h-8 rounded-md"
+                  onClick={() => setFilter(initialFilterState)}
+                >
+                  Clear All
+                </button>
+              </div>
+            )}
             <div className="w-full flex justify-center">
               <button
                 className="btn btn-ghost w-full text-md hover:bg-gray-100 rounded-none"

@@ -62,7 +62,7 @@ export default function JobDescModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-5xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-5xl max-h-full transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
                   className="text-xl font-medium leading-6 text-gray-900"
@@ -87,12 +87,12 @@ export default function JobDescModal({
                         {jobData.companyName ? jobData.companyName : "NA"}
                       </span>
                     </div>
-                    <div className="flex items-center justify-start gap-4">
+                    <div className="md:flex hidden items-center justify-start gap-4">
                       <div className={`flex items-center`}>
                         <LuPieChart className="mr-2 " />
                         <span className=" text-md">{jobData.jobSector}</span>
                       </div>
-                      <div className={`flex items-center`}>
+                      <div className={`md:flex items-center hidden`}>
                         <LiaIndustrySolid className="mr-2 text-gray-500" />
                         <span className="text-gray-700 text-md">
                           {jobData.industry}
@@ -130,7 +130,6 @@ export default function JobDescModal({
                             : "Not Disclosed"}
                         </span>
                       </div>
-                      {/* <div className="divider divider-horizontal divider-start m-0" /> */}
                       {/* salary */}
                       <div className="flex items-center">
                         <FaRegMoneyBillAlt className="mr-2 text-gray-500" />
@@ -146,12 +145,12 @@ export default function JobDescModal({
 
                   {/* description */}
                   <div className="md:flex mt-8">
-                    <div className="flex flex-col w-full">
+                    <div className="flex flex-col w-full ">
                       {/* <CgNotes className="mr-2 text-gray-500" /> */}
                       <h2 className="text-lg font-medium leading-6 text-gray-900">
                         Job Description
                       </h2>
-                      <div className="border w-full p-5 rounded-md mt-2">
+                      <div className="border w-full max-h-60 sm:max-h-80 lg:max-h-full overflow-y-auto p-5 rounded-md mt-2">
                         <span className="mr-3  text-gray-700 text-md text-clip max-w-full text-pretty">
                           {jobData.jobDescription}
                         </span>
@@ -218,34 +217,31 @@ export default function JobDescModal({
                         </a>
                       )}
                     </div>
-
-                    <button
+                    <div className="flex mt-4 w-full gap-6 justify-end items-end">
+                      <Link
+                        href={jobData.jobLink}
+                        target="_blank"
+                        className="rounded-md border border-transparent bg-blue-100 px-4 py-2 text-md font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        onClick={closeModal}
+                      >
+                        Apply
+                      </Link>
+                      <button
+                        type="button"
+                        className="rounded-md border px-4 py-2 text-md font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        onClick={closeModal}
+                      >
+                        Close
+                      </button>
+                    </div>
+                    {/* <button
                       className=" hover:bg-gray-100 text-gray-500 hover:text-blue-500  flex items-center   rounded-full font-medium text-md px-2 py-1"
                       // onClick={handleInterested}
                     >
                       <FaHeart className="bg-gray-50 hover:text-blue-500  rounded-full font-semibold mr-2" />{" "}
                       Interested
-                    </button>
+                    </button> */}
                   </div>
-                </div>
-
-                <div className="flex mt-4 w-full gap-6 justify-end items-end">
-                  <Link
-                    // type="button"
-                    href={jobData.jobLink}
-                    target="_blank"
-                    className="rounded-md border border-transparent bg-blue-100 px-4 py-2 text-md font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    onClick={closeModal}
-                  >
-                    Apply
-                  </Link>
-                  <button
-                    type="button"
-                    className="rounded-md border   px-4 py-2 text-md font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                    onClick={closeModal}
-                  >
-                    Close
-                  </button>
                 </div>
               </Dialog.Panel>
             </Transition.Child>

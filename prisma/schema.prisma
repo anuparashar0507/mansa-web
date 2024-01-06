@@ -83,7 +83,7 @@ model Job {
     companyName    String?
     jobTitle       String
     jobDescription String   @db.Text
-    jobLink        String
+    jobLink        String   @db.VarChar(512)
     jobSector      String
     industry       String
     location       String?
@@ -94,7 +94,7 @@ model Job {
     createdAt      DateTime @default(now())
     updatedAt      DateTime @updatedAt
     // contact
-    email          String   @unique
+    email          String
     linkedin       String?
     facebook       String?
     instagram      String?
