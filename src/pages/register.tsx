@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { SEO } from "~/components/SEO";
 import RegisterationForm from "~/components/forms/RegisterationForm";
-import { signIn, getSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 export default function Register() {

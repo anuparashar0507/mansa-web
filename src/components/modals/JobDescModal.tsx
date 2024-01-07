@@ -55,7 +55,7 @@ export default function JobDescModal({
         </Transition.Child>
 
         <div className="fixed inset-0  w-screen ">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
+          <div className="flex min-h-full items-center justify-center md:p-4 p-2 text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -65,7 +65,7 @@ export default function JobDescModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-5xl max-h-screen transform overflow-y-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-full max-w-5xl max-h-[92vh] transform overflow-y-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
                   className="text-xl font-medium leading-6 text-gray-900"

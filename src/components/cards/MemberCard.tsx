@@ -6,6 +6,8 @@ import { IoLocationOutline } from "react-icons/io5";
 import { CiCalendarDate } from "react-icons/ci";
 import { type Member } from "~/types/member.type";
 import { MdFace, MdFace3 } from "react-icons/md";
+import { PiGenderNonbinaryBold } from "react-icons/pi";
+import { FaRegUser } from "react-icons/fa";
 const MemberCard: React.FC<{ member: Member }> = ({ member }) => {
   //   const getBadgeColor = (member: Filter) => {
   //     if (member.jobSector === "Government") {
@@ -24,8 +26,12 @@ const MemberCard: React.FC<{ member: Member }> = ({ member }) => {
       <div className="flex items-end mb-2">
         {member.gender === "Male" ? (
           <MdFace className="mr-2 text-sky-700 bg-sky-100 border border-sky-300 rounded-full p-1.5 h-12 w-12" />
-        ) : (
+        ) : member.gender === "Female" ? (
           <MdFace3 className="mr-2  text-pink-600 bg-pink-100 border border-pink-300 rounded-full p-1.5 h-12 w-12" />
+        ) : member.gender === "Other" ? (
+          <PiGenderNonbinaryBold className="mr-2 text-violet-600 bg-violet-100 border border-violet-300 rounded-full p-1.5 h-12 w-12" />
+        ) : (
+          <FaRegUser className="mr-2 text-stone-600 bg-stone-100 border border-stone-300 rounded-full p-1.5 h-12 w-12" />
         )}
 
         <div className="flex items-start flex-col justify-between">

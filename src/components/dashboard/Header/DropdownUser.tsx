@@ -51,7 +51,7 @@ const DropdownUser = () => {
           <span className="block text-xs">{session?.user.jnv}</span>
         </span>
 
-        <span className="md:h-12 md:w-12 h-10 w-10 bg-slate-400 flex items-center justify-center rounded-full">
+        <span className=" hidden md:h-12 md:w-12 h-10 w-10 bg-slate-400 lg:flex items-center justify-center rounded-full">
           {/* <Image
             width={112}
             height={112}
