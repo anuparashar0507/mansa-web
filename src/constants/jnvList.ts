@@ -336,6 +336,8 @@ export const jnvSchools: TJnvSchoolsStateWise = {
     "JNV Dindori",
     "JNV Guna",
     "JNV Gwalior",
+    "JNV Harda",
+    "JNV Hoshangabad",
     "JNV Indore",
     "JNV Jabalpur",
     "JNV Jhabua I",
